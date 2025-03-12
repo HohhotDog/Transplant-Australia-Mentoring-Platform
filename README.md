@@ -7,9 +7,9 @@
 
 ### 📁 [Client Provided Documents (`Client Documents`)](https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform/tree/main/Client%20Documents)
 
-- 📄 **DRAFT Mentor Matching Questions**
-- 📄 **Mentor Platform Brief**
-- 📄 **Mock Profiles**
+- 📄 [**DRAFT Mentor Matching Questions**](https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform/blob/main/Client%20Documents/DRAFT%20Mentor%20Matching%20Questions%201.docx)
+- 📄 [**Mentor Platform Brief**](https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform/blob/main/Client%20Documents/Mentor%20Platform%20Brief%20.docx)
+- 📄 [**Mock Profiles**](https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform/blob/main/Client%20Documents/Mock%20Profiles%20-%20Mentor%20Platform.docx)
 - 🔗 [**Mentor Loop Software Demo**](https://mentorloop.com/mentoring-software-demo/)
 
 ---
