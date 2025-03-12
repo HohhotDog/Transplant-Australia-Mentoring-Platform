@@ -5,7 +5,8 @@
 
 ## 📂 Project Documents
 
-### 📁 Client Provided Documents (`Client Documents`)
+### 📁 [Client Provided Documents (`Client Documents`)](https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform/tree/main/Client%20Documents)
+
 - 📄 **DRAFT Mentor Matching Questions7**
 - 📄 **Mentor Platform Brief**
 - 📄 **Mock Profiles**
