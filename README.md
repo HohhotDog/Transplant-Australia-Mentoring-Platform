@@ -31,6 +31,7 @@
 
 ### 📁 Group Documents
 - 🔗 [**Meeting Minutes**](https://docs.google.com/document/d/1B1b7HbDKNtuweympwyXPBBPjXx0_4ljawXAbKCIf5Gk/edit?addon_store&tab=t.0)
+- 🔗 [**Tech Stack Recommenation**]([https://docs.google.com/document/d/1B1b7HbDKNtuweympwyXPBBPjXx0_4ljawXAbKCIf5Gk/edit?addon_store&tab=t.0](https://uniwa-my.sharepoint.com/:x:/g/personal/23981621_student_uwa_edu_au/EeZlgnIbNuhBtDsCMlEQSbcBj5aL5HKv-Mno2Ur1C0kJ1g?e=rTeNT5&wdOrigin=TEAMS-MAGLEV.p2p_ns.rwc&wdExp=TEAMS-TREATMENT&wdhostclicktime=1741762985291&web=1))
 
 ---
 
