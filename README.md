@@ -11,7 +11,7 @@ Project Documents
 Client Provided Documents
 
 
-See folder `Client Documents`
+Inside of folder `Client Documents` :
 
 - `DRAFT Mentor Matching Questions7` 
 - `Mentor Platform Brief` 
