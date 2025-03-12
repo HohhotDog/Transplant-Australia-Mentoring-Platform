@@ -1,5 +1,15 @@
 # 📌 Transplant Australia Mentoring Platform  
-**Group #4 - Project #17**
+
+## 📌 Project Details
+
+| **Field**           | **Details** |
+|---------------------|------------|
+| **Project Number**  | Project 17 |
+| **Project Name**    | To create a compassionate and supportive mentoring platform that connects transplant recipients, those awaiting transplantation, and their caregivers with experienced mentors who have navigated similar journeys |
+| **Group Number**    | Group 4 |
+| **Group Members**   | Amrita Manoj (23981621), Baoyue Zhang (23967286), Chensu Yang (24035732), Rabi Rabi Ul Hasan (23881368), Zhengxu Jin (24117922), Zixiao Ma (24116864) |
+| **Group Facilitator** | Z Gilani |
+
 
 ---
 
