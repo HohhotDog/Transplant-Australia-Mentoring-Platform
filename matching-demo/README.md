@@ -1,4 +1,4 @@
-# Mentor-Mentee Matching demo
+# Mentor-Mentee Matching Survey
 
 ## Overview
 A simple survey-based matching system that pairs mentees with the most compatible mentors based on their answers.
@@ -15,15 +15,25 @@ A simple survey-based matching system that pairs mentees with the most compatibl
 - The top 3 mentors with the highest scores are returned.
 
 ## Installation
-1. Install dependencies:
+### Prerequisites
+- Ensure you have **Node.js** installed.
+- Ensure you have **Git** installed.
+
+### Setup Instructions
+1. Clone the repository:
    ```sh
-   npm install express cors
+   git clone https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform.git
+   cd matching-demo
    ```
-2. Start the server:
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Start the server:
    ```sh
    node server.js
    ```
-3. Open `http://localhost:3000/` in your browser.
+4. Open `http://localhost:3000/` in your browser.
 
 ## Usage
 - Select **Mentor** or **Mentee**.
@@ -62,5 +72,16 @@ A simple survey-based matching system that pairs mentees with the most compatibl
 - Improve matching logic.
 - Add a user login system.
 
+## Notes for Team Members
+- Ensure all team members **pull the latest changes** before running the project:
+  ```sh
+  git pull origin main
+  ```
+- If issues arise, delete `node_modules` and reinstall dependencies:
+  ```sh
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
 
+🚀 Ready to match mentees with mentors!
 
