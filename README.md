@@ -33,6 +33,7 @@
 - 🔗 [**Meeting Minutes**](https://docs.google.com/document/d/1B1b7HbDKNtuweympwyXPBBPjXx0_4ljawXAbKCIf5Gk/edit?addon_store&tab=t.0)
 - 🔗 [**Tech Stack Recommenation**](https://docs.google.com/document/d/1d5gYZ9k4LIPO2XxJKMwe75d1cAoi4dljN3ssgErJcw0/edit?usp=sharing)
 - 🔗 [**Requirements Specification Document**](https://docs.google.com/document/d/1WX6uZwZotFo76DViyXjLEt3AsmGaboB9fErCLJrstCE/edit?usp=sharing)
+- 🔗 [**Learning Resources**](https://docs.google.com/document/d/1DFY3lnWn82pg10eKOA8aZ4Ug-roccF-6BpgPVbvQF24/edit?tab=t.0#heading=h.964opy444ogh)
 
 ---
 
