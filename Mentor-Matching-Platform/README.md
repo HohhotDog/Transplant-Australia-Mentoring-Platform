@@ -10,7 +10,7 @@ This is the development environment for the **Transplant Australia Mentoring Pla
 |------------|------------------------------|
 | Frontend   | React, Tailwind CSS          |
 | Backend    | Node.js, Express.js          |
-| Database   | MySQL                        |
+| Database   | SQLite                        |
 
 ---
 
@@ -54,23 +54,9 @@ cd ../server
 npm install
 node index.js
 ```
-Runs on: `http://localhost:5000`
+Runs on: `http://localhost:4000`
 
-### 4. Create the MySQL Database
 
-```sql
-CREATE DATABASE transplant_db;
-
-USE transplant_db;
-
-CREATE TABLE mentors (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100),
-  area VARCHAR(255),
-  email VARCHAR(100)
-);
-```
-Test the API at: `http://localhost:5000/mentors`
 
 ## 🛠️ Example API
 
