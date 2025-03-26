@@ -1,10 +1,12 @@
+// ./server/index.js
 const express = require('express');
 const cors = require('cors');
+const db = require('./db');
 
 const app = express();
-const PORT = 5000;
+const PORT = 4000;
 
-const db = require('./db');
+
 
 app.use(cors());
 app.use(express.json());
