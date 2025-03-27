@@ -2,9 +2,13 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
+
+// Pages
 import HomePage from "./pages/HomePage";
-import ProfilePage from "./pages/ProfilePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import SurveyPage from "./pages/SurveyPage";
+import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 
 function App() {
@@ -29,26 +33,33 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <h1>🧑‍💻 Mentor-Mentee Portal</h1>
+        <h1>👩‍💻 Mentor-Mentee Portal</h1>
         <nav>
           <Link to="/">Home</Link>{" "}
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <>
-              | <Link to="/survey">Survey</Link> | <Link to="/profile">Profile</Link> |{" "}
-              <Link to="/admin">Admin</Link>
+              | <Link to="/survey">Survey</Link> |{" "}
+              <Link to="/profile">Profile</Link> |{" "}
+              <Link to="/admin">Admin</Link> |{" "}
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              | <Link to="/login">Login</Link> |{" "}
+              <Link to="/register">Register</Link>
             </>
           )}
         </nav>
-        {isLoggedIn && (
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        )}
+
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route
-            path="/"
-            element={<HomePage onLoginSuccess={handleLoginSuccess} />}
+            path="/login"
+            element={<LoginPage onLoginSuccess={handleLoginSuccess} />}
           />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/survey" element={<SurveyPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/admin" element={<AdminPage />} />
