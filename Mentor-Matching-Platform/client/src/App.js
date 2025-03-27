@@ -1,9 +1,9 @@
 // src/App.js
 import React, { useState } from "react";
 import "./App.css";
-import AuthForms from "./components/AuthForms";
-import SurveyForm from "./components/SurveyForm";
-import MatchResult from "./components/MatchResult";
+import AuthForms from "./components/Auth/AuthForms";
+import SurveyForm from "./components/Survey/SurveyForm";
+import MatchResult from "./components/Match/MatchResult";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
