@@ -1,9 +1,11 @@
 // src/App.js
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
-import AuthForms from "./components/Auth/AuthForms";
-import SurveyForm from "./components/Survey/SurveyForm";
-import MatchResult from "./components/Match/MatchResult";
+import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import SurveyPage from "./pages/SurveyPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,21 +27,34 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <h1>🧑‍💻 Mentor-Mentee Portal</h1>
-      {!isLoggedIn ? (
-        <AuthForms onLoginSuccess={handleLoginSuccess} />
-      ) : (
-        <>
+    <Router>
+      <div className="container">
+        <h1>🧑‍💻 Mentor-Mentee Portal</h1>
+        <nav>
+          <Link to="/">Home</Link>{" "}
+          {isLoggedIn && (
+            <>
+              | <Link to="/survey">Survey</Link> | <Link to="/profile">Profile</Link> |{" "}
+              <Link to="/admin">Admin</Link>
+            </>
+          )}
+        </nav>
+        {isLoggedIn && (
           <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>
-          <SurveyForm />
-          <hr />
-          <MatchResult />
-        </>
-      )}
-    </div>
+        )}
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage onLoginSuccess={handleLoginSuccess} />}
+          />
+          <Route path="/survey" element={<SurveyPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
