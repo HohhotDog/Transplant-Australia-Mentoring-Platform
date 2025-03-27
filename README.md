@@ -21,7 +21,6 @@
 - 📄 [**Mentor Platform Brief**](https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform/blob/main/Client%20Documents/Mentor%20Platform%20Brief%20.docx)
 - 📄 [**Mock Profiles**](https://github.com/HohhotDog/Transplant-Australia-Mentoring-Platform/blob/main/Client%20Documents/Mock%20Profiles%20-%20Mentor%20Platform.docx)
 - 🔗 [**Mentor Loop Software Demo**](https://mentorloop.com/mentoring-software-demo/)
-- 🔗 [**Requirements Specification**](https://docs.google.com/document/d/1WX6uZwZotFo76DViyXjLEt3AsmGaboB9fErCLJrstCE/edit?tab=t.0#heading=h.s8sxd71zufha)
 - 🔗 [**Figma Diagram**](https://www.figma.com/design/LSRmhgPvh31CA0zqtr9NQT/CITS5206_TransplantAustralia_Mentoring_platform?node-id=0-1&p=f&t=2ufJnXVR23spDDpE-0)
 
 ---
