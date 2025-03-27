@@ -54,7 +54,7 @@ cd ../server
 npm install
 node index.js
 ```
-Runs on: `http://localhost:4000`
+Runs on: `http://localhost:3001`
 
 
 
