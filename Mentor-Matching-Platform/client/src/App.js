@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 // Import pages
@@ -10,6 +10,9 @@ import RegisterPage from "./pages/RegisterPage";
 import SurveyPage from "./pages/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
+
+// Import NavBar component
+import NavBar from "./components/Navigation/NavBar";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,25 +37,12 @@ function App() {
     <Router>
       <div className="container">
         <h1>👩‍💻 Mentor-Mentee Portal</h1>
-        <nav>
-          <Link to="/">Home</Link>{" "}
-          {isLoggedIn ? (
-            <>
-              | <Link to="/survey">Survey</Link> |{" "}
-              <Link to="/profile">Profile</Link> |{" "}
-              <Link to="/admin">Admin</Link> |{" "}
-              <button className="logout-btn" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              | <Link to="/login">Login</Link> |{" "}
-              <Link to="/register">Register</Link>
-            </>
-          )}
-        </nav>
-
+        <NavBar isLoggedIn={isLoggedIn} />
+        {isLoggedIn && (
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        )}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
