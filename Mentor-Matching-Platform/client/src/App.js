@@ -14,11 +14,15 @@ import AdminPage from "./pages/AdminPage";
 // Import NavBar component
 import NavBar from "./components/Navigation/NavBar";
 
+
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+ 
 
   function handleLoginSuccess() {
     setIsLoggedIn(true);
+   
   }
 
   function handleLogout() {

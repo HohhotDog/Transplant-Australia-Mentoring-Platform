@@ -1,6 +1,8 @@
 // src/components/Auth/LoginForm.js
 import React, { useState } from "react";
 
+
+
 function LoginForm({ onLoginSuccess }) {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -16,7 +18,7 @@ function LoginForm({ onLoginSuccess }) {
       });
       const data = await res.json();
       if (data.success) {
-        alert("✅ Logged in successfully!");
+      
         onLoginSuccess(); 
       } else {
         alert("Error: " + data.message);
