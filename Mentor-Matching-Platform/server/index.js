@@ -187,8 +187,11 @@ app.get("/api/match-mentee", isAuthenticated, (req, res) => {
     res.json({
       success: true,
       message: "Top 3 mentor matches found.",
-      matches: topMatches
+      latestMentee: latestMentee,
+      matches: topMatches,
+        // Include the latest mentee's responses
     });
+    
   });
 });
 
