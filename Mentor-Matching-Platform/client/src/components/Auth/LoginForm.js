@@ -30,7 +30,7 @@ function LoginForm({ onLoginSuccess }) {
   }
 
   return (
-    <div className="login-form">
+    <div className="auth-container">
       <h2>🔑 Log In</h2>
       <form onSubmit={handleLogin}>
         <label>Username</label>

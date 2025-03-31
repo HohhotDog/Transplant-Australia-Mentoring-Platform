@@ -29,7 +29,7 @@ function RegisterForm({ onRegisterSuccess }) {
   }
 
   return (
-    <div className="register-form">
+    <div className="auth-container">
       <h2>🚀 Create an Account</h2>
       <form onSubmit={handleRegister}>
         <label>Username</label>
