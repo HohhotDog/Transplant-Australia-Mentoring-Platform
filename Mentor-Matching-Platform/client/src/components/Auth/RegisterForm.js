@@ -1,7 +1,7 @@
 // src/components/Auth/RegisterForm.js
 import React, { useState } from "react";
 
-function RegisterForm() {
+function RegisterForm({ onRegisterSuccess }) {
   const [regUsername, setRegUsername] = useState("");
   const [regPassword, setRegPassword] = useState("");
 
@@ -16,7 +16,7 @@ function RegisterForm() {
       });
       const data = await res.json();
       if (data.success) {
-        alert("🎉 Account created! You can now log in.");
+        onRegisterSuccess(); // Call the function to handle successful registration
         setRegUsername("");
         setRegPassword("");
       } else {
