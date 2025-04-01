@@ -20,7 +20,9 @@ function MatchResult() {
       {matchResult && (
         <div className="match-result">
           <h3>Match Results</h3>
+         
           <pre>{JSON.stringify(matchResult, null, 2)}</pre>
+          
         </div>
       )}
     </div>
