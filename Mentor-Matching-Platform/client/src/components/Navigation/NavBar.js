@@ -14,6 +14,10 @@ function NavBar({ isLoggedIn }) {
           <Link to="/profile">Profile</Link>
           {" | "}
           <Link to="/admin">Admin</Link>
+          {" | "}
+          <Link to="/enneagram-quiz">Enneagram</Link>
+          {" | "}
+          <Link to="/matches">Matches</Link>
         </>
       ) : (
         <>

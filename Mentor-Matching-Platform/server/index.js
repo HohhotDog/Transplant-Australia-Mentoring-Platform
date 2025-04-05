@@ -1,5 +1,4 @@
 // ./server/index.js
-// server.js
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -8,15 +7,12 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const db = require("./db.js"); // our SQLite db
 const app = express();
+const enneagramRoutes = require('./routes/enneagram');
+const matchRoutes = require('./routes/match');
+
 
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(express.json());
-app.use(cors({
-  origin: "http://localhost:3000", // React dev server
-  credentials: true
-}));
 app.use(
   session({
     secret: "someSuperSecretKey",
@@ -24,6 +20,18 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+app.use(cors({
+  origin: "http://localhost:3000", // React dev server
+  credentials: true
+}));
+
+// Middleware
+app.use(express.json());
+app.use('/api/enneagram', enneagramRoutes);
+console.log("🧪 enneagramRoutes is:", enneagramRoutes);
+
+app.use('/api/match', matchRoutes);
 
 // An authentication check middleware
 function isAuthenticated(req, res, next) {
@@ -97,7 +105,14 @@ app.post("/api/login", (req, res) => {
       id: row.id,
       username: row.username
     };
-    return res.json({ success: true, message: "Login successful" });
+    return res.json({
+      success: true,
+      message: "Login successful",
+      user: {
+        id: row.id,
+        username: row.username
+      }
+    });    
   });
 });
 
@@ -128,22 +143,36 @@ app.get("/api/questions", isAuthenticated, (req, res) => {
 
 // Submit survey
 app.post("/api/submit", isAuthenticated, (req, res) => {
+  console.log("🚀 /api/submit triggered");
+
   const { role, responses } = req.body;
+  const userId = req.session?.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ success: false, message: "Unauthorized - user not logged in" });
+  }
+
   if (!role || !['mentor', 'mentee'].includes(role)) {
     return res.status(400).json({ success: false, message: "Invalid role specified." });
   }
 
   const responsesStr = JSON.stringify(responses);
 
-  const stmt = `INSERT INTO responses (role, responses) VALUES (?, ?)`;
-  db.run(stmt, [role, responsesStr], function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ success: false, message: "Database error" });
+  db.run(
+    `UPDATE users SET role = ?, surveyResponses = ? WHERE id = ?`,
+    [role, responsesStr, userId],
+    function (err) {
+      if (err) {
+        console.error("❌ Failed to save survey/role:", err);
+        return res.status(500).json({ success: false, message: "Database error" });
+      }
+
+      console.log(`✅ Role + survey saved for user ${userId}`);
+      return res.json({ success: true, message: "Survey saved!" });
     }
-    return res.json({ success: true, message: "Response recorded successfully." });
-  });
+  );
 });
+
 
 // Match latest mentee
 app.get("/api/match-mentee", isAuthenticated, (req, res) => {

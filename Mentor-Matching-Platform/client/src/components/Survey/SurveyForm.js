@@ -1,10 +1,12 @@
 // src/components/SurveyForm.js
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SurveyForm() {
   const [questions, setQuestions] = useState([]);
   const [role, setRole] = useState("mentor");
   const [responses, setResponses] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchQuestions();
@@ -37,6 +39,12 @@ function SurveyForm() {
       if (data.success) {
         alert("🎉 Survey submitted!");
         setResponses({});
+        if (data.success) {
+          alert("🎉 Survey submitted!");
+          setResponses({});
+          navigate("/enneagram"); 
+        }
+        
       } else {
         alert("Error: " + data.message);
       }

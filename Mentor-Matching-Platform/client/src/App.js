@@ -1,6 +1,5 @@
-// src/App.js
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
 // Import pages
@@ -10,19 +9,17 @@ import RegisterPage from "./pages/RegisterPage";
 import SurveyPage from "./pages/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
+import EnneagramPage from "./pages/EnneagramPage"; 
+import MatchesPage from "./components/Match/MatchesPage";
 
 // Import NavBar component
 import NavBar from "./components/Navigation/NavBar";
 
-
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
- 
 
   function handleLoginSuccess() {
     setIsLoggedIn(true);
-   
   }
 
   function handleLogout() {
@@ -38,28 +35,26 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="container">
-        <h1>👩‍💻 Mentor-Mentee Portal</h1>
-        <NavBar isLoggedIn={isLoggedIn} />
-        {isLoggedIn && (
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        )}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/login"
-            element={<LoginPage onLoginSuccess={handleLoginSuccess} />}
-          />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/survey" element={<SurveyPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="container">
+      <h1>👩‍💻 Mentor-Mentee Portal</h1>
+      <NavBar isLoggedIn={isLoggedIn} />
+      {isLoggedIn && (
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+      )}
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/survey" element={<SurveyPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/enneagram-quiz" element={<EnneagramPage />} /> 
+        <Route path="/matches" component={<MatchesPage/>} />
+      </Routes>
+    </div>
   );
 }
 

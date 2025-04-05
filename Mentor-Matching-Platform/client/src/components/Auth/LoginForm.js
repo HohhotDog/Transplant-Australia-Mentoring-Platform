@@ -1,7 +1,4 @@
-// src/components/Auth/LoginForm.js
 import React, { useState } from "react";
-
-
 
 function LoginForm({ onLoginSuccess }) {
   const [loginUsername, setLoginUsername] = useState("");
@@ -17,9 +14,13 @@ function LoginForm({ onLoginSuccess }) {
         body: JSON.stringify({ username: loginUsername, password: loginPassword })
       });
       const data = await res.json();
+
       if (data.success) {
-      
-        onLoginSuccess(); 
+        // ✅ Save the logged-in user ID to sessionStorage
+        sessionStorage.setItem("userId", data.user.id);
+
+        // Continue with app-specific login success handler
+        onLoginSuccess();
       } else {
         alert("Error: " + data.message);
       }
