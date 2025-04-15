@@ -5,11 +5,13 @@ import "./App.css";
 
 // Import pages
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import SurveyPage from "./pages/SurveyPage";
+import LoginPage from "./pages/Auth/LoginPage";
+import RegisterPage from "./pages/Auth/RegisterPage";
+import SurveyPage from "./pages/Sessions/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
-import AdminPage from "./pages/AdminPage";
+import AdminPage from "./pages/Admin/AdminPage";
+import SessionPage from "./pages/Sessions/SessionPage";
+
 
 // Import global layout component
 import Layout from "./components/Layout";
@@ -47,6 +49,7 @@ function App() {
           <Route path="survey" element={<SurveyPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="admin" element={<AdminPage />} />
+          <Route path="session" element={<SessionPage />} />
         </Route>
 
         {/* Routes without the global layout */}

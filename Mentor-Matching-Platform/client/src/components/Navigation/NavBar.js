@@ -9,11 +9,13 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
       {isLoggedIn ? (
         <>
           {" | "}
+          <Link to="/session">Sessions</Link>
+          {" | "}
           <Link to="/survey">Survey</Link>
           {" | "}
-          <Link to="/profile">Profile</Link>
-          {" | "}
           <Link to="/admin">Admin</Link>
+          {" | "}
+          <Link to="/profile">Profile</Link>
           {" | "}
           <button onClick={handleLogout} className="bg-2-brown text-black font-normal px-3 py-1">
             Logout
