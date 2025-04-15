@@ -2,9 +2,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function NavBar({ isLoggedIn }) {
+const NavBar = ({ isLoggedIn, handleLogout }) => {
   return (
-    <nav className="navbar">
+    <nav className="navbar font-normal">
       <Link to="/">Home</Link>
       {isLoggedIn ? (
         <>
@@ -14,6 +14,10 @@ function NavBar({ isLoggedIn }) {
           <Link to="/profile">Profile</Link>
           {" | "}
           <Link to="/admin">Admin</Link>
+          {" | "}
+          <button onClick={handleLogout} className="bg-2-brown text-black font-normal px-3 py-1">
+            Logout
+          </button>
         </>
       ) : (
         <>
@@ -25,6 +29,6 @@ function NavBar({ isLoggedIn }) {
       )}
     </nav>
   );
-}
+};
 
 export default NavBar;

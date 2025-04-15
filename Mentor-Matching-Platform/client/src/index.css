@@ -7,13 +7,13 @@
     button {
         @apply bg-btnorange text-white font-semibold;
       }
-      
-    body, input, select, textarea {
+
+    body, select, textarea {
       @apply bg-2-brown;
     }
 
 
-    .container {
+    .container, form {
       @apply max-w-2xl mx-auto my-8 p-6 bg-brown rounded-lg ;
     }
 

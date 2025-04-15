@@ -11,18 +11,14 @@ import SurveyPage from "./pages/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 
-// Import NavBar component
-import NavBar from "./components/Navigation/NavBar";
-
-
+// Import global layout component
+import Layout from "./components/Layout";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
- 
 
   function handleLoginSuccess() {
     setIsLoggedIn(true);
-   
   }
 
   function handleLogout() {
@@ -39,26 +35,27 @@ function App() {
 
   return (
     <Router>
-      <div className="container">
-        <h1>👩‍💻 Mentor-Mentee Portal</h1>
-        <NavBar isLoggedIn={isLoggedIn} />
-        {isLoggedIn && (
-          <button className="logout-btn bg-btnorange" onClick={handleLogout}>
-            Logout
-          </button>
-        )}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/login"
-            element={<LoginPage onLoginSuccess={handleLoginSuccess} />}
-          />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/survey" element={<SurveyPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
-      </div>
+      <Routes>
+        {/* Routes using the global layout */}
+        <Route
+          path="/"
+          element={
+            <Layout isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+          }
+        >
+          <Route index element={<HomePage />} />
+          <Route path="survey" element={<SurveyPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="admin" element={<AdminPage />} />
+        </Route>
+
+        {/* Routes without the global layout */}
+        <Route
+          path="/login"
+          element={<LoginPage onLoginSuccess={handleLoginSuccess} />}
+        />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
     </Router>
   );
 }
