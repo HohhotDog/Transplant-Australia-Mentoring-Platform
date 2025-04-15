@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer base {
+    button {
+        @apply bg-btnorange text-white font-semibold;
+      }
+      
+    body, input, select, textarea {
+      @apply bg-2-brown;
+    }
+
+
+    .container {
+      @apply max-w-2xl mx-auto my-8 p-6 bg-brown rounded-lg ;
+    }
+
+    
+    
+  }

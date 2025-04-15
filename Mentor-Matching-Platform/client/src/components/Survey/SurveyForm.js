@@ -75,7 +75,7 @@ function SurveyForm() {
             </div>
           ))}
         </div>
-        <button type="submit" style={{ marginTop: "1rem" }}>
+        <button className="bg-btnorange" type="submit" style={{ marginTop: "1rem" }}>
           Submit Survey
         </button>
       </form>

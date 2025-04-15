@@ -45,7 +45,7 @@ function RegisterForm({ onRegisterSuccess }) {
           onChange={(e) => setRegPassword(e.target.value)}
           required
         />
-        <button type="submit">Register</button>
+        <button className="bg-btnorange" type="submit">Register</button>
       </form>
     </div>
   );

@@ -46,7 +46,7 @@ function LoginForm({ onLoginSuccess }) {
           onChange={(e) => setLoginPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button className="bg-btnorange" type="submit">Login</button>
       </form>
     </div>
   );

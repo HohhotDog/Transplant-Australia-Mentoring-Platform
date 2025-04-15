@@ -43,7 +43,7 @@ function App() {
         <h1>👩‍💻 Mentor-Mentee Portal</h1>
         <NavBar isLoggedIn={isLoggedIn} />
         {isLoggedIn && (
-          <button className="logout-btn" onClick={handleLogout}>
+          <button className="logout-btn bg-btnorange" onClick={handleLogout}>
             Logout
           </button>
         )}
