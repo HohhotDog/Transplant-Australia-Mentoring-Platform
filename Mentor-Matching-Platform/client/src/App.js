@@ -7,11 +7,11 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
-import SurveyPage from "./pages/Sessions/SurveyPage";
+import SurveyPage from "./pages/Mentorship/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
-import SessionPage from "./pages/Sessions/ExploreSessionPage";
-import SessionDetailPage from "./pages/Sessions/SessionDetailPage"; 
+import SessionPage from "./pages/Mentorship/ExploreSessionPage";
+import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
 
 
 // Import global layout component
@@ -51,7 +51,7 @@ function App() {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="admin" element={<AdminPage />} />
           <Route path="session" element={<SessionPage />} />
-          <Route path="sessions/:id" element={<SessionDetailPage />} />
+          <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
         </Route>
 
         {/* Routes without the global layout */}
