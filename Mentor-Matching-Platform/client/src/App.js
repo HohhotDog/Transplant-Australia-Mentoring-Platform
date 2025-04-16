@@ -11,6 +11,7 @@ import SurveyPage from "./pages/Sessions/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Sessions/ExploreSessionPage";
+import SessionDetailPage from "./pages/Sessions/SessionDetailPage"; 
 
 
 // Import global layout component
@@ -50,6 +51,7 @@ function App() {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="admin" element={<AdminPage />} />
           <Route path="session" element={<SessionPage />} />
+          <Route path="sessions/:id" element={<SessionDetailPage />} />
         </Route>
 
         {/* Routes without the global layout */}
