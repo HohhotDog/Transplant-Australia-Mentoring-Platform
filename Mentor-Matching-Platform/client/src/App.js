@@ -10,7 +10,7 @@ import RegisterPage from "./pages/Auth/RegisterPage";
 import SurveyPage from "./pages/Sessions/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
-import SessionPage from "./pages/Sessions/SessionPage";
+import SessionPage from "./pages/Sessions/ExploreSessionPage";
 
 
 // Import global layout component
