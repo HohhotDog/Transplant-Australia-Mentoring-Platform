@@ -5,7 +5,7 @@ import MatchResult from "../../components/Match/MatchResult";
 
 const SurveyPage = () => {
   return (
-    <div>
+    <div className="mx-auto" style={{ maxWidth: '36rem' /* 36rem ≈ max-w-xl */ }}>
       <h2>Survey</h2>
       <SurveyForm />
       <hr />
