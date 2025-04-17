@@ -1,7 +1,7 @@
 // src/pages/MentorshipSessionDetailPage.js
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import SessionDetail from '../../components/session/SessionDetail';
+import { useNavigate, useParams } from 'react-router-dom';
+import SessionDetail from '../../components/Session/SessionDetail';
 
 /**
  * MentorshipSessionDetailPage displays session details for the mentorship view.
@@ -57,7 +57,7 @@ const MentorshipSessionDetailPage = () => {
     appliedSessions.push(id);
     localStorage.setItem('appliedSessions', JSON.stringify(appliedSessions));
     setApplied(true);
-    navigate('/session'); // Redirect back to ExploreSessionPage
+    navigate('/sessions'); // Redirect back to ExploreSessionPage
   };
 
   // Handle Cancel Apply button click
@@ -68,7 +68,7 @@ const MentorshipSessionDetailPage = () => {
     setApplied(false);
     alert("You have successfully canceled the application!");
     // Optionally, redirect to another page or refresh the current page
-    navigate('/session'); // Redirect back to ExploreSessionPage
+    navigate('/sessions'); // Redirect back to ExploreSessionPage
   };
 
   if (loading) return <div>Loading...</div>;

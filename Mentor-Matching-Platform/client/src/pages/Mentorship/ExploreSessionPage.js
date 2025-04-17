@@ -1,5 +1,5 @@
 import React from 'react';
-import SessionCard from '../../components/session//SessionCard'; // Adjust the import path based on your project structure
+import SessionCard from '../../components/Session/SessionCard'; // Adjust the import path based on your project structure
 
 /**
  * ExploreSessionsPage component displays a list of session cards.

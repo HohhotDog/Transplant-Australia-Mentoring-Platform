@@ -50,7 +50,7 @@ function App() {
           <Route path="survey" element={<SurveyPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="admin" element={<AdminPage />} />
-          <Route path="session" element={<SessionPage />} />
+          <Route path="sessions" element={<SessionPage />} />
           <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
         </Route>
 
