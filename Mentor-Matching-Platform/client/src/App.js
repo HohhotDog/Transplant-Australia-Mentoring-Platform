@@ -12,6 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
+import MentorshipSessionPage from './pages/Mentorship/MySessions';
 
 
 // Import global layout component
@@ -52,6 +53,8 @@ function App() {
           <Route path="admin" element={<AdminPage />} />
           <Route path="sessions" element={<SessionPage />} />
           <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
+          <Route path="my-sessions" element={<MentorshipSessionPage />} />
+          {/* Add more routes as needed */}
         </Route>
 
         {/* Routes without the global layout */}
