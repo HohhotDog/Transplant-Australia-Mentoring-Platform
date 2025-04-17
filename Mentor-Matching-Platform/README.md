@@ -51,6 +51,7 @@ Runs on: `http://localhost:3000`
 
 ```bash
 cd ../server
+mkdir data
 npm install
 node index.js
 ```
