@@ -8,13 +8,15 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import SurveyPage from "./pages/Mentorship/SurveyPage";
-import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
 import MentorshipSessionPage from './pages/Mentorship/MySessions';
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
+import ProfileForm from "./components/Profile/ProfileCreation";
+import ProfilePage from "./components/Profile/ProfilePage";
+import PersonalDetails from "./components/Profile/PersonalDetails";
 
 // Import global layout
 import Layout from "./components/Layout";
@@ -53,14 +55,24 @@ function App() {
                 >
                     <Route index element={<HomePage />} />
                     <Route path="survey" element={<SurveyPage />} />
-                    <Route path="profile" element={<ProfilePage />} />
                     <Route path="admin" element={<AdminPage />} />
                     <Route path="sessions" element={<SessionPage />} />
                     <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
                     <Route path="my-sessions" element={<MentorshipSessionPage />} />
-                </Route>
+                    <Route
+                        path="profile"
+                        element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+                    />
+                    <Route
+                        path="profile-creation"
+                        element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+                    />
+                    <Route
+                        path="profile-edit"
+                        element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+                    />
 
-                {/* Auth pages without layout */}
+                </Route>
                 <Route
                     path="/login"
                     element={

@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Bug Fixed" />
+    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Bug Fixed">
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/PersonalDetails.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfileCreation.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Navigation/NavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Navigation/NavBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,9 +23,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JSX File" />
         <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -54,28 +64,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Back-end.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.Front-end.executor&quot;: &quot;Run&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.App.js.executor": "Run",
+    "Node.js.Back-end.executor": "Run",
+    "Node.js.index.js.executor": "Run",
+    "Node.js.server.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Chensu-Yang-dev-branch",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.Front-end.executor": "Run",
+    "npm.start.executor": "Run",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/style" />
     </key>
   </component>

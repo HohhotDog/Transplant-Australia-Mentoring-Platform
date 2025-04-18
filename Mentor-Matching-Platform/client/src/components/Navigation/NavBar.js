@@ -1,12 +1,41 @@
 // src/components/Navigation/NavBar.js
 import React from "react";
-import { Link, useLocation } from "react-router-dom"; // ✅ 引入 useLocation
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const NavBar = ({ isLoggedIn, handleLogout }) => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const isOnRegisterPage = location.pathname === "/register";
     const isOnLoginPage = location.pathname === "/login";
+    const handleProfileClick = async () => {
+        try {
+            const res = await fetch("/api/profile", {
+                method: "GET",
+                credentials: "include",
+            });
+
+            if (res.status === 200) {
+                // Profile exists
+                navigate("/profile");
+            } else if (res.status === 404) {
+                // Profile not found
+                alert("⚠️ You need to complete your profile first.");
+                navigate("/profile-creation");
+            } else if (res.status === 401) {
+                // Not logged in
+                alert("Please log in first.");
+                navigate("/login");
+            } else {
+                // Unexpected response
+                alert("Unexpected error.");
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            alert("Unable to fetch profile info.");
+        }
+    };
+
 
     return (
         <nav className="navbar font-normal flex items-center space-x-4">
@@ -37,7 +66,12 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
 
                     <Link to="/survey">Survey</Link>
                     <Link to="/admin">Admin</Link>
-                    <Link to="/profile">Profile</Link>
+                    <button
+                        onClick={handleProfileClick}
+                        className="text-black hover:text-btnorange"
+                    >
+                        Profile
+                    </button>
                     <button
                         onClick={handleLogout}
                         className="bg-2-brown text-black font-normal px-3 py-1 rounded"
