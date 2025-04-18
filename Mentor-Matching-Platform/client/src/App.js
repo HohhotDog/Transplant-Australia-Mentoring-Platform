@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 //import SurveyPage from "./pages/Mentorship/SurveyPage";
+import MatchingPreferences from './components/Survey/MatchingPreferences';
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Mentorship/ExploreSessionPage";
@@ -54,6 +55,7 @@ function App() {
                 >
                     <Route index element={<HomePage />} />
                     <Route path="survey" element={<MatchingRole />} />
+                    <Route path="/survey/preferences" element={<MatchingPreferences />} />
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="admin" element={<AdminPage />} />
                     <Route path="sessions" element={<SessionPage />} />
