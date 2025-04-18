@@ -1,0 +1,22 @@
+
+[
+    {
+      "id": "1",
+      "title": "Session Title 1",
+      "image": "/images/session.png",
+      "description": "This is a brief description for mentorship session 1.",
+      "startDate": "2025-05-01",
+      "endDate": "2025-05-31",
+      "status": "in_progress"
+    },
+    {
+      "id": "2",
+      "title": "Session Title 2",
+      "image": "/images/session.png",
+      "description": "This is a brief description for mentorship session 2.",
+      "startDate": "2025-06-01",
+      "endDate": "2025-06-30",
+      "status": "approved"
+    }
+  ]
+  
