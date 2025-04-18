@@ -2,7 +2,7 @@
 import React from 'react';
 
 /**
- * SessionDetail component displays details of a session.
+ * SessionDetail component displays details of a Session.
  * It shows the title, image, description, start date, and end date.
  */
 const SessionDetail = ({ session }) => {

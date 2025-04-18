@@ -1,10 +1,10 @@
 // src/pages/MentorshipSessionDetailPage.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import SessionDetail from '../../components/session/SessionDetail';
+import SessionDetail from '../../components/Session/SessionDetail';
 
 /**
- * MentorshipSessionDetailPage displays session details for the mentorship view.
+ * MentorshipSessionDetailPage displays Session details for the mentorship view.
  * It includes an 'Apply' button. Once applied, the button shows 'Applied'
  * and becomes disabled while a new 'Cancel Apply' button is added.
  * Clicking 'Cancel Apply' removes the application and updates the state.
@@ -17,7 +17,7 @@ const MentorshipSessionDetailPage = () => {
   const [applied, setApplied] = useState(false);
 
   useEffect(() => {
-    // Simulate an API call to fetch session details based on the session id
+    // Simulate an API call to fetch Session details based on the Session id
     const fetchSessionDetail = async () => {
       // Dummy data; replace with a real API call when ready
       const dummyData = {
@@ -39,7 +39,7 @@ const MentorshipSessionDetailPage = () => {
     fetchSessionDetail();
   }, [id]);
 
-  // Check if the session has been applied previously using localStorage
+  // Check if the Session has been applied previously using localStorage
   useEffect(() => {
     const appliedSessions = JSON.parse(localStorage.getItem('appliedSessions') || '[]');
     if (appliedSessions.includes(id)) {

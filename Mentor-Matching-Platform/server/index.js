@@ -21,7 +21,7 @@ app.use(
       secret: "someSuperSecretKey",
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 60 * 60 * 1000 } // 60 min session timeout
+      cookie: { maxAge: 60 * 60 * 1000 } // 60 min Session timeout
     })
 );
 

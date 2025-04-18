@@ -13,7 +13,7 @@ const MySessions = () => {
     <div>
       <h2>My Sessions</h2>
         <p>Here you can view and manage your mentorship sessions.</p>
-        {/* Add your session management logic here */}  
+        {/* Add your Session management logic here */}
     </div>
   );
 

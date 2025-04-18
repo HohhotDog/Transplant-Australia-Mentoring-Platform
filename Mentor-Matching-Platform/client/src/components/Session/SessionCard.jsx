@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link for routing
 
 /**
- * SessionCard component displays a session card with image, title, and description.
- * When clicked, it navigates to the session detail page.
+ * SessionCard component displays a Session card with image, title, and description.
+ * When clicked, it navigates to the Session detail page.
  */
 const SessionCard = ({ session }) => {
-  // Destructure session properties
+  // Destructure Session properties
   const { id, image, title, description } = session;
 
   return (
