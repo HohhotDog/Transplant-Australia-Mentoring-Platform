@@ -29,29 +29,32 @@ const MatchingRole = () => {
       <p className="mb-4">I’m applying to:</p>
 
       <div className="flex gap-4 mb-8">
-        <button
-          type="button"
-          onClick={() => handleRoleSelect("mentor")}
-          className={`px-4 py-2 rounded border transition ${
-            selectedRole === 'mentor'
-              ? 'bg-orange-500 text-white'
-              : 'bg-white border-gray-300 hover:bg-gray-100'
-          }`}
-        >
-          Become a mentor
-        </button>
-        <button
-          type="button"
-          onClick={() => handleRoleSelect("mentee")}
-          className={`px-4 py-2 rounded border transition ${
-            selectedRole === 'mentee'
-              ? 'bg-orange-500 text-white'
-              : 'bg-white border-gray-300 hover:bg-gray-100'
-          }`}
-        >
-          Find a mentor
-        </button>
-      </div>
+      <button
+  type="button"
+  onClick={() => handleRoleSelect("mentor")}
+  className={`px-4 py-2 rounded border ${
+    selectedRole === 'mentor'
+      ? 'bg-orange-500 text-white border-orange-500'
+      : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
+  } hover:border-gray-300 hover:shadow-md transition duration-200 ease-in-out`}  
+>
+  Become a mentor
+</button>
+
+
+  <button
+    type="button"
+    onClick={() => handleRoleSelect("mentee")}
+    className={`px-4 py-2 rounded border ${
+        selectedRole === 'mentee'
+          ? 'bg-orange-500 text-white border-orange-500'
+          : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
+      } hover:border-gray-300 hover:shadow-md transition duration-200 ease-in-out`}
+      >
+    Find a mentor
+  </button>
+</div>
+
 
       <h2 className="text-xl font-semibold mb-4">Confirm Your Personal Details</h2>
 
