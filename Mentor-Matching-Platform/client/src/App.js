@@ -7,7 +7,7 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
-import SurveyPage from "./pages/Mentorship/SurveyPage";
+//import SurveyPage from "./pages/Mentorship/SurveyPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Mentorship/ExploreSessionPage";
@@ -15,6 +15,7 @@ import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDet
 import MentorshipSessionPage from './pages/Mentorship/MySessions';
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
+import MatchingRole from './components/Survey/MatchingRole';
 
 // Import global layout
 import Layout from "./components/Layout";
@@ -52,7 +53,7 @@ function App() {
                     }
                 >
                     <Route index element={<HomePage />} />
-                    <Route path="survey" element={<SurveyPage />} />
+                    <Route path="survey" element={<MatchingRole />} />
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="admin" element={<AdminPage />} />
                     <Route path="sessions" element={<SessionPage />} />
