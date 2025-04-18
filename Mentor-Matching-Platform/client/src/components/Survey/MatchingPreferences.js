@@ -1,16 +1,32 @@
 // src/components/Survey/MatchingPreferences.js
 
 import React, { useState } from 'react';
+import Select from 'react-select';
 
 const transplantOptions = [
-  'Bone Marrow', 'Pancreas', 'Kidney', 'Liver', 'Heart',
-  'Lung', 'Cornea', 'Other Tissue', 'Not Applicable'
-];
+    { value: 'Bone Marrow', label: 'Bone Marrow' },
+    { value: 'Pancreas', label: 'Pancreas' },
+    { value: 'Kidney', label: 'Kidney' },
+    { value: 'Liver', label: 'Liver' },
+    { value: 'Heart', label: 'Heart' },
+    { value: 'Lung', label: 'Lung' },
+    { value: 'Cornea', label: 'Cornea' },
+    { value: 'Other Tissue', label: 'Other Tissue' },
+    { value: 'Not Applicable', label: 'Not Applicable' },
+  ];
 
-const sportsOptions = [
-  'Running', 'Pilates/Yoga', 'Cycling', 'Swimming',
-  'Ball Sports', 'Walking', 'Board Games', 'Triathlon', 'Bowls/Petanque'
-];
+  const sportsOptions = [
+    { value: 'Running', label: 'Running' },
+    { value: 'Pilates/Yoga', label: 'Pilates/Yoga' },
+    { value: 'Cycling', label: 'Cycling' },
+    { value: 'Triathlon', label: 'Triathlon' },
+    { value: 'Swimming', label: 'Swimming' },
+    { value: 'Bowls/Petanque', label: 'Bowls/Petanque' },
+    { value: 'Ball Sports', label: 'Ball Sports (Football, Volleyball, etc.)' },
+    { value: 'Walking', label: 'Walking' },
+    { value: 'Board Games', label: 'Board Games' },
+  ];
+  
 
 const MatchingPreferences = () => {
   const [formData, setFormData] = useState({
@@ -22,17 +38,6 @@ const MatchingPreferences = () => {
     supportNeeds: []
   });
 
-  const toggleMultiSelect = (field, value) => {
-    setFormData(prev => {
-      const arr = prev[field];
-      return {
-        ...prev,
-        [field]: arr.includes(value)
-          ? arr.filter(item => item !== value)
-          : [...arr, value]
-      };
-    });
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -76,24 +81,21 @@ const MatchingPreferences = () => {
       </select>
 
       {/* Transplant Type */}
-      <label className="block font-medium mb-1">Transplant Type</label>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {transplantOptions.map(option => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => toggleMultiSelect('transplantType', option)}
-            className={`px-3 py-1 rounded border ${
-              formData.transplantType.includes(option)
-                ? 'bg-orange-500 text-white'
-                : 'bg-white border-gray-300'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-
+<label className="block font-medium mb-1">Transplant Type</label>
+<Select
+  isMulti
+  options={transplantOptions}
+  value={transplantOptions.filter(option =>
+    formData.transplantType.includes(option.value)
+  )}
+  onChange={(selectedOptions) => {
+    setFormData(prev => ({
+      ...prev,
+      transplantType: selectedOptions.map(option => option.value),
+    }));
+  }}
+  className="mb-4"
+/>
       {/* Year of Transplant */}
       <label className="block font-medium mb-1">Year of Transplant</label>
       <select
@@ -147,22 +149,23 @@ const MatchingPreferences = () => {
 
       {/* Sports/Activity Interests */}
       <label className="block font-medium mb-1">Sports/Activities Interest</label>
-      <div className="flex flex-wrap gap-2 mb-6">
-        {sportsOptions.map(option => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => toggleMultiSelect('sportsInterests', option)}
-            className={`px-3 py-1 rounded border ${
-              formData.sportsInterests.includes(option)
-                ? 'bg-orange-500 text-white'
-                : 'bg-white border-gray-300'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
+<Select
+  isMulti
+  name="sportsInterests"
+  options={sportsOptions}
+  value={sportsOptions.filter(option =>
+    formData.sportsInterests.includes(option.value)
+  )}
+  onChange={(selectedOptions) => {
+    setFormData(prev => ({
+      ...prev,
+      sportsInterests: selectedOptions.map(option => option.value),
+    }));
+  }}
+  className="mb-6"
+  classNamePrefix="select"
+/>
+
       <div className="flex justify-end mt-8">
   <button
     type="button"
@@ -170,7 +173,7 @@ const MatchingPreferences = () => {
       // You can log the data or store it if needed
       console.log(formData);
       localStorage.setItem('preferencesData', JSON.stringify(formData));
-      window.location.href = '/survey/questionnaire'; // Navigate to next page
+      window.location.href = '/survey/lifestyle'; // Navigate to next page
     }}
     className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 flex items-center gap-2"
   >
