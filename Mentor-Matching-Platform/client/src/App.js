@@ -13,59 +13,84 @@ import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
 import MentorshipSessionPage from './pages/Mentorship/MySessions';
+import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 
-
-// Import global layout component
+// Import global layout
 import Layout from "./components/Layout";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  function handleLoginSuccess() {
-    setIsLoggedIn(true);
-  }
+    function handleLoginSuccess() {
+        setIsLoggedIn(true);
+    }
 
-  function handleLogout() {
-    fetch("/api/logout", { method: "POST", credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          alert("👋 Logged out!");
-          setIsLoggedIn(false);
-        }
-      })
-      .catch((err) => console.error(err));
-  }
+    function handleLogout() {
+        fetch("/api/logout", {
+            method: "POST",
+            credentials: "include",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    alert("👋 Logged out!");
+                    setIsLoggedIn(false);
+                }
+            })
+            .catch((err) => console.error(err));
+    }
 
-  return (
-    <Router>
-      <Routes>
-        {/* Routes using the global layout */}
-        <Route
-          path="/"
-          element={
-            <Layout isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-          }
-        >
-          <Route index element={<HomePage />} />
-          <Route path="survey" element={<SurveyPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="admin" element={<AdminPage />} />
-          <Route path="sessions" element={<SessionPage />} />
-          <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
-          <Route path="my-sessions" element={<MentorshipSessionPage />} />
-          {/* Add more routes as needed */}
-        </Route>
+    return (
+        <Router>
+            <Routes>
+                {/* Routes that include the global layout */}
+                <Route
+                    path="/"
+                    element={
+                        <Layout isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+                    }
+                >
+                    <Route index element={<HomePage />} />
+                    <Route path="survey" element={<SurveyPage />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="admin" element={<AdminPage />} />
+                    <Route path="sessions" element={<SessionPage />} />
+                    <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
+                    <Route path="my-sessions" element={<MentorshipSessionPage />} />
+                </Route>
 
-        {/* Routes without the global layout */}
-        <Route
-          path="/login"
-          element={<LoginPage onLoginSuccess={handleLoginSuccess} />}
-        />
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
-    </Router>
-  );
+                {/* Routes outside the layout (auth pages) */}
+                <Route
+                    path="/login"
+                    element={
+                        <LoginPage
+                            isLoggedIn={isLoggedIn}
+                            handleLogout={handleLogout}
+                            onLoginSuccess={handleLoginSuccess}
+                        />
+                    }
+                />
+                <Route
+                    path="/register"
+                    element={
+                        <RegisterPage
+                            isLoggedIn={isLoggedIn}
+                            handleLogout={handleLogout}
+                        />
+                    }
+                />
+                <Route
+                    path="/register-success"
+                    element={
+                        <RegisterSuccessInfo
+                            isLoggedIn={isLoggedIn}
+                            handleLogout={handleLogout}
+                        />
+                    }
+                />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
