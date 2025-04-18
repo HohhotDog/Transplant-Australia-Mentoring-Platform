@@ -1,4 +1,3 @@
-// ./server/routes/auth.js
 const express = require("express");
 const bcrypt = require("bcrypt");
 const db = require("../db");
@@ -27,13 +26,13 @@ router.post("/register", async (req, res) => {
             const hashedAnswer = await bcrypt.hash(securityAnswer, 10);
 
             const stmt = `
-        INSERT INTO users (email, password_hash, security_question, security_answer_hash)
-        VALUES (?, ?, ?, ?)
-      `;
+                INSERT INTO users (email, password_hash, security_question, security_answer_hash)
+                VALUES (?, ?, ?, ?)
+            `;
 
             db.run(stmt, [email, hashedPassword, securityQuestion, hashedAnswer], function (err) {
                 if (err) {
-                    console.error("Insert error:", err);
+                    console.error("Insert error:", err.message);
                     return res.status(500).json({ success: false, message: "Failed to register user." });
                 }
 
@@ -74,6 +73,44 @@ router.post("/login", (req, res) => {
             email: row.email
         };
         return res.json({ success: true, message: "Login successful." });
+    });
+});
+
+// Forgot Password
+router.post("/forgot-password", (req, res) => {
+    const { email, securityAnswer, newPassword } = req.body;
+
+    if (!email || !securityAnswer || !newPassword) {
+        return res.status(400).json({ success: false, message: "All fields are required." });
+    }
+
+    const query = `SELECT * FROM users WHERE email = ?`;
+    db.get(query, [email], async (err, row) => {
+        if (err) {
+            console.error("DB error:", err);
+            return res.status(500).json({ success: false, message: "Database error." });
+        }
+
+        if (!row) {
+            return res.status(404).json({ success: false, message: "No user found with that email." });
+        }
+
+        const answerMatch = await bcrypt.compare(securityAnswer, row.security_answer_hash);
+        if (!answerMatch) {
+            return res.status(403).json({ success: false, message: "Security answer does not match." });
+        }
+
+        const newHash = await bcrypt.hash(newPassword, 10);
+        const updateStmt = `UPDATE users SET password_hash = ? WHERE email = ?`;
+
+        db.run(updateStmt, [newHash, email], function (err) {
+            if (err) {
+                console.error("Update error:", err);
+                return res.status(500).json({ success: false, message: "Failed to reset password." });
+            }
+
+            return res.json({ success: true, message: "Password has been reset successfully." });
+        });
     });
 });
 

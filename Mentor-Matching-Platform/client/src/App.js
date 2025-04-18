@@ -14,6 +14,7 @@ import SessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
 import MentorshipSessionPage from './pages/Mentorship/MySessions';
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
+import PasswordLost from "./components/Auth/PasswordLost";
 
 // Import global layout
 import Layout from "./components/Layout";
@@ -43,7 +44,7 @@ function App() {
     return (
         <Router>
             <Routes>
-                {/* Routes that include the global layout */}
+                {/* Routes using the global layout */}
                 <Route
                     path="/"
                     element={
@@ -59,7 +60,7 @@ function App() {
                     <Route path="my-sessions" element={<MentorshipSessionPage />} />
                 </Route>
 
-                {/* Routes outside the layout (auth pages) */}
+                {/* Auth pages without layout */}
                 <Route
                     path="/login"
                     element={
@@ -83,6 +84,15 @@ function App() {
                     path="/register-success"
                     element={
                         <RegisterSuccessInfo
+                            isLoggedIn={isLoggedIn}
+                            handleLogout={handleLogout}
+                        />
+                    }
+                />
+                <Route
+                    path="/forgot-password"
+                    element={
+                        <PasswordLost
                             isLoggedIn={isLoggedIn}
                             handleLogout={handleLogout}
                         />
