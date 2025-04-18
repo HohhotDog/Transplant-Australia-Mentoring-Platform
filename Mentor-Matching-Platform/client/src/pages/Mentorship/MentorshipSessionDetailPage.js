@@ -1,7 +1,7 @@
 // src/pages/MentorshipSessionDetailPage.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import SessionDetail from '../../components/session/SessionDetail';
+import SessionDetail from '../../components/Session/SessionDetail';
 
 /**
  * MentorshipSessionDetailPage displays session details for the mentorship view.
