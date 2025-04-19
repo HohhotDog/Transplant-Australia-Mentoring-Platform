@@ -106,6 +106,13 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
                 >
                     Edit Profile
                 </button>
+                <button
+                    className="form-btn mt-2"
+                    onClick={() => navigate("/profile-security")}
+                >
+                    Password & Security
+                </button>
+
             </div>
         </div>
     );

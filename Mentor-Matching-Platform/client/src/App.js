@@ -17,6 +17,7 @@ import PasswordLost from "./components/Auth/PasswordLost";
 import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";
+import SecurityManagement from "./components/Profile/SecurityManagement";
 
 // Import global layout
 import Layout from "./components/Layout";
@@ -70,6 +71,10 @@ function App() {
                     <Route
                         path="profile-edit"
                         element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+                    />
+                    <Route
+                        path="profile-security"
+                        element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
                     />
 
                 </Route>

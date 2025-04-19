@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Bug Fixed">
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/PersonalDetails.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfileCreation.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/profile.js" afterDir="false" />
+    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Updated Profile NavBar Function">
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/SecurityManagement.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/security.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Navigation/NavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Navigation/NavBar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,8 +21,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="JSX File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -35,11 +32,11 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Chensu-Yang-dev-branch" />
+        <entry key="$PROJECT_DIR$" value="5bb7dddc7a352cf79804963d0d41e01a1bd86536" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="MIXED" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -184,7 +181,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744954275050</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Updated Profile NavBar Function">
+      <option name="closed" value="true" />
+      <created>1745079863407</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1745079863407</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +223,7 @@
     <MESSAGE value="Refactor login/register pages: unified styles, moved CSS to file, updated NavBar visibility logic, updated back-end logic and refactored the current file structure" />
     <MESSAGE value="Forget Password Function Implemented&#10;Added Password Visible Feature" />
     <MESSAGE value="Bug Fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug Fixed" />
+    <MESSAGE value="Updated Profile NavBar Function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Profile NavBar Function" />
   </component>
 </project>

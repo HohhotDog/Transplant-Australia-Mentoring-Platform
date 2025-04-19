@@ -5,6 +5,7 @@ const session = require("express-session");
 const db = require("./db.js");
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
+const securityRoutes = require("./routes/security");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,6 +29,7 @@ app.use(
 // Mount routes
 app.use("/api", authRoutes);
 app.use("/api", profileRoutes);
+app.use("/api", securityRoutes);
 
 // Auth middleware
 function isAuthenticated(req, res, next) {
