@@ -66,12 +66,16 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
 
                     <Link to="/survey">Survey</Link>
                     <Link to="/admin">Admin</Link>
-                    <button
-                        onClick={handleProfileClick}
+                    <Link
+                        to="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleProfileClick();
+                        }}
                         className="text-black hover:text-btnorange"
                     >
                         Profile
-                    </button>
+                    </Link>
                     <button
                         onClick={handleLogout}
                         className="bg-2-brown text-black font-normal px-3 py-1 rounded"
