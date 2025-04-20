@@ -70,7 +70,6 @@ function PersonalDetails({ isLoggedIn, handleLogout }) {
 
     return (
         <div>
-            <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
             <div className="form-container">
                 <h2 className="form-title">Personal Details</h2>
                 <form onSubmit={handleSubmit} className="form-box">
