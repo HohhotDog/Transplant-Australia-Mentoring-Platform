@@ -1,7 +1,6 @@
 // src/components/Profile/PersonalDetails.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../Navigation/NavBar";
 import "../../components/Auth/style/Register.css";
 
 function PersonalDetails({ isLoggedIn, handleLogout }) {
