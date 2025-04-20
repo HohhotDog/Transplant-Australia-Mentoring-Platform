@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import NavBar from "../Navigation/NavBar";
 import "../../components/Auth/style/Register.css";
 
 function SecurityManagement({ isLoggedIn, handleLogout }) {
@@ -57,7 +56,6 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
 
     return (
         <div>
-            <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
             <div className="security-section">
                 <h2 className="security-title">Security</h2>
 

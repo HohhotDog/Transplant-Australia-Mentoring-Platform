@@ -1,7 +1,6 @@
 // src/components/ProfileCreation/ProfileCreation.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../Navigation/NavBar";
 import "../../components/Auth/style/Register.css";
 
 function ProfileCreation({ isLoggedIn, handleLogout }) {
