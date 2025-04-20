@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Updated SecurityManagement file">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Updated Security Question">
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/SecurityManagement.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/SecurityManagement.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="5bb7dddc7a352cf79804963d0d41e01a1bd86536" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -200,7 +200,31 @@
       <option name="project" value="LOCAL" />
       <updated>1745081084957</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Bug Fix">
+      <option name="closed" value="true" />
+      <created>1745140942255</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1745140942255</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Bug Fix">
+      <option name="closed" value="true" />
+      <created>1745141011127</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1745141011127</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Updated Security Question">
+      <option name="closed" value="true" />
+      <created>1745141438162</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1745141438162</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,6 +263,8 @@
     <MESSAGE value="Bug Fixed" />
     <MESSAGE value="Updated Profile NavBar Function" />
     <MESSAGE value="Updated SecurityManagement file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated SecurityManagement file" />
+    <MESSAGE value="Bug Fix" />
+    <MESSAGE value="Updated Security Question" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Security Question" />
   </component>
 </project>

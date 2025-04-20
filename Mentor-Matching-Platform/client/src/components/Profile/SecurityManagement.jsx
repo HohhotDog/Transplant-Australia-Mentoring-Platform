@@ -1,11 +1,34 @@
-import React, { useState } from "react";
+// src/components/Profile/SecurityManagement.jsx
+import React, { useState, useEffect } from "react";
 import "../../components/Auth/style/Register.css";
 
 function SecurityManagement({ isLoggedIn, handleLogout }) {
+    const [securityQuestion, setSecurityQuestion] = useState("");
     const [securityAnswer, setSecurityAnswer] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    useEffect(() => {
+        async function fetchSecurityQuestion() {
+            try {
+                const res = await fetch("/api/security-question", {
+                    credentials: "include"
+                });
+                const data = await res.json();
+                if (data.success) {
+                    setSecurityQuestion(data.question);
+                } else {
+                    setSecurityQuestion("(Unable to load security question)");
+                }
+            } catch (err) {
+                console.error("Error fetching security question:", err);
+                setSecurityQuestion("(Server error)");
+            }
+        }
+
+        fetchSecurityQuestion();
+    }, []);
 
     const handleChangePassword = async () => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
@@ -56,6 +79,7 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
 
     return (
         <div>
+
             <div className="security-section">
                 <h2 className="security-title">Security</h2>
 
@@ -64,7 +88,7 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
                     To reset your password, please answer your security question:
                     <br />
                     <span className="security-question">
-                        Security Question: What is your childhood dog's name?
+                        Security Question: {securityQuestion}
                     </span>
                 </p>
 
