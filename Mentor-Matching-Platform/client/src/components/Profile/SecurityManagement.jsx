@@ -1,11 +1,35 @@
-import React, { useState } from "react";
+// ✅ Updated SecurityManagement.jsx to dynamically load the security question from DB
+import React, { useState, useEffect } from "react";
+import NavBar from "../Navigation/NavBar";
 import "../../components/Auth/style/Register.css";
 
 function SecurityManagement({ isLoggedIn, handleLogout }) {
+    const [securityQuestion, setSecurityQuestion] = useState("");
     const [securityAnswer, setSecurityAnswer] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    useEffect(() => {
+        async function fetchSecurityQuestion() {
+            try {
+                const res = await fetch("/api/security-question", {
+                    credentials: "include"
+                });
+                const data = await res.json();
+                if (data.success) {
+                    setSecurityQuestion(data.question);
+                } else {
+                    setSecurityQuestion("(Unable to load security question)");
+                }
+            } catch (err) {
+                console.error("Error fetching security question:", err);
+                setSecurityQuestion("(Server error)");
+            }
+        }
+
+        fetchSecurityQuestion();
+    }, []);
 
     const handleChangePassword = async () => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
@@ -56,14 +80,16 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
 
     return (
         <div>
+            <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
             <div className="security-section">
                 <h2 className="security-title">Security</h2>
+
                 <h3 className="security-subtitle">Change Password</h3>
                 <p className="security-note">
                     To reset your password, please answer your security question:
                     <br />
                     <span className="security-question">
-                        Security Question: What is your childhood dog's name?
+                        Security Question: {securityQuestion}
                     </span>
                 </p>
 
@@ -102,19 +128,6 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
                     />
                     <button className="security-btn" onClick={handleChangePassword}>
                         Change Password
-                    </button>
-                </div>
-
-                <div className="security-recovery">
-                    <h3 className="security-subtitle">Forgot Password</h3>
-                    <p className="security-note">
-                        If you’ve forgotten your password, follow the steps below to recover access to your account.
-                    </p>
-                    <button
-                        className="security-recovery-btn"
-                        onClick={() => alert("🔐 Account recovery not implemented.")}
-                    >
-                        Initiate Account Recovery
                     </button>
                 </div>
             </div>
