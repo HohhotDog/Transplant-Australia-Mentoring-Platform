@@ -30,7 +30,7 @@ db.run(`
     user_id INTEGER PRIMARY KEY,
     first_name TEXT,
     last_name TEXT,
-    date_of_birth DATE CHECK (date_of_birth < DATE('now')),
+    date_of_birth DATE,
     address TEXT,
     city_suburb TEXT,
     state TEXT,

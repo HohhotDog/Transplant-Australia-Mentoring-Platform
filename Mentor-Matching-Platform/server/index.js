@@ -1,11 +1,11 @@
-// ./server/index.js
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 const session = require("express-session");
-const db = require("./db.js"); // SQLite DB
+const db = require("./db.js");
 const authRoutes = require("./routes/auth");
+const profileRoutes = require("./routes/profile");
+const securityRoutes = require("./routes/security");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,19 +16,22 @@ app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
 }));
+
 app.use(
     session({
       secret: "someSuperSecretKey",
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 60 * 60 * 1000 } // 60 min session timeout
+      cookie: { maxAge: 60 * 60 * 1000 } // 60 minutes
     })
 );
 
-// Use auth routes
+// Mount routes
 app.use("/api", authRoutes);
+app.use("/api", profileRoutes);
+app.use("/api", securityRoutes);
 
-// Auth check middleware
+// Auth middleware
 function isAuthenticated(req, res, next) {
   if (req.session.user) {
     return next();
@@ -37,8 +40,12 @@ function isAuthenticated(req, res, next) {
   }
 }
 
-// ============= NON-AUTH ROUTES REMAIN HERE =============
+// ===== Default root =====
+app.get("/", (req, res) => {
+  res.json({ message: "Transplant Australia backend server!" });
+});
 
+// ===== Sample survey questions =====
 const questions = [
   { id: 1, text: "Do you prefer cooking? 🍳" },
   { id: 2, text: "Do you prefer dogs? 🐶" },
@@ -47,16 +54,15 @@ const questions = [
   { id: 5, text: "Do you prefer reading books? 📚" }
 ];
 
-app.get("/", (req, res) => {
-  res.json({ message: "Transplant Australia backend server!" });
-});
-
+// Protected: Get survey questions
 app.get("/api/questions", isAuthenticated, (req, res) => {
   res.json(questions);
 });
 
+// Protected: Submit survey responses
 app.post("/api/submit", isAuthenticated, (req, res) => {
   const { role, responses } = req.body;
+
   if (!role || !["mentor", "mentee"].includes(role)) {
     return res.status(400).json({ success: false, message: "Invalid role specified." });
   }
@@ -66,29 +72,39 @@ app.post("/api/submit", isAuthenticated, (req, res) => {
   const stmt = `INSERT INTO responses (role, responses) VALUES (?, ?)`;
   db.run(stmt, [role, responsesStr], function (err) {
     if (err) {
-      console.error(err);
+      console.error("DB insert error:", err);
       return res.status(500).json({ success: false, message: "Database error" });
     }
     return res.json({ success: true, message: "Response recorded successfully." });
   });
 });
 
+// Protected: Match latest mentee to top mentors
 app.get("/api/match-mentee", isAuthenticated, (req, res) => {
   db.all(`SELECT * FROM responses`, [], (err, rows) => {
     if (err) {
-      console.error(err);
+      console.error("DB fetch error:", err);
       return res.status(500).json({ success: false, message: "Database error" });
     }
+
     const mentors = rows
         .filter((r) => r.role === "mentor")
-        .map((row) => ({ role: row.role, responses: JSON.parse(row.responses) }));
+        .map((row) => ({
+          role: row.role,
+          responses: JSON.parse(row.responses)
+        }));
+
     const mentees = rows
         .filter((r) => r.role === "mentee")
-        .map((row) => ({ role: row.role, responses: JSON.parse(row.responses) }));
+        .map((row) => ({
+          role: row.role,
+          responses: JSON.parse(row.responses)
+        }));
 
     if (mentees.length === 0) {
       return res.json({ success: false, message: "No mentees available for matching." });
     }
+
     if (mentors.length === 0) {
       return res.json({ success: false, message: "No mentors available for matching." });
     }
@@ -113,8 +129,8 @@ app.get("/api/match-mentee", isAuthenticated, (req, res) => {
     res.json({
       success: true,
       message: "Top 3 mentor matches found.",
-      latestMentee: latestMentee,
-      matches: topMatches,
+      latestMentee,
+      matches: topMatches
     });
   });
 });

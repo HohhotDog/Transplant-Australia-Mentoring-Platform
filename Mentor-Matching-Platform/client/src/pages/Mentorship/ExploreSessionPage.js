@@ -2,26 +2,26 @@ import React from 'react';
 import SessionCard from '../../components/Session/SessionCard'; // Adjust the import path based on your project structure
 
 /**
- * ExploreSessionsPage component displays a list of session cards.
- * It maps through a sessions array and renders a SessionCard for each session.
+ * ExploreSessionsPage component displays a list of Session cards.
+ * It maps through a sessions array and renders a SessionCard for each Session.
  */
 const ExploreSessionsPage = () => {
-  // Dummy session data for demonstration
+  // Dummy Session data for demonstration
   const sessions = [
     {
       id: '1',
       // The image is stored in the public folder under 'images/sessions'
-      image: '/images/session.png',  
+      image: '/images/Session.png',
       title: 'Mentorship Session 1',
-      description: 'Brief description for mentorship session 1.',
+      description: 'Brief description for mentorship Session 1.',
     },
     {
       id: '2',
-      image: '/images/session.png',
+      image: '/images/Session.png',
       title: 'Mentorship Session 2',
-      description: 'Brief description for mentorship session 2.',
+      description: 'Brief description for mentorship Session 2.',
     },
-    // Add more session objects as needed
+    // Add more Session objects as needed
   ];
 
   return (
