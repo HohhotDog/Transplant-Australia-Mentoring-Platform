@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Bug Fix" />
+    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Updated Security Question">
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/SecurityManagement.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/SecurityManagement.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745141011127</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Updated Security Question">
+      <option name="closed" value="true" />
+      <created>1745141438162</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1745141438162</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,6 +264,7 @@
     <MESSAGE value="Updated Profile NavBar Function" />
     <MESSAGE value="Updated SecurityManagement file" />
     <MESSAGE value="Bug Fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug Fix" />
+    <MESSAGE value="Updated Security Question" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Security Question" />
   </component>
 </project>

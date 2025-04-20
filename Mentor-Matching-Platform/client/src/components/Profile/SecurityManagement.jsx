@@ -1,6 +1,5 @@
-// ✅ Updated SecurityManagement.jsx to dynamically load the security question from DB
+// src/components/Profile/SecurityManagement.jsx
 import React, { useState, useEffect } from "react";
-import NavBar from "../Navigation/NavBar";
 import "../../components/Auth/style/Register.css";
 
 function SecurityManagement({ isLoggedIn, handleLogout }) {
@@ -80,7 +79,7 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
 
     return (
         <div>
-            <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+
             <div className="security-section">
                 <h2 className="security-title">Security</h2>
 
@@ -128,6 +127,19 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
                     />
                     <button className="security-btn" onClick={handleChangePassword}>
                         Change Password
+                    </button>
+                </div>
+
+                <div className="security-recovery">
+                    <h3 className="security-subtitle">Forgot Password</h3>
+                    <p className="security-note">
+                        If you’ve forgotten your password, follow the steps below to recover access to your account.
+                    </p>
+                    <button
+                        className="security-recovery-btn"
+                        onClick={() => alert("🔐 Account recovery not implemented.")}
+                    >
+                        Initiate Account Recovery
                     </button>
                 </div>
             </div>
