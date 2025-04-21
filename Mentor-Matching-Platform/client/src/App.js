@@ -7,32 +7,28 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
-<<<<<<< HEAD
-//import SurveyPage from "./pages/Mentorship/SurveyPage";
-import MatchingPreferences from './components/Survey/MatchingPreferences';
-import SubmitForm from './components/Survey/SubmitForm';
-import MatchingEnneagram from './components/Survey/MatchingEnneagram';
-import MatchingLifestyle from "./components/Survey/MatchingLifestyle";
-import ProfilePage from "./pages/ProfilePage";
-=======
 import SurveyPage from "./pages/Mentorship/SurveyPage";
->>>>>>> temp-chensu
 import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
 import MentorshipSessionPage from './pages/Mentorship/MySessions';
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
-<<<<<<< HEAD
+
+// Survey Components
 import MatchingRole from './components/Survey/MatchingRole';
-=======
+import MatchingPreferences from './components/Survey/MatchingPreferences';
+import MatchingLifestyle from "./components/Survey/MatchingLifestyle";
+import MatchingEnneagram from './components/Survey/MatchingEnneagram';
+import SubmitForm from './components/Survey/SubmitForm';
+
+// Profile Components
 import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";
 import SecurityManagement from "./components/Profile/SecurityManagement";
->>>>>>> temp-chensu
 
-// Import global layout
+// Global layout
 import Layout from "./components/Layout";
 
 function App() {
@@ -60,83 +56,51 @@ function App() {
     return (
         <Router>
             <Routes>
-                {/* Routes using the global layout */}
                 <Route
                     path="/"
-                    element={
-                        <Layout isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-                    }
+                    element={<Layout isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
                 >
                     <Route index element={<HomePage />} />
-<<<<<<< HEAD
+                    
+                    {/* Survey Flow */}
                     <Route path="survey" element={<MatchingRole />} />
-                    <Route path="/survey/preferences" element={<MatchingPreferences />} />
-                    <Route path="/survey/lifestyle" element={<MatchingLifestyle />} />
-                    <Route path="/survey/enneagram" element={<MatchingEnneagram />} />
-                    <Route path="/survey/submitform" element={<SubmitForm />} />
-                    <Route path="profile" element={<ProfilePage />} />
-=======
-                    <Route path="survey" element={<SurveyPage />} />
->>>>>>> temp-chensu
-                    <Route path="admin" element={<AdminPage />} />
+                    <Route path="survey/preferences" element={<MatchingPreferences />} />
+                    <Route path="survey/lifestyle" element={<MatchingLifestyle />} />
+                    <Route path="survey/enneagram" element={<MatchingEnneagram />} />
+                    <Route path="survey/submitform" element={<SubmitForm />} />
+                    
+                    {/* Sessions */}
                     <Route path="sessions" element={<SessionPage />} />
                     <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
                     <Route path="my-sessions" element={<MentorshipSessionPage />} />
-                    <Route
-                        path="profile"
-                        element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
-                    />
-                    <Route
-                        path="profile-creation"
-                        element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
-                    />
-                    <Route
-                        path="profile-edit"
-                        element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
-                    />
-                    <Route
-                        path="profile-security"
-                        element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
-                    />
 
+                    {/* Profile */}
+                    <Route path="profile" element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                    <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                    <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                    <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+
+                    {/* Admin */}
+                    <Route path="admin" element={<AdminPage />} />
                 </Route>
-                <Route
-                    path="/login"
-                    element={
-                        <LoginPage
-                            isLoggedIn={isLoggedIn}
-                            handleLogout={handleLogout}
-                            onLoginSuccess={handleLoginSuccess}
-                        />
-                    }
-                />
-                <Route
-                    path="/register"
-                    element={
-                        <RegisterPage
-                            isLoggedIn={isLoggedIn}
-                            handleLogout={handleLogout}
-                        />
-                    }
-                />
-                <Route
-                    path="/register-success"
-                    element={
-                        <RegisterSuccessInfo
-                            isLoggedIn={isLoggedIn}
-                            handleLogout={handleLogout}
-                        />
-                    }
-                />
-                <Route
-                    path="/forgot-password"
-                    element={
-                        <PasswordLost
-                            isLoggedIn={isLoggedIn}
-                            handleLogout={handleLogout}
-                        />
-                    }
-                />
+
+                {/* Auth pages without layout */}
+                <Route path="/login" element={
+                    <LoginPage
+                        isLoggedIn={isLoggedIn}
+                        handleLogout={handleLogout}
+                        onLoginSuccess={handleLoginSuccess}
+                    />
+                } />
+                <Route path="/register" element={
+                    <RegisterPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+                } />
+                <Route path="/register-success" element={
+                    <RegisterSuccessInfo isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+                } />
+                <Route path="/forgot-password" element={
+                    <PasswordLost isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+                } />
             </Routes>
         </Router>
     );
