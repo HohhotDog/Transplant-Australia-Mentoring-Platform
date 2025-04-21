@@ -28,16 +28,31 @@ const MatchingLifestyle = () => {
   };
 
   const handleNext = () => {
-    console.log("🔥 Matching Lifestyle Responses:");
-    Object.entries(responses).forEach(([key, value]) => {
-      console.log(`${key}: ${value}`);
-    });
+    console.log("🔥 Matching Lifestyle Responses:", responses);
   
-    localStorage.setItem('lifestyleData', JSON.stringify(responses));
-    navigate('/survey/enneagram');
+    fetch('/api/save-lifestyle', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ answers: responses })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          console.log("✅ Lifestyle answers saved!");
+          navigate('/survey/enneagram');
+        } else {
+          console.error("❌ Failed to save lifestyle answers");
+          alert("Something went wrong while saving. Try again?");
+        }
+      })
+      .catch(err => {
+        console.error("❌ Server error:", err);
+        alert("Server error. Please try again later.");
+      });
   };
   
-
+  
   const QuestionSlider = ({ label, name }) => (
     <div className="mb-6">
       <label className="block font-semibold text-lg mb-1 text-gray-800">{label}</label>

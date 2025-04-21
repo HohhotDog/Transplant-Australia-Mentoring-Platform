@@ -169,12 +169,37 @@ const MatchingPreferences = () => {
       <div className="flex justify-end mt-8">
   <button
     type="button"
-    onClick={() => {
-      // You can log the data or store it if needed
-      console.log(formData);
-      localStorage.setItem('preferencesData', JSON.stringify(formData));
-      window.location.href = '/survey/lifestyle'; // Navigate to next page
-    }}
+    onClick={async () => {
+        const payload = {
+          role: localStorage.getItem("selectedRole") || "mentee", // or fetch from global state
+          transplantType: formData.transplantType,
+          transplantYear: formData.transplantYear,
+          goals: formData.supportNeeds,
+          meetingPref: formData.meetingPreference,
+          sportsInterest: formData.sportsInterests,
+        };
+      
+        try {
+          const res = await fetch("/api/save-preferences", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload),
+          });
+      
+          const data = await res.json();
+      
+          if (data.success) {
+            window.location.href = '/survey/lifestyle';
+          } else {
+            alert("❌ Failed to save preferences.");
+          }
+        } catch (err) {
+          console.error("❌ Error saving preferences:", err);
+          alert("⚠️ Server error. Please try again.");
+        }
+      }}
+      
     className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 flex items-center gap-2"
   >
     <span>Next</span>

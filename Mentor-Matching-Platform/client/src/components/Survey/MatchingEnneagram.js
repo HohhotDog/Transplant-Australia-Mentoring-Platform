@@ -88,10 +88,36 @@ const MatchingEnneagram = () => {
           allScores: scores,
         };
       
-        console.log('📊 Enneagram Result:', resultData); // 🔥 Print to console
+        console.log('📊 Enneagram Result:', resultData);
+      
+        // Save to localStorage (optional)
         localStorage.setItem('enneagramResult', JSON.stringify(resultData));
-        navigate('/survey/submitform'); 
+      
+        // 🧠 POST to server
+        fetch('/api/save-enneagram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            topTypes: resultData.topTypes,
+            allScores: resultData.allScores,
+          })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              console.log("✅ Enneagram saved");
+              navigate('/survey/submitform');
+            } else {
+              alert("⚠️ Failed to save Enneagram result.");
+            }
+          })
+          .catch(err => {
+            console.error("❌ Error:", err);
+            alert("Something went wrong. Please try again.");
+          });
       };
+      
       
       
   

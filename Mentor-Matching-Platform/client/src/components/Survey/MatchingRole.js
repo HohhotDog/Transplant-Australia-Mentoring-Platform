@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const MatchingRole = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState(null);
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+    fetch('/api/profile', {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setProfile(data.profile);
+        } else {
+          console.warn("No profile found or incomplete.");
+        }
+      })
+      .catch(err => console.error("Failed to fetch profile", err));
+  }, []);
 
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
-    localStorage.setItem('selectedRole', role); // Store for later use
+    localStorage.setItem('selectedRole', role);
   };
 
   const handleNext = () => {
@@ -15,7 +31,7 @@ const MatchingRole = () => {
       alert('Please select a role before proceeding.');
       return;
     }
-    navigate('/survey/preferences'); // You’ll build this next
+    navigate('/survey/preferences');
   };
 
   const inputStyle = "w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100";
@@ -29,59 +45,66 @@ const MatchingRole = () => {
       <p className="mb-4">I’m applying to:</p>
 
       <div className="flex gap-4 mb-8">
-      <button
-  type="button"
-  onClick={() => handleRoleSelect("mentor")}
-  className={`px-4 py-2 rounded border ${
-    selectedRole === 'mentor'
-      ? 'bg-orange-500 text-white border-orange-500'
-      : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
-  } hover:border-gray-300 hover:shadow-md transition duration-200 ease-in-out`}  
->
-  Become a mentor
-</button>
+        <button
+          type="button"
+          onClick={() => handleRoleSelect("mentor")}
+          className={`px-4 py-2 rounded border ${
+            selectedRole === 'mentor'
+              ? 'bg-orange-500 text-white border-orange-500'
+              : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
+          } hover:border-gray-300 hover:shadow-md transition duration-200 ease-in-out`}
+        >
+          Become a mentor
+        </button>
 
-
-  <button
-    type="button"
-    onClick={() => handleRoleSelect("mentee")}
-    className={`px-4 py-2 rounded border ${
-        selectedRole === 'mentee'
-          ? 'bg-orange-500 text-white border-orange-500'
-          : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
-      } hover:border-gray-300 hover:shadow-md transition duration-200 ease-in-out`}
-      >
-    Find a mentor
-  </button>
-</div>
-
+        <button
+          type="button"
+          onClick={() => handleRoleSelect("mentee")}
+          className={`px-4 py-2 rounded border ${
+            selectedRole === 'mentee'
+              ? 'bg-orange-500 text-white border-orange-500'
+              : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
+          } hover:border-gray-300 hover:shadow-md transition duration-200 ease-in-out`}
+        >
+          Find a mentor
+        </button>
+      </div>
 
       <h2 className="text-xl font-semibold mb-4">Confirm Your Personal Details</h2>
 
       <div>
         <label className={labelStyle}>First Name</label>
-        <input type="text" className={inputStyle} disabled placeholder="Will be auto-filled later" />
+        <input type="text" className={inputStyle} value={profile.first_name || ''} disabled />
 
         <label className={labelStyle}>Last Name</label>
-        <input type="text" className={inputStyle} disabled />
+        <input type="text" className={inputStyle} value={profile.last_name || ''} disabled />
 
         <label className={labelStyle}>Date of Birth</label>
-        <input type="date" className={inputStyle} disabled />
+        <input type="text" className={inputStyle} value={profile.date_of_birth || ''} disabled />
 
         <label className={labelStyle}>Address</label>
-        <input type="text" className={inputStyle} disabled />
+        <input type="text" className={inputStyle} value={profile.address || ''} disabled />
 
         <label className={labelStyle}>Gender</label>
-        <input type="text" className={inputStyle} disabled />
+        <input type="text" className={inputStyle} value={profile.gender || ''} disabled />
 
         <label className={labelStyle}>Aboriginal or Torres Strait Islander</label>
-        <input type="text" className={inputStyle} disabled />
+        <input
+          type="text"
+          className={inputStyle}
+          value={
+            profile.aboriginal_or_torres_strait_islander === 'Yes' || profile.aboriginal_or_torres_strait_islander === true
+              ? 'Yes'
+              : 'No'
+          }
+          disabled
+        />
 
         <label className={labelStyle}>Language Other Than English Spoken at Home</label>
-        <input type="text" className={inputStyle} disabled />
+        <input type="text" className={inputStyle} value={profile.language_spoken_at_home || ''} disabled />
 
         <label className={labelStyle}>Living Situation</label>
-        <input type="text" className={inputStyle} disabled />
+        <input type="text" className={inputStyle} value={profile.living_situation || ''} disabled />
       </div>
 
       <div className="flex justify-end mt-8">

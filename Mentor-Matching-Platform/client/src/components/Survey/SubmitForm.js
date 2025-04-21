@@ -37,8 +37,26 @@ const SubmitForm = () => {
           Back to Connections
         </button>
       </div>
+
+      <button
+  onClick={() => {
+    fetch('/api/match-mentee', {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => console.log("Matches 🔥", data))
+      .catch(err => console.error("Error fetching matches:", err));
+  }}
+  className="bg-blue-500 text-white px-4 py-2 rounded"
+>
+  Get My Matches
+</button>
+
     </div>
+    
   );
 };
+
 
 export default SubmitForm;
