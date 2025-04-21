@@ -30,7 +30,7 @@ db.run(`
     user_id INTEGER PRIMARY KEY,
     first_name TEXT,
     last_name TEXT,
-    date_of_birth DATE,
+    date_of_birth DATE CHECK (date_of_birth < DATE('now')),
     address TEXT,
     city_suburb TEXT,
     state TEXT,
@@ -47,12 +47,42 @@ db.run(`
   )
 `);
 
+
+
+
 // Mentorship preferences table
 db.run(`
   CREATE TABLE IF NOT EXISTS mentorship_preferences (
     user_id INTEGER PRIMARY KEY,
+    role TEXT CHECK (role IN ('mentor', 'mentee')),
+    transplant_type TEXT,
+    transplant_year TEXT,
+    goals TEXT,
+    meeting_preference TEXT,
+    sports_activities TEXT,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  )
+`);
+
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS lifestyle_answers (
+    user_id INTEGER PRIMARY KEY,
+    q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER,
+    q6 INTEGER, q7 INTEGER, q8 INTEGER,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  )
+`);
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS enneagram_answers (
+    user_id INTEGER PRIMARY KEY,
+    top_type TEXT, -- string or JSON of types if tie
+    scores TEXT, -- store full score breakdown as JSON
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )
 `);
 
