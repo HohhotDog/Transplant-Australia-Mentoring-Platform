@@ -6,6 +6,8 @@ const cors = require("cors");
 const session = require("express-session");
 const db = require("./db.js"); // SQLite DB
 const authRoutes = require("./routes/auth");
+const surveyRoutes = require("./routes/survey");
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -27,6 +29,8 @@ app.use(
 
 // Use auth routes
 app.use("/api", authRoutes);
+app.use("/api/survey", surveyRoutes);
+
 
 // Auth check middleware
 function isAuthenticated(req, res, next) {
