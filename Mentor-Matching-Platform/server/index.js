@@ -6,10 +6,14 @@ const db = require("./db.js");
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
 const securityRoutes = require("./routes/security");
+const sessionRoutes = require("./routes/sessions");
+const seedSessions = require("./scripts/seedSessions");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Seed the database with session data
+seedSessions();
 // Middleware
 app.use(express.json());
 app.use(cors({
@@ -30,6 +34,7 @@ app.use(
 app.use("/api", authRoutes);
 app.use("/api", profileRoutes);
 app.use("/api", securityRoutes);
+app.use("/api", sessionRoutes);
 
 // Auth middleware
 function isAuthenticated(req, res, next) {
