@@ -1,0 +1,19 @@
+[
+    {
+      "id": "1",
+      "name": "Session Title 1",
+      "picture_url": "/images/sessions/session1.png",
+      "description": "This is a brief description for mentorship session 1.",
+      "start_date": "2025-05-01",
+      "end_date": "2025-05-31"
+    },
+    {
+      "id": "2",
+      "name": "Session Title 2",
+      "picture_url": "/images/sessions/session2.png",
+      "description": "This is a brief description for mentorship session 2.",
+      "start_date": "2025-06-01",
+      "end_date": "2025-06-30"
+    }
+  ]
+  
