@@ -120,15 +120,15 @@ router.post('/sessions/:id/apply', ensureAuthenticated, (req, res) => {
     }
     // Insert new application
     const insertSql = `
-      INSERT INTO applications (user_id, session_id, status)
-      VALUES (?, ?, 'in_progress')
+      INSERT INTO applications (user_id, session_id,  role)
+      VALUES (?, ?, 'mentor')
     `;
     db.run(insertSql, [userId, sessionId], function(err) {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-      res.status(201).json({ message: 'Applied successfully', sessionId, status: 'in_progress' });
+      res.status(201).json({ message: 'Applied successfully', sessionId });
     });
   });
 });
@@ -153,7 +153,7 @@ router.delete('/sessions/:id/apply', ensureAuthenticated, (req, res) => {
     if (this.changes === 0) {
       return res.status(404).json({ error: 'Not applied or not found' });
     }
-    res.sendStatus(204);
+    return res.status(200).json({ message: 'Application cancelled successfully', sessionId });
   });
 });
 
