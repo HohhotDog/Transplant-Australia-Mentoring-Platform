@@ -2,3 +2,4 @@ server/node_modules
 client/node_modules
 # Ignore all SQLite database files in server/data directory
 server/data/*.db
+
