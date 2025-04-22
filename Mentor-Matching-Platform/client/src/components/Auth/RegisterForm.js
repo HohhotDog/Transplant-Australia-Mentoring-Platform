@@ -71,10 +71,15 @@ function RegisterForm({ isLoggedIn, handleLogout }) {
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
 
-            <div className="form-group">
+            <div className="form-group password-group">
               <label>Password</label>
-              <div className="form-password-toggle">
-                <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <div className="password-input-wrapper">
+                <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
                 <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>👁️</span>
               </div>
               <small className="form-note">
@@ -82,10 +87,15 @@ function RegisterForm({ isLoggedIn, handleLogout }) {
               </small>
             </div>
 
-            <div className="form-group">
+            <div className="form-group password-group">
               <label>Confirm Password</label>
-              <div className="form-password-toggle">
-                <input type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+              <div className="password-input-wrapper">
+                <input
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                />
                 <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>👁️</span>
               </div>
             </div>

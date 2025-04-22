@@ -1,42 +1,30 @@
 // src/components/Auth/RegisterSuccessInfo.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import NavBar from "../Navigation/NavBar"; // ✅ 引入 NavBar
-import "../../components/Auth/style/Register.css";
+import NavBar from "../Navigation/NavBar";
+import "../../components/Auth/style/RegSuccessInfo.css";
 
-function RegisterSuccessInfo({ isLoggedIn, handleLogout }) { // ✅ 接收 props
+function RegisterSuccessInfo({ isLoggedIn, handleLogout }) {
     return (
         <div>
-            {/* ✅ 显示顶部导航栏 */}
             <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-
-            <div className="auth-container text-center">
+            <div className="success-container">
                 <img
-                    src="/images/success-graphic.png"
+                    src="/images/RegSuccessInfo/1.jpg"
                     alt="Welcome illustration"
-                    style={{
-                        width: "100%",
-                        maxWidth: "600px",
-                        borderRadius: "12px",
-                        margin: "0 auto",
-                    }}
+                    className="success-image"
                 />
-                <h2 className="mt-6 font-bold text-xl">
-                    Welcome to Transplant Australia Mentoring
-                </h2>
-                <p className="my-4 text-gray-700">
-                    Your account has been successfully created! You’re now one step
-                    closer to connecting with a mentor who understands your journey.
-                    Take a moment to explore your profile settings and complete your
-                    mentorship preferences to enhance your experience. We're thrilled to
-                    have you aboard!
+                <h2 className="success-title">Welcome to Transplant Australia Mentoring</h2>
+                <p className="success-description">
+                    Your account has been successfully created! You’re now one step closer to
+                    connecting with a mentor who understands your journey. Take a moment to
+                    explore your profile settings and complete your mentorship preferences to
+                    enhance your experience. We're thrilled to have you aboard!
                 </p>
-                <Link to="/">
-                    <button className="bg-btnorange">Go to Home</button>
+                <Link to="/profile">
+                    <button className="form-btn">Go to My Profile</button>
                 </Link>
-                <p className="mt-2 text-sm text-gray-500">
-                    Embracing the journey, together.
-                </p>
+                <p className="success-tagline">Embracing the journey, together.</p>
             </div>
         </div>
     );

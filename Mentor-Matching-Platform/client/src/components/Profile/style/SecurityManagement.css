@@ -1,0 +1,99 @@
+/* ---------- Layout ---------- */
+.security-section {
+    max-width: 90%;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', sans-serif;
+    color: #111;
+}
+
+/* ---------- Titles ---------- */
+.security-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.security-subtitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 28px 0 12px;
+}
+
+/* ---------- Descriptions ---------- */
+.security-note {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 16px;
+}
+
+.security-question {
+    display: block;
+    margin-top: 8px;
+    font-weight: 500;
+    color: #a34b2d;
+}
+
+/* ---------- Inputs ---------- */
+.security-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.security-input {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    background-color: #fdf2e9;
+    border: 1px solid #e0d6cf;
+    border-radius: 12px;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.security-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(224, 86, 0, 0.3);
+}
+
+/* ---------- Primary Button ---------- */
+.security-btn {
+    width: fit-content;
+    padding: 12px 24px;
+    background-color: #e05600;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.security-btn:hover {
+    background-color: #c74700;
+}
+
+/* ---------- Forgot Password ---------- */
+.security-recovery {
+    margin-top: 40px;
+}
+
+.security-recovery-btn {
+    margin-top: 12px;
+    padding: 12px 20px;
+    background-color: #f2e7dc;
+    color: #444;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.security-recovery-btn:hover {
+    background-color: #e4d6c8;
+}

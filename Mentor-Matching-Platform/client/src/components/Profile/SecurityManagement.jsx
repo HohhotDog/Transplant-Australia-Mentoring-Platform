@@ -1,6 +1,6 @@
 // src/components/Profile/SecurityManagement.jsx
 import React, { useState, useEffect } from "react";
-import "../../components/Auth/style/Register.css";
+import "../../components/Profile/style/SecurityManagement.css";
 
 function SecurityManagement({ isLoggedIn, handleLogout }) {
     const [securityQuestion, setSecurityQuestion] = useState("");

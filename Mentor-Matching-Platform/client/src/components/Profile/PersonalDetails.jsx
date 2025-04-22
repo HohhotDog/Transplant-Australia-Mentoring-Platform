@@ -1,7 +1,7 @@
 // src/components/Profile/PersonalDetails.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../components/Auth/style/Register.css";
+import "./style/PersonalDetails.css";
 
 function PersonalDetails({ isLoggedIn, handleLogout }) {
     const [formData, setFormData] = useState({
