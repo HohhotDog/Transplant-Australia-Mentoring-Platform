@@ -1,7 +1,7 @@
 // src/components/ProfileCreation/ProfileCreation.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../components/Auth/style/Register.css";
+import "../../components/Profile/style/ProfileCreation.css";
 
 function ProfileCreation({ isLoggedIn, handleLogout }) {
     const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ function ProfileCreation({ isLoggedIn, handleLogout }) {
         living_situation: "",
     });
 
-    const navigate = useNavigate(); // ✅ 用于跳转
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -54,6 +54,11 @@ function ProfileCreation({ isLoggedIn, handleLogout }) {
     return (
         <div>
             <div className="form-container">
+                <img
+                    src="/images/ProfileCreation/1.jpg"
+                    alt="Profile illustration"
+                    className="creation-image"
+                />
                 <h2 className="form-title">Personal Details</h2>
                 <p className="form-footer">
                     Please provide your personal details accurately. This information will be kept confidential.

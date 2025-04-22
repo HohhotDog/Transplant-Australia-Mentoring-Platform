@@ -1,0 +1,119 @@
+/* ---------- General Layout ---------- */
+body {
+    background-color: #fdfaf6;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ---------- Main Container ---------- */
+.form-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #111;
+}
+
+/* ---------- Page Title ---------- */
+.form-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+/* ---------- Error Message ---------- */
+.form-footer {
+    font-size: 0.95rem;
+    margin-top: 10px;
+    color: #c0392b;
+}
+
+/* ---------- Avatar Card ---------- */
+.avatar-card {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 24px;
+}
+
+.avatar-card-inner {
+    width: 160px;
+    height: 160px;
+    padding: 4px;
+    border: 4px solid #ccc;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.avatar-card-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* ---------- Profile Info Layout ---------- */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.profile-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.label {
+    font-weight: 600;
+    min-width: 260px;
+    color: #222;
+    text-align: left;
+}
+
+.value {
+    flex: 1;
+    color: #333;
+    text-align: left;
+}
+
+/* ---------- Buttons ---------- */
+.profile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.form-btn {
+    width: fit-content;
+    padding: 14px 24px;
+    background-color: #e05600;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.form-btn:hover {
+    background-color: #c74700;
+}
+
+.secondary-btn {
+    background-color: #888;
+}
+
+.secondary-btn:hover {
+    background-color: #666;
+}

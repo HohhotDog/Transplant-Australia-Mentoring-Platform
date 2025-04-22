@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../Navigation/NavBar";
-import "../../components/Auth/style/Register.css";
+import "../../components/Auth/style/Login.css";
 
 function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
   const [loginEmail, setLoginEmail] = useState("");
