@@ -9,9 +9,9 @@ import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import SurveyPage from "./pages/Mentorship/SurveyPage";
 import AdminPage from "./pages/Admin/AdminPage";
-import SessionPage from "./pages/Mentorship/ExploreSessionPage";
+import ExploreSessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
-import MentorshipSessionPage from './pages/Mentorship/MySessions';
+import MySessionPage from './pages/Mentorship/MySessions';
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
 import ProfileForm from "./components/Profile/ProfileCreation";
@@ -57,9 +57,18 @@ function App() {
                     <Route index element={<HomePage />} />
                     <Route path="survey" element={<SurveyPage />} />
                     <Route path="admin" element={<AdminPage />} />
-                    <Route path="sessions" element={<SessionPage />} />
-                    <Route path="sessions/:id" element={<MentorshipSessionDetailPage />} />
-                    <Route path="my-sessions" element={<MentorshipSessionPage />} />
+                    {/* Explore Sessions with nested detail */}
+                    <Route path="sessions">
+                        <Route index element={<ExploreSessionPage />} />
+                        <Route path=":id" element={<MentorshipSessionDetailPage />} />
+                    </Route>
+
+                    {/* My Sessions with nested detail */}
+                    <Route path="my-sessions">
+                        <Route index element={<MySessionPage />} />
+                        {/*<Route path=":id" element={<MySessionDetailPage />} /> */}
+                    </Route>
+                    
                     <Route
                         path="profile"
                         element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
