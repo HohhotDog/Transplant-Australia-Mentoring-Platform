@@ -23,7 +23,7 @@ const MentorshipSessionDetailPage = () => {
       const dummyData = {
         id,
         title: `Session Title ${id}`,
-        image: `/images/session.png`,
+        image: `/images/sessions/session${id}.png`,
         description: `This is a detailed description for session ${id}.`,
         startDate: '2025-05-01',
         endDate: '2025-05-31'

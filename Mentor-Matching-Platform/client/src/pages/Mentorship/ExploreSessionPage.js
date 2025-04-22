@@ -11,13 +11,13 @@ const ExploreSessionsPage = () => {
     {
       id: '1',
       // The image is stored in the public folder under 'images/sessions'
-      image: '/images/Session.png',
+      image: '/images/sessions/session1.png',
       title: 'Mentorship Session 1',
       description: 'Brief description for mentorship Session 1.',
     },
     {
       id: '2',
-      image: '/images/Session.png',
+      image: '/images/sessions/session2.png',
       title: 'Mentorship Session 2',
       description: 'Brief description for mentorship Session 2.',
     },
