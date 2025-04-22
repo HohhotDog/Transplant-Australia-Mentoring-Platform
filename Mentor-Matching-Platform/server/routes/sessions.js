@@ -44,6 +44,30 @@ router.get('/my-sessions', ensureAuthenticated, (req, res) => {
     res.json(rows);
   });
 });
+/**
+ * GET /api/sessions
+ * Returns all available sessions
+ */
+router.get('/sessions', (req, res) => {
+    const sql = `
+        SELECT id,
+             name        AS title,
+             picture_url AS image,
+             description,
+             start_date  AS startDate,
+             end_date    AS endDate
+        FROM sessions
+        WHERE status = 'available'
+    `;
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        res.json(rows);
+    });
+});
+
 
 /**
  * GET /api/sessions/:id
