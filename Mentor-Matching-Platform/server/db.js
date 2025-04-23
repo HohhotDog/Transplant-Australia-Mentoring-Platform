@@ -1,6 +1,8 @@
 // ./server/db.js
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+const { promisify } = require("util");
+
 
 // Create or open the database file in ./data/survey.db
 const db = new sqlite3.Database(path.join(__dirname, "data", "survey.db"), (err) => {
@@ -10,6 +12,9 @@ const db = new sqlite3.Database(path.join(__dirname, "data", "survey.db"), (err)
     console.log("✅ Connected to SQLite database");
   }
 });
+
+db.getAsync = promisify(db.get).bind(db);
+db.allAsync = promisify(db.all).bind(db);
 
 // Users table
 db.run(`
@@ -69,12 +74,21 @@ db.run(`
 
 db.run(`
   CREATE TABLE IF NOT EXISTS lifestyle_answers (
-    user_id INTEGER PRIMARY KEY,
-    q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER, q5 INTEGER,
-    q6 INTEGER, q7 INTEGER, q8 INTEGER,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-  )
+  user_id INTEGER PRIMARY KEY,
+  physicalExerciseFrequency INTEGER,
+  likeAnimals INTEGER,
+  likeCooking INTEGER,
+  travelImportance INTEGER,
+  freeTimePreference INTEGER,
+  feelOverwhelmed INTEGER,
+  activityBarriers INTEGER,
+  longTermGoals INTEGER,
+  stressHandling INTEGER,
+  motivationLevel INTEGER,
+  hadMentor INTEGER,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
 `);
 
 db.run(`
