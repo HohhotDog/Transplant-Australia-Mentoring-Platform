@@ -31,6 +31,7 @@ router.get('/my-sessions', ensureAuthenticated, (req, res) => {
            s.description,
            s.start_date  AS startDate,
            s.end_date    AS endDate,
+            a.role     AS role,
            a.status      
     FROM applications a
     JOIN sessions s ON s.id = a.session_id
@@ -119,11 +120,12 @@ router.post('/sessions/:id/apply', ensureAuthenticated, (req, res) => {
       return res.status(409).json({ error: 'Already applied' });
     }
     // Insert new application
+    const {role} = req.body;
     const insertSql = `
-      INSERT INTO applications (user_id, session_id,  role)
-      VALUES (?, ?, 'mentor')
+      INSERT INTO applications (user_id, session_id, role)
+      VALUES (?, ?, ?)
     `;
-    db.run(insertSql, [userId, sessionId], function(err) {
+    db.run(insertSql, [userId, sessionId, role], function(err) {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });
