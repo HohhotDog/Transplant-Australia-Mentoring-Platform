@@ -18,9 +18,11 @@ import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";
 import SecurityManagement from "./components/Profile/SecurityManagement";
+import MySessionDetailRouter from "./pages/Mentorship/MySessionDetailRouter";
 
 // Import global layout
 import Layout from "./components/Layout";
+
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -66,7 +68,7 @@ function App() {
                     {/* My Sessions with nested detail */}
                     <Route path="my-sessions">
                         <Route index element={<MySessionPage />} />
-                        {/*<Route path=":id" element={<MySessionDetailPage />} /> */}
+                        <Route path=":id" element={<MySessionDetailRouter />} /> 
                     </Route>
                     
                     <Route
