@@ -120,7 +120,11 @@ router.post('/sessions/:id/apply', ensureAuthenticated, (req, res) => {
       return res.status(409).json({ error: 'Already applied' });
     }
     // Insert new application
-    const {role} = req.body;
+    const { role } = req.body;
+    const allowedRoles = ['mentor', 'mentee'];
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({ error: 'Invalid role. Allowed values are "mentor" or "mentee".' });
+    }
     const insertSql = `
       INSERT INTO applications (user_id, session_id, role)
       VALUES (?, ?, ?)
