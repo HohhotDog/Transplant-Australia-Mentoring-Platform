@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="CSS Profile+Auth Implemented">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/security.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/security.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/__tests__/LoginForm.test.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +67,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "Chensu-Yang-dev-branch",
-    "last_opened_file_path": "/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/public/images/ProfilePage",
+    "last_opened_file_path": "/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/src/components/Auth",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -83,6 +82,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images/ProfilePage" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images/ProfileCreation" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images/RegSuccessInfo" />
@@ -283,7 +283,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="origin/Chensu-Yang-dev-branch" />
                       </list>
                     </value>
                   </entry>
