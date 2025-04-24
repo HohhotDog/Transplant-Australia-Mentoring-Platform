@@ -1,14 +1,31 @@
-// src/components/Profile/SecurityManagement.jsx
+/**
+ * @file SecurityManagement.jsx
+ * @description Provides UI for changing the user's password and initiating account recovery.
+ */
+
 import React, { useState, useEffect } from "react";
 import "../../components/Profile/style/SecurityManagement.css";
 
+/**
+ * SecurityManagement Component
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.isLoggedIn - Indicates if the user is currently logged in
+ * @param {Function} props.handleLogout - Function to handle user logout
+ * @returns {JSX.Element} A form interface to change password and manage account recovery
+ */
 function SecurityManagement({ isLoggedIn, handleLogout }) {
+    // === State hooks for security and password fields ===
     const [securityQuestion, setSecurityQuestion] = useState("");
     const [securityAnswer, setSecurityAnswer] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    /**
+     * Fetch the user's security question from the backend when the component mounts
+     */
     useEffect(() => {
         async function fetchSecurityQuestion() {
             try {
@@ -30,6 +47,9 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
         fetchSecurityQuestion();
     }, []);
 
+    /**
+     * Handle the password update process, including validation and API call
+     */
     const handleChangePassword = async () => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
 
@@ -79,10 +99,10 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
 
     return (
         <div>
-
             <div className="security-section">
                 <h2 className="security-title">Security</h2>
 
+                {/* === Change Password Section === */}
                 <h3 className="security-subtitle">Change Password</h3>
                 <p className="security-note">
                     To reset your password, please answer your security question:
@@ -130,6 +150,7 @@ function SecurityManagement({ isLoggedIn, handleLogout }) {
                     </button>
                 </div>
 
+                {/* === Account Recovery Section === */}
                 <div className="security-recovery">
                     <h3 className="security-subtitle">Forgot Password</h3>
                     <p className="security-note">

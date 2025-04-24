@@ -1,12 +1,30 @@
+/**
+ * @file ProfilePage.jsx
+ * @description Displays the authenticated user's profile in read-only view with options to edit or manage security settings.
+ */
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../components/Profile/style/ProfilePage.css";
 
+/**
+ * ProfilePage Component
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.isLoggedIn - Indicates whether the user is currently authenticated
+ * @param {Function} props.handleLogout - Function to log out the user
+ * @returns {JSX.Element} A page displaying user's personal profile details
+ */
 function ProfilePage({ isLoggedIn, handleLogout }) {
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    /**
+     * Fetch profile data on mount
+     * Redirects if user is unauthorized (401) or has not completed profile (404)
+     */
     useEffect(() => {
         async function fetchProfile() {
             try {
@@ -41,6 +59,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         fetchProfile();
     }, [navigate]);
 
+    // === UI: Error Display ===
     if (error) {
         return (
             <div className="form-container">
@@ -50,6 +69,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         );
     }
 
+    // === UI: Loading Indicator ===
     if (!profile) {
         return (
             <div className="form-container">
@@ -58,10 +78,12 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         );
     }
 
+    // === UI: Profile Data ===
     return (
         <div className="form-container">
             <h2 className="form-title">My Profile</h2>
 
+            {/* Avatar Section */}
             <div className="avatar-card">
                 <div className="avatar-card-inner">
                     <img
@@ -71,6 +93,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
                 </div>
             </div>
 
+            {/* Profile Info Table */}
             <div className="profile-info">
                 {[
                     ["Name", `${profile.first_name} ${profile.last_name}`],
@@ -94,6 +117,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
                 ))}
             </div>
 
+            {/* Buttons */}
             <div className="profile-buttons">
                 <button className="form-btn" onClick={() => navigate("/profile-edit")}>
                     Edit Profile

@@ -1,9 +1,25 @@
+/**
+ * @module AuthRoutes
+ * @description Handles user authentication including registration, login, password reset, and logout.
+ */
+
 const express = require("express");
 const bcrypt = require("bcrypt");
 const db = require("../db");
 const router = express.Router();
 
-// Register new user
+/**
+ * @route POST /register
+ * @group Auth - Operations about user authentication
+ * @summary Registers a new user
+ * @param {string} email.body.required - User email
+ * @param {string} password.body.required - User password
+ * @param {string} securityQuestion.body.required - Security question
+ * @param {string} securityAnswer.body.required - Security question answer
+ * @returns {object} 200 - Success with created user ID
+ * @returns {object} 400 - Validation error
+ * @returns {object} 500 - Database or server error
+ */
 router.post("/register", async (req, res) => {
     const { email, password, securityQuestion, securityAnswer } = req.body;
 
@@ -45,7 +61,16 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// Login
+/**
+ * @route POST /login
+ * @group Auth
+ * @summary Authenticates a user and starts a session
+ * @param {string} email.body.required - User email
+ * @param {string} password.body.required - User password
+ * @returns {object} 200 - Login successful
+ * @returns {object} 401 - Invalid credentials
+ * @returns {object} 500 - Server or database error
+ */
 router.post("/login", (req, res) => {
     const { email, password } = req.body;
 
@@ -76,7 +101,18 @@ router.post("/login", (req, res) => {
     });
 });
 
-// Forgot Password
+/**
+ * @route POST /forgot-password
+ * @group Auth
+ * @summary Resets password using a security question
+ * @param {string} email.body.required - User email
+ * @param {string} securityAnswer.body.required - Answer to the security question
+ * @param {string} newPassword.body.required - New password
+ * @returns {object} 200 - Password reset successful
+ * @returns {object} 403 - Security answer mismatch
+ * @returns {object} 404 - User not found
+ * @returns {object} 500 - Server or database error
+ */
 router.post("/forgot-password", (req, res) => {
     const { email, securityAnswer, newPassword } = req.body;
 
@@ -114,7 +150,12 @@ router.post("/forgot-password", (req, res) => {
     });
 });
 
-// Logout
+/**
+ * @route POST /logout
+ * @group Auth
+ * @summary Logs the user out by destroying the session
+ * @returns {object} 200 - Logout successful
+ */
 router.post("/logout", (req, res) => {
     req.session.destroy();
     res.clearCookie("connect.sid");
