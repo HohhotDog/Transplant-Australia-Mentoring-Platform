@@ -1,8 +1,19 @@
+/**
+ * @module ProfileRoutes
+ * @description Handles authenticated user profile operations: fetching, creating, and updating.
+ */
+
 const express = require("express");
 const db = require("../db");
 const router = express.Router();
 
-// Middleware to check if user is authenticated
+/**
+ * Middleware to check if user is authenticated.
+ * @function isAuthenticated
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.user) {
         next();
@@ -11,35 +22,40 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-// Helper to check if profile is complete
+/**
+ * Helper function to check if a profile is complete.
+ * @function isProfileComplete
+ * @param {Object} profile - The user profile object
+ * @returns {boolean} - Returns true if all required fields are non-empty
+ */
 function isProfileComplete(profile) {
     const requiredFields = [
-        "first_name",
-        "last_name",
-        "date_of_birth",
-        "address",
-        "city_suburb",
-        "state",
-        "postal_code",
-        "gender",
-        "aboriginal_or_torres_strait_islander",
-        "language_spoken_at_home",
-        "living_situation"
+        "first_name", "last_name", "date_of_birth", "address", "city_suburb",
+        "state", "postal_code", "gender", "aboriginal_or_torres_strait_islander",
+        "language_spoken_at_home", "living_situation"
     ];
     return requiredFields.every(field => profile[field] !== null && profile[field] !== "");
 }
 
-// ✅ GET: fetch profile and email if exists and is complete
+/**
+ * @route GET /profile
+ * @group Profile - Operations related to user profile
+ * @summary Fetch the authenticated user's profile if it exists and is complete
+ * @returns {object} 200 - Profile data
+ * @returns {object} 401 - Unauthorized
+ * @returns {object} 404 - Profile not found or incomplete
+ * @returns {object} 500 - Database error
+ */
 router.get("/profile", isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
 
     const query = `
-      SELECT 
-        u.email,
-        p.*
-      FROM users u
-      LEFT JOIN profiles p ON u.id = p.user_id
-      WHERE u.id = ?
+        SELECT
+            u.email,
+            p.*
+        FROM users u
+                 LEFT JOIN profiles p ON u.id = p.user_id
+        WHERE u.id = ?
     `;
 
     db.get(query, [userId], (err, row) => {
@@ -57,27 +73,25 @@ router.get("/profile", isAuthenticated, (req, res) => {
     });
 });
 
-// ✅ POST: insert or update profile
+/**
+ * @route POST /profile
+ * @group Profile
+ * @summary Create or update the authenticated user's profile
+ * @param {object} req.body - Profile fields including name, address, DOB, etc.
+ * @returns {object} 200 - Success confirmation
+ * @returns {object} 400 - Invalid input (e.g., future DOB)
+ * @returns {object} 401 - Unauthorized
+ * @returns {object} 500 - Database error on insert/update
+ */
 router.post("/profile", isAuthenticated, (req, res) => {
     const userId = req.session.user.id;
     const {
-        first_name,
-        last_name,
-        date_of_birth,
-        address,
-        city_suburb,
-        state,
-        postal_code,
-        gender,
-        aboriginal_or_torres_strait_islander,
-        language_spoken_at_home,
-        living_situation,
-        profile_picture_url,
-        bio,
-        phone_number
+        first_name, last_name, date_of_birth, address, city_suburb, state,
+        postal_code, gender, aboriginal_or_torres_strait_islander,
+        language_spoken_at_home, living_situation, profile_picture_url,
+        bio, phone_number
     } = req.body;
 
-    // ✅ Manual date check to avoid SQLite CHECK constraint error
     const dob = new Date(date_of_birth);
     const today = new Date();
     if (isNaN(dob.getTime()) || dob > today) {
@@ -88,21 +102,10 @@ router.post("/profile", isAuthenticated, (req, res) => {
     }
 
     const values = [
-        first_name,
-        last_name,
-        date_of_birth,
-        address,
-        city_suburb,
-        state,
-        postal_code,
-        gender,
-        aboriginal_or_torres_strait_islander,
-        language_spoken_at_home,
-        living_situation,
-        profile_picture_url,
-        bio,
-        phone_number,
-        userId
+        first_name, last_name, date_of_birth, address, city_suburb, state,
+        postal_code, gender, aboriginal_or_torres_strait_islander,
+        language_spoken_at_home, living_situation, profile_picture_url,
+        bio, phone_number, userId
     ];
 
     db.get("SELECT * FROM profiles WHERE user_id = ?", [userId], (err, row) => {
@@ -115,10 +118,10 @@ router.post("/profile", isAuthenticated, (req, res) => {
             // Update profile
             const updateQuery = `
                 UPDATE profiles SET
-                  first_name = ?, last_name = ?, date_of_birth = ?, address = ?, city_suburb = ?, state = ?, postal_code = ?,
-                  gender = ?, aboriginal_or_torres_strait_islander = ?, language_spoken_at_home = ?, living_situation = ?,
-                  profile_picture_url = ?, bio = ?, phone_number = ?,
-                  updated_at = CURRENT_TIMESTAMP
+                                    first_name = ?, last_name = ?, date_of_birth = ?, address = ?, city_suburb = ?, state = ?, postal_code = ?,
+                                    gender = ?, aboriginal_or_torres_strait_islander = ?, language_spoken_at_home = ?, living_situation = ?,
+                                    profile_picture_url = ?, bio = ?, phone_number = ?,
+                                    updated_at = CURRENT_TIMESTAMP
                 WHERE user_id = ?
             `;
             db.run(updateQuery, values, function (err) {
@@ -132,9 +135,9 @@ router.post("/profile", isAuthenticated, (req, res) => {
             // Insert profile
             const insertQuery = `
                 INSERT INTO profiles (
-                  first_name, last_name, date_of_birth, address, city_suburb, state, postal_code, gender,
-                  aboriginal_or_torres_strait_islander, language_spoken_at_home, living_situation,
-                  profile_picture_url, bio, phone_number, user_id
+                    first_name, last_name, date_of_birth, address, city_suburb, state, postal_code, gender,
+                    aboriginal_or_torres_strait_islander, language_spoken_at_home, living_situation,
+                    profile_picture_url, bio, phone_number, user_id
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
             db.run(insertQuery, values, function (err) {
