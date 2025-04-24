@@ -1,7 +1,8 @@
 // src/components/Survey/MatchingPreferences.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
+import ApplicationLayout from './ApplicationLayout';
 
 const transplantOptions = [
     { value: 'Bone Marrow', label: 'Bone Marrow' },
@@ -38,6 +39,20 @@ const MatchingPreferences = () => {
     supportNeeds: []
   });
 
+  const [isLocked, setIsLocked] = useState(false);
+useEffect(() => {
+  fetch('/api/form-status', {
+    method: 'GET',
+    credentials: 'include',
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success && data.submitted) {
+        setIsLocked(true);
+      }
+    })
+    .catch(err => console.error("⚠️ Error checking submission status:", err));
+}, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +70,7 @@ const MatchingPreferences = () => {
   };
 
   return (
+    <ApplicationLayout>
     <div className="max-w-3xl mx-auto p-8 text-left">
       <h1 className="text-3xl font-bold mb-4">Confirm Your Preferences</h1>
       <p className="mb-6 text-gray-600">
@@ -67,6 +83,7 @@ const MatchingPreferences = () => {
         name="participantRole"
         value={formData.participantRole}
         onChange={handleChange}
+        disabled={isLocked}
         className="w-full p-2 mb-4 border border-gray-300 rounded"
       >
         <option value="">Choose your role</option>
@@ -85,6 +102,7 @@ const MatchingPreferences = () => {
 <Select
   isMulti
   options={transplantOptions}
+  disabled={isLocked}
   value={transplantOptions.filter(option =>
     formData.transplantType.includes(option.value)
   )}
@@ -102,6 +120,7 @@ const MatchingPreferences = () => {
   name="transplantYear"
   value={formData.transplantYear}
   onChange={handleChange}
+  disabled={isLocked}
   className="w-full p-2 mb-4 border border-gray-300 rounded"
 >
   <option value="">Select Year</option>
@@ -126,6 +145,7 @@ const MatchingPreferences = () => {
               value={need}
               checked={formData.supportNeeds.includes(need)}
               onChange={handleCheckboxChange}
+              disabled={isLocked}
             />
             {need}
           </label>
@@ -138,6 +158,7 @@ const MatchingPreferences = () => {
         name="meetingPreference"
         value={formData.meetingPreference}
         onChange={handleChange}
+        disabled={isLocked}
         className="w-full p-2 mb-4 border border-gray-300 rounded"
       >
         <option value="">Choose meeting preference</option>
@@ -151,6 +172,7 @@ const MatchingPreferences = () => {
       <label className="block font-medium mb-1">Sports/Activities Interest</label>
 <Select
   isMulti
+  isDisabled={isLocked}
   name="sportsInterests"
   options={sportsOptions}
   value={sportsOptions.filter(option =>
@@ -169,6 +191,7 @@ const MatchingPreferences = () => {
       <div className="flex justify-end mt-8">
   <button
     type="button"
+    disabled={isLocked}
     onClick={async () => {
         const payload = {
           role: localStorage.getItem("selectedRole") || "mentee", // or fetch from global state
@@ -208,6 +231,7 @@ const MatchingPreferences = () => {
 </div>
 
     </div>
+    </ApplicationLayout>
   );
 };
 

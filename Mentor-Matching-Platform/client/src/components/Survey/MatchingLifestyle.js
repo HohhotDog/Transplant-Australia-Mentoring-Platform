@@ -1,8 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ApplicationLayout from './ApplicationLayout';
 
 const MatchingLifestyle = () => {
   const navigate = useNavigate();
+  const [isLocked, setIsLocked] = useState(false);
+  useEffect(() => {
+    fetch("/api/form-status", {
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.submitted) {
+          setIsLocked(true);
+        }
+      });
+  }, []);
+  
+
 
   const [responses, setResponses] = useState({
     physicalExerciseFrequency: '',
@@ -63,6 +78,7 @@ const MatchingLifestyle = () => {
         value={responses[name]}
         onChange={(e) => handleSliderChange(name, e.target.value)}
         className="w-full accent-orange-500"
+        disabled={isLocked}
       />
       <div className="text-sm text-gray-500 mt-1">Value: {responses[name]}</div>
     </div>
@@ -71,7 +87,7 @@ const MatchingLifestyle = () => {
   const QuestionDropdown = ({ label, name, options }) => (
     <div className="mb-6">
       <label className="block font-semibold text-lg mb-1 text-gray-800">{label}</label>
-      <select
+      <select disabled={isLocked}
         name={name}
         value={responses[name]}
         onChange={handleDropdownChange}
@@ -86,6 +102,7 @@ const MatchingLifestyle = () => {
   );
 
   return (
+    <ApplicationLayout>
     <div className="max-w-3xl mx-auto p-8 text-left">
       <h1 className="text-3xl font-bold mb-6">Lifestyle & Matching Questions</h1>
 
@@ -182,13 +199,18 @@ const MatchingLifestyle = () => {
       <div className="flex justify-end mt-10">
         <button
           onClick={handleNext}
-          className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600"
+          disabled={isLocked}
+          className={`px-6 py-2 rounded ${
+            isLocked
+              ? 'bg-gray-400 cursor-not-allowed text-white'
+              : 'bg-orange-500 text-white hover:bg-orange-600'
+          }`}
         >
           Next ➔
         </button>
       </div>
     </div>
-  );
+    </ApplicationLayout> );
 };
 
 export default MatchingLifestyle;

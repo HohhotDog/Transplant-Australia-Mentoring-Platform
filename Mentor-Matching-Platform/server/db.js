@@ -59,16 +59,17 @@ db.run(`
 // Mentorship preferences table
 db.run(`
   CREATE TABLE IF NOT EXISTS mentorship_preferences (
-    user_id INTEGER PRIMARY KEY,
-    role TEXT CHECK (role IN ('mentor', 'mentee')),
-    transplant_type TEXT,
-    transplant_year TEXT,
-    goals TEXT,
-    meeting_preference TEXT,
-    sports_activities TEXT,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-  )
+  user_id INTEGER PRIMARY KEY,
+  role TEXT CHECK (role IN ('mentor', 'mentee')),
+  transplant_type TEXT,
+  transplant_year TEXT,
+  goals TEXT,
+  meeting_preference TEXT,
+  sports_activities TEXT,
+  submitted BOOLEAN NOT NULL DEFAULT 0,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
 `);
 
 

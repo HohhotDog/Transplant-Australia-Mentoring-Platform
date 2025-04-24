@@ -1,8 +1,8 @@
 // src/components/Survey/MatchingEnneagram.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import ApplicationLayout from './ApplicationLayout';
 
 const questions = [
   { id: 1, textA: 'I want to be helpful.', typeA: 2, textB: 'I want to be competent.', typeB: 3 },
@@ -44,160 +44,202 @@ const questions = [
 ];
 
 const MatchingEnneagram = () => {
-    const [step, setStep] = useState(1);
-    const [responses, setResponses] = useState({});
-    const [result, setResult] = useState(null);
-    const navigate = useNavigate();
-  
-    const handleSliderChange = (id, value) => {
-      setResponses(prev => ({ ...prev, [id]: Number(value) }));
+  const [step, setStep] = useState(1);
+  const [responses, setResponses] = useState({});
+  const [result, setResult] = useState(null);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('/api/form-status', {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.submitted) {
+          setIsLocked(true);
+        }
+      })
+      .catch(err => console.error("⚠️ Error checking form status:", err));
+  }, []);
+
+  const handleSliderChange = (id, value) => {
+    setResponses(prev => ({ ...prev, [id]: Number(value) }));
+  };
+
+  const batch1 = questions.slice(0, 18);
+  const batch2 = questions.slice(18, 36);
+
+  const weightMap = {
+    1: [5, 0],
+    2: [4, 1],
+    3: [2.5, 2.5],
+    4: [1, 4],
+    5: [0, 5],
+  };
+
+  const calculateResult = () => {
+    const scores = {
+      1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
+      6: 0, 7: 0, 8: 0, 9: 0,
     };
-  
-    const batch1 = questions.slice(0, 18);
-    const batch2 = questions.slice(18, 36);
-  
-    const weightMap = {
-      1: [5, 0],
-      2: [4, 1],
-      3: [2.5, 2.5],
-      4: [1, 4],
-      5: [0, 5],
+
+    Object.entries(responses).forEach(([id, val]) => {
+      const question = questions.find(q => q.id === Number(id));
+      const [scoreA, scoreB] = weightMap[val];
+      scores[question.typeA] += scoreA;
+      scores[question.typeB] += scoreB;
+    });
+
+    const maxScore = Math.max(...Object.values(scores));
+    const topTypes = Object.entries(scores)
+      .filter(([type, score]) => score === maxScore)
+      .map(([type]) => Number(type));
+
+    const resultData = {
+      topTypes: topTypes.length === 1 ? topTypes[0] : topTypes,
+      topScore: maxScore,
+      allScores: scores,
     };
-  
-    const calculateResult = () => {
-        const scores = {
-          1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
-          6: 0, 7: 0, 8: 0, 9: 0,
-        };
-      
-        Object.entries(responses).forEach(([id, val]) => {
-          const question = questions.find(q => q.id === Number(id));
-          const [scoreA, scoreB] = weightMap[val];
-          scores[question.typeA] += scoreA;
-          scores[question.typeB] += scoreB;
-        });
-      
-        const maxScore = Math.max(...Object.values(scores));
-        const topTypes = Object.entries(scores)
-          .filter(([type, score]) => score === maxScore)
-          .map(([type]) => Number(type));
-      
-        const resultData = {
-          topTypes: topTypes.length === 1 ? topTypes[0] : topTypes,
-          topScore: maxScore,
-          allScores: scores,
-        };
-      
-        console.log('📊 Enneagram Result:', resultData);
-      
-        // Save to localStorage (optional)
-        localStorage.setItem('enneagramResult', JSON.stringify(resultData));
-      
-        // 🧠 POST to server
-        fetch('/api/save-enneagram', {
+
+    setResult(resultData);
+    localStorage.setItem('enneagramResult', JSON.stringify(resultData));
+
+    fetch('/api/save-enneagram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        topTypes: resultData.topTypes,
+        allScores: resultData.allScores,
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        fetch('/api/mark-submitted', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            topTypes: resultData.topTypes,
-            allScores: resultData.allScores,
-          })
+          credentials: 'include'
         })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              console.log("✅ Enneagram saved");
-              navigate('/survey/submitform');
-            } else {
-              alert("⚠️ Failed to save Enneagram result.");
-            }
-          })
-          .catch(err => {
-            console.error("❌ Error:", err);
-            alert("Something went wrong. Please try again.");
-          });
-      };
-      
-      
-      
-  
-    const renderSlider = (q) => (
-      <div key={q.id} className="mb-6">
-        <p className="font-semibold text-gray-700 mb-2">Q{q.id}</p>
-        <div className="flex justify-between text-sm mb-1 text-gray-600">
-          <span>{q.textA}</span>
-          <span>{q.textB}</span>
-        </div>
-        <input
-          type="range"
-          min="1"
-          max="5"
-          value={responses[q.id] || 3}
-          onChange={(e) => handleSliderChange(q.id, e.target.value)}
-          className="w-full accent-orange-500"
-        />
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            navigate('/survey/submitform');
+          } else {
+            alert("⚠️ Failed to mark application as submitted.");
+          }
+        })
+        .catch(err => {
+          console.error("❌ Submission marking failed:", err);
+          alert("An error occurred while finalizing submission.");
+        });
+      } else {
+        alert("⚠️ Failed to save Enneagram result.");
+      }
+    })
+    .catch(err => {
+      console.error("❌ Error:", err);
+      alert("Something went wrong. Please try again.");
+    });
+  };
+
+  const renderSlider = (q) => (
+    <div key={q.id} className="mb-6">
+      <p className="font-semibold text-gray-700 mb-2">Q{q.id}</p>
+      <div className="flex justify-between text-sm mb-1 text-gray-600">
+        <span>{q.textA}</span>
+        <span>{q.textB}</span>
       </div>
-    );
-  
-    if (result) {
-      return (
+      <input
+        type="range"
+        min="1"
+        max="5"
+        disabled={isLocked}
+        value={responses[q.id] || 3}
+        onChange={(e) => handleSliderChange(q.id, e.target.value)}
+        className="w-full accent-orange-500"
+      />
+    </div>
+  );
+
+  return (
+    <ApplicationLayout>
+      {result ? (
         <div className="max-w-2xl mx-auto p-6 text-left">
           <h1 className="text-3xl font-bold mb-6">Your Enneagram Result</h1>
           <p className="text-lg mb-4">
-  {result.topTypes.length === 1
-    ? 'Your top Enneagram type is: '
-    : 'Your top Enneagram types are: '}
-  <strong>
-    {result.topTypes.length === 1
-      ? `Type ${result.topTypes[0]}`
-      : result.topTypes.map(t => `Type ${t}`).join(', ')}
-  </strong>
-</p>
-
+            {Array.isArray(result.topTypes)
+              ? 'Your top Enneagram types are: '
+              : 'Your top Enneagram type is: '}
+            <strong>
+              {Array.isArray(result.topTypes)
+                ? result.topTypes.map(t => `Type ${t}`).join(', ')
+                : `Type ${result.topTypes}`}
+            </strong>
+          </p>
           <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
             {JSON.stringify(result.allScores, null, 2)}
           </pre>
         </div>
-      );
-    }
-  
-    return (
-      <div className="max-w-3xl mx-auto p-6 text-left">
-        <h1 className="text-3xl font-bold mb-6">Enneagram Questionnaire</h1>
-        <p className="mb-4 text-gray-600">
-          Please adjust the slider to indicate which statement is more like you.
-        </p>
-  
-        {(step === 1 ? batch1 : batch2).map(renderSlider)}
-  
-        <div className="flex justify-between mt-10">
-          {step === 2 && (
-            <button
-              onClick={() => setStep(1)}
-              className="bg-gray-300 text-black px-6 py-2 rounded hover:bg-gray-400"
-            >
-              ◀ Back
-            </button>
-          )}
-          {step === 1 ? (
-            <button
-              onClick={() => setStep(2)}
-              className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 ml-auto"
-            >
-              Next ➔
-            </button>
-          ) : (
-            <button
-              onClick={calculateResult}
-              className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 ml-auto"
-            >
-              Submit
-            </button>
-          )}
+      ) : (
+        <div className="max-w-3xl mx-auto p-6 text-left">
+          <h1 className="text-3xl font-bold mb-6">Enneagram Questionnaire</h1>
+          <p className="mb-4 text-gray-600">
+            Please adjust the slider to indicate which statement is more like you.
+          </p>
+
+          {(step === 1 ? batch1 : batch2).map(renderSlider)}
+
+          <div className="mt-6">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                disabled={isLocked} 
+                checked={isConfirmed}
+                onChange={(e) => setIsConfirmed(e.target.checked)}
+              />
+              <span className="text-sm text-gray-700">
+                I confirm that the information provided is accurate and I want to submit my mentorship application.
+              </span>
+            </label>
+          </div>
+
+          <div className="flex justify-between mt-10">
+            {step === 2 && (
+              <button
+                onClick={() => setStep(1)}
+                className="bg-gray-300 text-black px-6 py-2 rounded hover:bg-gray-400"
+              >
+                ◀ Back
+              </button>
+            )}
+            {step === 1 ? (
+              <button
+                onClick={() => setStep(2)}
+                className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 ml-auto"
+              >
+                Next ➔
+              </button>
+            ) : (
+              <button
+                onClick={calculateResult}
+                disabled={!isConfirmed || isLocked}
+                className={`ml-auto px-6 py-2 rounded text-white ${
+                  isConfirmed
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
+              >
+                Submit
+              </button>
+            )}
+          </div>
         </div>
-      </div>
-    );
-  };
-  
-  export default MatchingEnneagram;
-  
+      )}
+    </ApplicationLayout>
+  );
+};
+
+export default MatchingEnneagram;

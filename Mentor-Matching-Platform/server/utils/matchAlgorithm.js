@@ -70,14 +70,22 @@ async function matchMentorsForMentee(menteeId) {
   if (!mentee) throw new Error("Mentee not found or missing data");
 
   const mentors = await db.allAsync(`
-    SELECT u.id, p.first_name, p.last_name, u.email,
-           mp.transplant_type, mp.goals, mp.sports_activities, e.top_type, l.*
-    FROM users u
-    JOIN profiles p ON u.id = p.user_id
-    JOIN mentorship_preferences mp ON u.id = mp.user_id
-    JOIN enneagram_answers e ON u.id = e.user_id
-    JOIN lifestyle_answers l ON u.id = l.user_id
-    WHERE mp.role = 'mentor'
+    SELECT 
+  u.id AS mentor_id, 
+  p.first_name AS first_name, 
+  p.last_name AS last_name, 
+  u.email,
+  mp.transplant_type, 
+  mp.goals, 
+  mp.sports_activities, 
+  e.top_type, 
+  l.*
+FROM users u
+JOIN profiles p ON u.id = p.user_id
+JOIN mentorship_preferences mp ON u.id = mp.user_id
+JOIN enneagram_answers e ON u.id = e.user_id
+JOIN lifestyle_answers l ON u.id = l.user_id
+WHERE mp.role = 'mentor'
   `);
 
   const menteeLifestyle = lifestyleVector(mentee);

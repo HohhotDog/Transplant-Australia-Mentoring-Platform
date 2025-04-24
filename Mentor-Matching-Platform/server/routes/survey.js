@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require("../db");
 const matchMentorsForMentee = require("../utils/matchAlgorithm");
 
-
 // Middleware: Check if user is logged in
 function isAuthenticated(req, res, next) {
   if (req.session?.user?.id) return next();
@@ -77,17 +76,18 @@ router.post("/save-lifestyle", isAuthenticated, (req, res) => {
       stressHandling,
       motivationLevel,
       hadMentor
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `, values, function (err) {
-    if (err) {
-      console.error("❌ Error saving lifestyle answers:", err.message);
-      return res.status(500).json({ success: false, error: err.message });
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    values,
+    function (err) {
+      if (err) {
+        console.error("❌ Error saving lifestyle answers:", err.message);
+        return res.status(500).json({ success: false, error: err.message });
+      }
+      console.log("✅ Lifestyle answers saved for user:", userId);
+      res.json({ success: true });
     }
-    console.log("✅ Lifestyle answers saved for user:", userId);
-    res.json({ success: true });
-  });
+  );
 });
-
 
 // Save Enneagram
 router.post("/save-enneagram", isAuthenticated, (req, res) => {
@@ -111,17 +111,54 @@ router.post("/save-enneagram", isAuthenticated, (req, res) => {
   );
 });
 
-// Get top mentor matches for current mentee
+// Get top mentor matches for current mentee (combined name format)
 router.get("/match-mentee", isAuthenticated, async (req, res) => {
   try {
     const menteeId = req.session.user.id;
     const matches = await matchMentorsForMentee(menteeId);
-    res.json({ success: true, matches });
+
+    const formatted = matches.map(m => ({
+      mentor_id: m.mentor_id,
+      name: `${m.first_name} ${m.last_name}`,
+      email: m.email,
+      finalScore: m.finalScore
+    }));
+
+    res.json({ success: true, recommendations: formatted });
   } catch (err) {
     console.error("❌ Match error:", err.message);
-    res.status(500).json({ success: false, message: "Matching failed" });
+    res.status(500).json({ success: false, error: err.message });
   }
 });
+
+// POST /api/mark-submitted
+router.post("/mark-submitted", isAuthenticated, (req, res) => {
+  const userId = req.session.user.id;
+
+  db.run(`UPDATE mentorship_preferences SET submitted = 1 WHERE user_id = ?`, [userId], function (err) {
+    if (err) {
+      console.error("❌ Failed to mark as submitted:", err.message);
+      return res.status(500).json({ success: false });
+    }
+    console.log(`✅ Form marked as submitted for user ${userId}`);
+    res.json({ success: true });
+  });
+});
+
+// Check if form is submitted
+router.get("/form-status", isAuthenticated, (req, res) => {
+  const userId = req.session.user.id;
+
+  db.get(`SELECT submitted FROM mentorship_preferences WHERE user_id = ?`, [userId], (err, row) => {
+    if (err) {
+      console.error("❌ Failed to check form status:", err.message);
+      return res.status(500).json({ success: false });
+    }
+    res.json({ success: true, submitted: row?.submitted === 1 });
+  });
+});
+
+
 
 
 module.exports = router;
