@@ -10,7 +10,7 @@ const SessionCard = ({ session }) => {
   const { id, image, title, description } = session;
 
   return (
-    <Link to={`/sessions/${id}`} className="block">
+    <Link to={`${id}`} className="block">
       <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300">
         {/* Session image */}
         <img
