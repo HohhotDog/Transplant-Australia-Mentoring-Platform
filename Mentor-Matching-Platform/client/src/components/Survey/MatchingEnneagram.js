@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApplicationLayout from './ApplicationLayout';
 
 const questions = [
   { id: 1, textA: 'I want to be helpful.', typeA: 2, textB: 'I want to be competent.', typeB: 3 },
@@ -104,7 +103,6 @@ const MatchingEnneagram = () => {
       allScores: scores,
     };
 
-    setResult(resultData);
     localStorage.setItem('enneagramResult', JSON.stringify(resultData));
 
     fetch('/api/save-enneagram', {
@@ -165,7 +163,7 @@ const MatchingEnneagram = () => {
   );
 
   return (
-    <ApplicationLayout>
+    <>
       {result ? (
         <div className="max-w-2xl mx-auto p-6 text-left">
           <h1 className="text-3xl font-bold mb-6">Your Enneagram Result</h1>
@@ -189,23 +187,26 @@ const MatchingEnneagram = () => {
           <p className="mb-4 text-gray-600">
             Please adjust the slider to indicate which statement is more like you.
           </p>
-
+  
           {(step === 1 ? batch1 : batch2).map(renderSlider)}
+  
+          {step === 2 && (
+  <div className="mt-6">
+    <label className="flex items-center space-x-2">
+      <input
+        type="checkbox"
+        disabled={isLocked} 
+        checked={isConfirmed}
+        onChange={(e) => setIsConfirmed(e.target.checked)}
+      />
+      <span className="text-sm text-gray-700">
+        I confirm that the information provided is accurate and I want to submit my mentorship application.
+      </span>
+    </label>
+  </div>
+)}
 
-          <div className="mt-6">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                disabled={isLocked} 
-                checked={isConfirmed}
-                onChange={(e) => setIsConfirmed(e.target.checked)}
-              />
-              <span className="text-sm text-gray-700">
-                I confirm that the information provided is accurate and I want to submit my mentorship application.
-              </span>
-            </label>
-          </div>
-
+  
           <div className="flex justify-between mt-10">
             {step === 2 && (
               <button
@@ -238,8 +239,9 @@ const MatchingEnneagram = () => {
           </div>
         </div>
       )}
-    </ApplicationLayout>
+    </>
   );
+  
 };
 
 export default MatchingEnneagram;

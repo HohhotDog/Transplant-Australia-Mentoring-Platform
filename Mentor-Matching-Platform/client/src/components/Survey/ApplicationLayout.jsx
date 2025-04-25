@@ -1,18 +1,27 @@
-// components/Survey/ApplicationLayout.jsx
 import { Link } from "react-router-dom";
 
 const ApplicationLayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gray-50 text-black">
-      <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-[#f4ede6] text-black">
+      <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm">
         <div className="flex items-center gap-2">
           <span className="text-lg font-bold">🏥 Transplant Australia</span>
         </div>
+
         <nav className="flex items-center gap-6 text-sm">
           <Link to="/dashboard" className="hover:underline">Dashboard</Link>
           <Link to="/network" className="hover:underline">My Network</Link>
-          <Link to="/resources" className="hover:underline">Resources</Link>
+          <button
+            onClick={async () => {
+              await fetch("/api/logout", { method: "POST", credentials: "include" });
+              window.location.href = "/";
+            }}
+            className="hover:underline text-sm text-red-600"
+          >
+            Logout
+          </button>
         </nav>
+
         <div>
           <img
             src="/path-to-avatar.jpg"
@@ -22,8 +31,10 @@ const ApplicationLayout = ({ children }) => {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-6">
-        {children}
+      <main className="py-10 px-4">
+        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-10 border">
+          {children}
+        </div>
       </main>
     </div>
   );

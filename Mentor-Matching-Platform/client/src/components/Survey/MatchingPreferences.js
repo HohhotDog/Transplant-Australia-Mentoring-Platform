@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import ApplicationLayout from './ApplicationLayout';
 
 const transplantOptions = [
     { value: 'Bone Marrow', label: 'Bone Marrow' },
@@ -70,7 +69,6 @@ useEffect(() => {
   };
 
   return (
-    <ApplicationLayout>
     <div className="max-w-3xl mx-auto p-8 text-left">
       <h1 className="text-3xl font-bold mb-4">Confirm Your Preferences</h1>
       <p className="mb-6 text-gray-600">
@@ -231,7 +229,6 @@ useEffect(() => {
 </div>
 
     </div>
-    </ApplicationLayout>
   );
 };
 

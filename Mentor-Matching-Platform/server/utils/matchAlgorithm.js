@@ -122,13 +122,15 @@ WHERE mp.role = 'mentor'
       );
 
       return {
-        mentor_id: mentor.id,
-        name: `${mentor.first_name} ${mentor.last_name}`,
+        mentor_id: mentor.mentor_id,
+        first_name: mentor.first_name,
+        last_name: mentor.last_name,
         email: mentor.email,
         finalScore: parseFloat(finalScore.toFixed(3))
       };
+      
     } catch (err) {
-      console.error(`❌ Error processing mentor ID ${mentor.id}:`, err.message);
+      console.error(`❌ Error processing mentor ID ${mentor.mentor_id}:`, err.message);
       return null;
     }
   });

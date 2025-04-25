@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApplicationLayout from './ApplicationLayout';
 
 const MatchingLifestyle = () => {
   const navigate = useNavigate();
@@ -102,7 +101,6 @@ const MatchingLifestyle = () => {
   );
 
   return (
-    <ApplicationLayout>
     <div className="max-w-3xl mx-auto p-8 text-left">
       <h1 className="text-3xl font-bold mb-6">Lifestyle & Matching Questions</h1>
 
@@ -209,8 +207,7 @@ const MatchingLifestyle = () => {
           Next ➔
         </button>
       </div>
-    </div>
-    </ApplicationLayout> );
+    </div>);
 };
 
 export default MatchingLifestyle;
