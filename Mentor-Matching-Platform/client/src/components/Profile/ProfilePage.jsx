@@ -1,12 +1,30 @@
+/**
+ * @file ProfilePage.jsx
+ * @description Displays the authenticated user's profile in read-only view with options to edit or manage security settings.
+ */
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../components/Auth/style/Register.css";
+import "../../components/Profile/style/ProfilePage.css";
 
+/**
+ * ProfilePage Component
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.isLoggedIn - Indicates whether the user is currently authenticated
+ * @param {Function} props.handleLogout - Function to log out the user
+ * @returns {JSX.Element} A page displaying user's personal profile details
+ */
 function ProfilePage({ isLoggedIn, handleLogout }) {
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    /**
+     * Fetch profile data on mount
+     * Redirects if user is unauthorized (401) or has not completed profile (404)
+     */
     useEffect(() => {
         async function fetchProfile() {
             try {
@@ -41,15 +59,17 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         fetchProfile();
     }, [navigate]);
 
+    // === UI: Error Display ===
     if (error) {
         return (
             <div className="form-container">
                 <h2 className="form-title">Profile</h2>
-                <p className="form-footer text-red-500">❌ {error}</p>
+                <p className="form-footer error-text">❌ {error}</p>
             </div>
         );
     }
 
+    // === UI: Loading Indicator ===
     if (!profile) {
         return (
             <div className="form-container">
@@ -58,61 +78,53 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         );
     }
 
+    // === UI: Profile Data ===
     return (
         <div className="form-container">
             <h2 className="form-title">My Profile</h2>
-            <div className="form-box">
-                {profile.profile_picture_url && (
-                    <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
-                        <div
-                            style={{
-                                padding: "6px",
-                                border: "2px solid #ccc",
-                                borderRadius: "12px",
-                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                                maxWidth: "180px"
-                            }}
-                        >
-                            <img
-                                src={profile.profile_picture_url}
-                                alt="Profile"
-                                style={{
-                                    width: "100%",
-                                    height: "auto",
-                                    borderRadius: "8px",
-                                    objectFit: "cover"
-                                }}
-                            />
-                        </div>
-                    </div>
-                )}
-                <p><strong>Name:</strong> {profile.first_name} {profile.last_name}</p>
-                <p><strong>Email:</strong> {profile.email || "(N/A)"}</p>
-                <p><strong>Phone:</strong> {profile.phone_number || "(N/A)"}</p>
-                <p><strong>Bio:</strong> {profile.bio || "(N/A)"}</p>
-                <p><strong>Date of Birth:</strong> {profile.date_of_birth}</p>
-                <p><strong>Address:</strong> {profile.address}</p>
-                <p><strong>City/Suburb:</strong> {profile.city_suburb}</p>
-                <p><strong>State:</strong> {profile.state}</p>
-                <p><strong>Postcode:</strong> {profile.postal_code}</p>
-                <p><strong>Gender:</strong> {profile.gender}</p>
-                <p><strong>Aboriginal or Torres Strait Islander:</strong> {profile.aboriginal_or_torres_strait_islander === "true" ? "Yes" : "No"}</p>
-                <p><strong>Language at Home:</strong> {profile.language_spoken_at_home}</p>
-                <p><strong>Living Situation:</strong> {profile.living_situation}</p>
 
-                <button
-                    className="form-btn mt-4"
-                    onClick={() => navigate("/profile-edit")}
-                >
+            {/* Avatar Section */}
+            <div className="avatar-card">
+                <div className="avatar-card-inner">
+                    <img
+                        src={profile.profile_picture_url || "/images/ProfilePage/Sample.jpg"}
+                        alt="Profile"
+                    />
+                </div>
+            </div>
+
+            {/* Profile Info Table */}
+            <div className="profile-info">
+                {[
+                    ["Name", `${profile.first_name} ${profile.last_name}`],
+                    ["Email", profile.email],
+                    ["Phone", profile.phone_number],
+                    ["Bio", profile.bio],
+                    ["Date of Birth", profile.date_of_birth],
+                    ["Address", profile.address],
+                    ["City/Suburb", profile.city_suburb],
+                    ["State", profile.state],
+                    ["Postcode", profile.postal_code],
+                    ["Gender", profile.gender],
+                    ["Aboriginal / Torres Strait Islander", profile.aboriginal_or_torres_strait_islander === "true" ? "Yes" : "No"],
+                    ["Language at Home", profile.language_spoken_at_home],
+                    ["Living Situation", profile.living_situation],
+                ].map(([label, value], idx) => (
+                    <div className="profile-info-row" key={idx}>
+                        <span className="label">{label}:</span>
+                        <span className="value">{value || "(N/A)"}</span>
+                    </div>
+                ))}
+            </div>
+
+            {/* Buttons */}
+            <div className="profile-buttons">
+                <button className="form-btn" onClick={() => navigate("/profile-edit")}>
                     Edit Profile
                 </button>
-                <button
-                    className="form-btn mt-2"
-                    onClick={() => navigate("/profile-security")}
-                >
+                <button className="form-btn secondary-btn" onClick={() => navigate("/profile-security")}>
                     Password & Security
                 </button>
-
             </div>
         </div>
     );

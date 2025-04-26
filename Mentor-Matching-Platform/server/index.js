@@ -9,11 +9,14 @@ const securityRoutes = require("./routes/security");
 const surveyRoutes = require("./routes/survey");
 const matchRoutes = require("./routes/match");
 
-
+const sessionRoutes = require("./routes/sessions");
+const seedSessions = require("./scripts/seedSessions");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Seed the database with session data
+seedSessions();
 // Middleware
 app.use(express.json());
 app.use(cors({
@@ -36,6 +39,7 @@ app.use("/api", profileRoutes);
 app.use("/api", securityRoutes);
 app.use("/api", surveyRoutes);
 app.use("/api", matchRoutes);
+app.use("/api", sessionRoutes);
 
 // Auth middleware
 function isAuthenticated(req, res, next) {

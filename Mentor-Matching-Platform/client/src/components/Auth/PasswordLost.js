@@ -1,7 +1,7 @@
-// src/components/Auth/PasswordLost.js
+// src/components/Auth/PasswordLost.css
 import React, { useState } from "react";
 import NavBar from "../Navigation/NavBar";
-import "../../components/Auth/style/Register.css";
+import "../../components/Auth/style/PasswordLost.css";
 
 function PasswordLost({ isLoggedIn, handleLogout }) {
     const [email, setEmail] = useState("");

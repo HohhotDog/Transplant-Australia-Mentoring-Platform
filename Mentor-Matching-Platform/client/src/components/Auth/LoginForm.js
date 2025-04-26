@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../Navigation/NavBar";
-import "../../components/Auth/style/Register.css";
+import "../../components/Auth/style/Login.css";
 
 function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
   const [loginEmail, setLoginEmail] = useState("");
@@ -39,19 +39,19 @@ function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
         <div className="login-container">
           <div className="login-carousel">
             <div className="carousel-item">
-              <img src="/images/login1.jpg" alt="1" />
+              <img src="/images/Login/1.jpg" alt="1" />
               <p>Embracing New Beginnings</p>
             </div>
             <div className="carousel-item">
-              <img src="/images/login2.jpg" alt="2" />
+              <img src="/images/Login/2.jpg" alt="2" />
               <p>Guiding Lights Through the Transplant Journey</p>
             </div>
             <div className="carousel-item">
-              <img src="/images/login3.jpg" alt="3" />
+              <img src="/images/Login/3.jpg" alt="3" />
               <p>Sharing Stories, Building Connections</p>
             </div>
             <div className="carousel-item">
-              <img src="/images/login4.jpg" alt="4" />
+              <img src="/images/Login/4.jpg" alt="4" />
               <p>Hope and Resilience</p>
             </div>
           </div>

@@ -1,28 +1,49 @@
 // src/pages/Mentorship/MySessions.js
-import React from 'react';
-import { useMySessions } from '../../hooks/useMySessions';
+import React, { useState, useEffect } from 'react';
 import SessionCard from '../../components/Session/SessionCard';
 
 /**
- * MySessions component displays the sessions the user has applied to,
- * grouped into "In Progress" and "Approved" sections.
+ * MySessions component fetches the user's applied sessions from the API,
+ * then groups them into 'In Progress' and 'Approved' and renders SessionCard for each.
  */
 const MySessions = () => {
-  const { data, loading, error } = useMySessions();
+  const [sessions, setSessions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Show loading or error states
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading sessions</div>;
+  useEffect(() => {
+    // Fetch user's sessions from backend
+    fetch('/api/my-sessions', { credentials: 'include' })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json();
+      })
+      .then((data) => setSessions(data))
+      .catch((err) => setError(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-red-600">
+        Error: {error.message}
+      </div>
+    );
+  }
 
   // Separate sessions by status
-  const inProgress = data.filter((session) => session.status === 'in_progress');
-  const approved = data.filter((session) => session.status === 'approved');
+  const inProgress = sessions.filter((s) => s.status === 'pending');
+  const approved = sessions.filter((s) => s.status === 'approved');
 
   return (
-    <div className="px-4 py-8 space-y-8">
-    <h1 className="text-3xl font-bold mb-6">My Sessions</h1>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <Section title="In Progress">
+    <div className="container mx-auto px-4 py-8 space-y-8">
+      <h1 className="text-3xl font-bold mb-6">My Sessions</h1>
+
+      <Section title="In Progress">
         {inProgress.length ? (
           inProgress.map((session) => (
             <SessionCard key={session.id} session={session} />
@@ -31,9 +52,7 @@ const MySessions = () => {
           <p>No sessions in progress.</p>
         )}
       </Section>
-    </div>
-     
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
       <Section title="Approved">
         {approved.length ? (
           approved.map((session) => (
@@ -43,7 +62,6 @@ const MySessions = () => {
           <p>No approved sessions.</p>
         )}
       </Section>
-      </div>
     </div>
   );
 };
@@ -51,12 +69,12 @@ const MySessions = () => {
 export default MySessions;
 
 /**
- * Section component renders a titled section with children elements.
+ * Section component renders a titled section with a grid of SessionCards.
  */
 const Section = ({ title, children }) => (
   <div>
     <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {children}
     </div>
   </div>
