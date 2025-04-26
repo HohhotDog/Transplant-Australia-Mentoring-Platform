@@ -1,13 +1,12 @@
-// src/App.js
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-// Import pages
+// Pages
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
-import SurveyPage from "./pages/Mentorship/SurveyPage";
+import SurveyPage from "./pages/Mentorship/SurveyPage"; 
 import AdminPage from "./pages/Admin/AdminPage";
 import SessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
@@ -15,21 +14,15 @@ import MentorshipSessionPage from './pages/Mentorship/MySessions';
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
 
-// Survey Components
-import MatchingRole from './components/Survey/MatchingRole';
-import MatchingPreferences from './components/Survey/MatchingPreferences';
-import MatchingLifestyle from "./components/Survey/MatchingLifestyle";
-import MatchingEnneagram from './components/Survey/MatchingEnneagram';
-import SubmitForm from './components/Survey/SubmitForm';
-
 // Profile Components
 import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";
 import SecurityManagement from "./components/Profile/SecurityManagement";
 
-// Global layout
+// Layout
 import Layout from "./components/Layout";
+
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,11 +56,8 @@ function App() {
                     <Route index element={<HomePage />} />
                     
                     {/* Survey Flow */}
-                    <Route path="survey" element={<MatchingRole />} />
-                    <Route path="survey/preferences" element={<MatchingPreferences />} />
-                    <Route path="survey/lifestyle" element={<MatchingLifestyle />} />
-                    <Route path="survey/enneagram" element={<MatchingEnneagram />} />
-                    <Route path="survey/submitform" element={<SubmitForm />} />
+                    <Route path="survey/*" element={<SurveyPage />} />
+
                     
                     {/* Sessions */}
                     <Route path="sessions" element={<SessionPage />} />

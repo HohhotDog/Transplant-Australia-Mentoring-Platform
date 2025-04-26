@@ -1,7 +1,8 @@
+// src/components/Survey/SurveyStart.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const MatchingRole = () => {
+const SurveyStart = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState(null);
   const [profile, setProfile] = useState({});
@@ -60,29 +61,29 @@ const MatchingRole = () => {
       <p className="mb-4">I’m applying to:</p>
 
       <div className="flex gap-4 mb-8">
-      <button
-  type="button"
-  onClick={() => handleRoleSelect("mentor")}
-  disabled={isLocked}
-  className={`px-4 py-2 rounded border ${
-    selectedRole === 'mentor'
-      ? 'bg-orange-500 text-white border-orange-500'
-      : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
-  } ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-300 hover:shadow-md'} transition duration-200 ease-in-out`}
->
+        <button
+          type="button"
+          onClick={() => handleRoleSelect("mentor")}
+          disabled={isLocked}
+          className={`px-4 py-2 rounded border ${
+            selectedRole === 'mentor'
+              ? 'bg-orange-500 text-white border-orange-500'
+              : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
+          } ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-300 hover:shadow-md'} transition duration-200 ease-in-out`}
+        >
           Become a mentor
         </button>
 
         <button
-  type="button"
-  onClick={() => handleRoleSelect("mentee")}
-  disabled={isLocked}
-  className={`px-4 py-2 rounded border ${
-    selectedRole === 'mentee'
-      ? 'bg-orange-500 text-white border-orange-500'
-      : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
-  } ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-300 hover:shadow-md'} transition duration-200 ease-in-out`}
->
+          type="button"
+          onClick={() => handleRoleSelect("mentee")}
+          disabled={isLocked}
+          className={`px-4 py-2 rounded border ${
+            selectedRole === 'mentee'
+              ? 'bg-orange-500 text-white border-orange-500'
+              : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
+          } ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-300 hover:shadow-md'} transition duration-200 ease-in-out`}
+        >
           Find a mentor
         </button>
       </div>
@@ -125,20 +126,20 @@ const MatchingRole = () => {
       </div>
 
       <div className="flex justify-end mt-8">
-      <button
-  type="button"
-  onClick={handleNext}
-  disabled={isLocked}
-  className={`px-6 py-2 rounded flex items-center gap-2 text-white ${
-    isLocked ? 'bg-gray-400 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'
-  }`}
->
-  <span>Next</span>
-  <span>➔</span>
-</button>
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={isLocked}
+          className={`px-6 py-2 rounded flex items-center gap-2 text-white ${
+            isLocked ? 'bg-gray-400 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'
+          }`}
+        >
+          <span>Next</span>
+          <span>➔</span>
+        </button>
       </div>
     </div>
   );
 };
 
-export default MatchingRole;
+export default SurveyStart;

@@ -154,9 +154,13 @@ router.get("/form-status", isAuthenticated, (req, res) => {
       console.error("❌ Failed to check form status:", err.message);
       return res.status(500).json({ success: false });
     }
-    res.json({ success: true, submitted: row?.submitted === 1 });
+    if (!row) {
+      return res.json({ success: true, submitted: false });
+    }
+    res.json({ success: true, submitted: row.submitted === 1 });
   });
 });
+
 
 
 
