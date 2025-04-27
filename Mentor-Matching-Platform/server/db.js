@@ -1,6 +1,8 @@
 // ./server/db.js
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+const { promisify } = require("util");
+
 
 // Create or open the database file in ./data/survey.db
 const db = new sqlite3.Database(path.join(__dirname, "data", "survey.db"), (err) => {
@@ -10,6 +12,9 @@ const db = new sqlite3.Database(path.join(__dirname, "data", "survey.db"), (err)
     console.log("✅ Connected to SQLite database");
   }
 });
+
+db.getAsync = promisify(db.get).bind(db);
+db.allAsync = promisify(db.all).bind(db);
 
 // Users table
 db.run(`
@@ -24,13 +29,14 @@ db.run(`
   )
 `);
 
+
 // Profiles table
 db.run(`
   CREATE TABLE IF NOT EXISTS profiles (
     user_id INTEGER PRIMARY KEY,
     first_name TEXT,
     last_name TEXT,
-    date_of_birth DATE,
+    date_of_birth TEXT,
     address TEXT,
     city_suburb TEXT,
     state TEXT,
@@ -47,12 +53,52 @@ db.run(`
   )
 `);
 
+
+
+
 // Mentorship preferences table
 db.run(`
   CREATE TABLE IF NOT EXISTS mentorship_preferences (
+  user_id INTEGER PRIMARY KEY,
+  role TEXT CHECK (role IN ('mentor', 'mentee')),
+  transplant_type TEXT,
+  transplant_year TEXT,
+  goals TEXT,
+  meeting_preference TEXT,
+  sports_activities TEXT,
+  submitted BOOLEAN NOT NULL DEFAULT 0,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
+`);
+
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS lifestyle_answers (
+  user_id INTEGER PRIMARY KEY,
+  physicalExerciseFrequency INTEGER,
+  likeAnimals INTEGER,
+  likeCooking INTEGER,
+  travelImportance INTEGER,
+  freeTimePreference INTEGER,
+  feelOverwhelmed INTEGER,
+  activityBarriers INTEGER,
+  longTermGoals INTEGER,
+  stressHandling INTEGER,
+  motivationLevel INTEGER,
+  hadMentor INTEGER,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
+`);
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS enneagram_answers (
     user_id INTEGER PRIMARY KEY,
+    top_type TEXT, -- string or JSON of types if tie
+    scores TEXT, -- store full score breakdown as JSON
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )
 `);
 
