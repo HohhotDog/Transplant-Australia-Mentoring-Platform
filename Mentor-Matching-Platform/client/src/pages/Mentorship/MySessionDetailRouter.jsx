@@ -31,10 +31,10 @@ export default function MySessionDetailRouter() {
 
   // Check status and render appropriate component
 
-  if (session.status === 'aproved') {
+  if (session.status === 'approved') {
     return <ApprovedSessionDetailPage session={session} />;
   } else {
     // Assuming 'pending' or other statuses are handled in MentorshipSessionDetailPage
-    return <MentorshipSessionDetailPage />;
+    return <MentorshipSessionDetailPage session={session}/>;
   }
 }
