@@ -41,6 +41,10 @@ app.use("/api", surveyRoutes);
 app.use("/api", matchRoutes);
 app.use("/api", sessionRoutes);
 
+// admin routes
+const adminRoutes = require("./routes/admin");
+app.use("/api/admin", adminRoutes);
+
 // Auth middleware
 function isAuthenticated(req, res, next) {
   if (req.session.user) {
