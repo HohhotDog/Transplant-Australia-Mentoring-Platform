@@ -79,4 +79,63 @@ router.get('/sessions/:id/applications', (req, res) => {
   });
 
   
+
+/**
+ * GET /api/admin/sessions/:sessionId/applications/:id
+ * Fetch single application by ID and session
+ */
+router.get('/sessions/:sessionId/applications/:id', (req, res) => {
+    const { sessionId, id } = req.params;
+    const sql = `
+      SELECT
+        a.id,
+        u.email                         AS email,
+        a.role,
+        a.application_date              AS applicationDate,
+        a.status
+      FROM applications a
+      JOIN users u ON u.id = a.user_id
+      WHERE a.session_id = ? AND a.id = ?
+    `;
+    db.get(sql, [sessionId, id], (err, row) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+      if (!row) return res.status(404).json({ error: 'Application not found' });
+      res.json(row);
+    });
+  });
+  
+ /**
+ * PATCH /api/admin/applications/:id
+ * Update application status to 'approved' or 'onhold'
+ */
+router.patch('/sessions/:sessionId/applications/:id', (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    const allowed = ['approved', 'onhold', 'pending'];
+    if (!allowed.includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+  
+    const sql = `
+      UPDATE applications
+      SET status = ?
+      WHERE id = ?
+    `;
+    db.run(sql, [status, id], function(err) {
+      if (err) {
+        console.error('Failed to update status:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Application not found' });
+      }
+      res.json({ message: 'Status updated', status });
+    });
+  });
+  
+
+
 module.exports = router;

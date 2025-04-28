@@ -30,13 +30,8 @@ export default function MySessionDetailRouter() {
   if (error)  return <div className="text-red-600">Error: {error.message}</div>;
 
   // Check status and render appropriate component
-  /**
-   * The logic is inverted here for testing ApprovedSessionDetailPage.
-   * - If the session is 'pending', we show the ApprovedSessionDetailPage.
-   * Once the approval API is implemented, this should be changed to show the
-   * ApprovedSessionDetailPage for 'approved' sessions.
-   */
-  if (session.status === 'pending') {
+
+  if (session.status === 'aproved') {
     return <ApprovedSessionDetailPage session={session} />;
   } else {
     // Assuming 'pending' or other statuses are handled in MentorshipSessionDetailPage
