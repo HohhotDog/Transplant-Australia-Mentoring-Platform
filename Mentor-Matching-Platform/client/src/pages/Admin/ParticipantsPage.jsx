@@ -9,7 +9,7 @@ export default function ParticipantPage() {
   const [mentors, setMentors] = useState([]);
   const [mentees, setMentees] = useState([]);
 
-  // 数据获取逻辑保持不变
+
   useEffect(() => {
     fetch(`/api/admin/sessions/${sessionId}/participants/mentors`)
       .then(res => res.json())
@@ -20,7 +20,7 @@ export default function ParticipantPage() {
       .then(setMentees);
   }, [sessionId]);
 
-  // 表格渲染函数
+
   const renderTable = (data, columns) => (
     <div className="overflow-x-auto shadow rounded-lg">
       <table className="min-w-full divide-y divide-gray-200">
@@ -59,7 +59,7 @@ export default function ParticipantPage() {
     </div>
   );
 
-  // 列配置
+  // Define the columns for the mentor and mentee tables
   const mentorColumns = [
     { header: 'Name', field: 'name' },
     { 
