@@ -21,6 +21,10 @@ import PersonalDetails from "./components/Profile/PersonalDetails";
 import SecurityManagement from "./components/Profile/SecurityManagement";
 import MySessionDetailRouter from "./pages/Mentorship/MySessionDetailRouter";
 
+// Admin
+import AdminApplicationsPage from "./pages/Admin/AdminApplicationPage";
+import AdminApplicationDetailPage from "./pages/Admin/AdminApplicationDetailPage";
+
 // Layout
 import Layout from "./components/Layout";
 
@@ -77,6 +81,8 @@ function App() {
 
                     {/* Admin */}
                     <Route path="admin" element={<AdminPage />} />
+                    <Route path="admin/sessions/:sessionId/applications" element={<AdminApplicationsPage />} />
+                    <Route path="admin/sessions/:sessionId/applications/:applicationId" element={<AdminApplicationDetailPage />} />
                 </Route>
 
                 {/* Auth pages without layout */}
