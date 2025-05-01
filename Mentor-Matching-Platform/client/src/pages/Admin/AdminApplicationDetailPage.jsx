@@ -1,4 +1,3 @@
-
 // src/pages/AdminApplicationDetailPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -60,50 +59,70 @@ export default function AdminApplicationDetailPage() {
   if (error) return <p className="p-4 text-red-500">Error: {error.message}</p>;
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-6">Application Details</h2>
-
-      {/* Applicant Email */}
-      <div className="mb-4">
-        <h3 className="text-lg font-medium">Email</h3>
-        <p>{app.email}</p>
+    <div className="max-w-4xl mx-auto bg-white p-8 rounded shadow">
+      {/* 顶部标题栏 */}
+      <div className="flex justify-between items-start mb-6">
+        <div>
+          <h2 className="text-2xl font-semibold">Mentorship Application Details</h2>
+        </div>
+        <div className="flex items-center space-x-4">
+          <button className="bg-gray-100 text-sm px-3 py-1 rounded">Edit</button>
+          <div className="flex items-center space-x-2">
+            <img src="/placeholder-avatar.jpg" className="w-10 h-10 rounded-full" alt="Creator" />
+            <div className="text-sm font-medium">{app?.email || 'Applicant'}</div>
+          </div>
+        </div>
       </div>
 
       {/* Applied Role */}
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-1">Applied Role</h3>
-        <p>{app.role}</p>
+        <h3 className="text-lg font-medium">Applied Role</h3>
+        <p>{app?.role}</p>
       </div>
 
-      {/* Personal Profile Placeholder */}
+      {/* Personal Profile */}
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-1">Personal Profile</h3>
-        <div className="p-4 bg-gray-50 rounded">Profile details placeholder</div>
+        <h3 className="text-lg font-medium">Personal Profile</h3>
+        <div className="p-4 bg-gray-50 rounded text-gray-700">
+          Profile details placeholder
+        </div>
       </div>
 
-      {/* Mentorship Preferences Placeholder */}
+      {/* Mentorship Preferences */}
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-1">Mentorship Preferences</h3>
-        <div className="p-4 bg-gray-50 rounded">Preferences placeholder</div>
+        <h3 className="text-lg font-medium">Mentorship Preferences</h3>
+        <div className="p-4 bg-gray-50 rounded text-gray-700">
+          Preferences placeholder
+        </div>
+      </div>
+
+      {/* Photo */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium">Photo</h3>
+        <img
+          src="/mentor-photo.jpg"
+          alt="Mentor Session"
+          className="rounded-lg w-full max-w-2xl mx-auto"
+        />
       </div>
 
       {/* Current Status */}
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-1">Current Status</h3>
+        <h3 className="text-lg font-medium">Current Status</h3>
         <span
           className={`px-2 py-1 rounded-full text-sm ${
-            app.status === 'approved'
+            app?.status === 'approved'
               ? 'bg-green-100 text-green-800'
-              : app.status === 'onhold'
+              : app?.status === 'onhold'
               ? 'bg-yellow-100 text-yellow-800'
               : 'bg-gray-100 text-gray-800'
           }`}
         >
-          {app.status}
+          {app?.status}
         </span>
       </div>
 
-      {/* Action Buttons */}
+      {/* 操作按钮 */}
       <div className="flex space-x-4">
         <button
           onClick={() => updateStatus('approved')}
@@ -123,4 +142,3 @@ export default function AdminApplicationDetailPage() {
     </div>
   );
 }
-
