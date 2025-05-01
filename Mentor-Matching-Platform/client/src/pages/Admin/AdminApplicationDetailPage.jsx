@@ -132,9 +132,8 @@ function AdminApplicationDetailPage() {
                 type="text"
                 placeholder="Search mentors..."
                 className="w-full p-2 border rounded"
-                disabled
               />
-              <p className="mt-2 text-gray-500 text-sm">Feature coming soon.</p>
+              <p className="mt-2 text-gray-500 text-sm">Mentor details will appear here after selection</p>
             </div>
           </div>
 
