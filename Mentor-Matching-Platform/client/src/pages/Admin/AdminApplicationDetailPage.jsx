@@ -55,6 +55,7 @@ function AdminApplicationDetailPage() {
       <div className="flex justify-between items-start mb-6">
         <div>
           <h2 className="text-2xl font-semibold">Mentorship Application Details</h2>
+          <p className="text-sm text-gray-500 mt-1">Session ID: {sessionId}</p>
         </div>
       </div>
 
