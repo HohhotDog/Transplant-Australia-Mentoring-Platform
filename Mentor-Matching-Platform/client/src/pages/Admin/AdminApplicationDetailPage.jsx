@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 function AdminApplicationDetailPage() {
-  console.log("AdminApplicationDetailPage loaded");
-
   const { sessionId, applicationId } = useParams();
   const [app, setApp] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +26,6 @@ function AdminApplicationDetailPage() {
   }, [sessionId, applicationId]);
 
   const updateStatus = (newStatus) => {
-    console.log("Updating status to", newStatus);
     setUpdating(true);
     fetch(`/api/admin/sessions/${sessionId}/applications/${applicationId}`, {
       method: "PATCH",
@@ -40,7 +37,6 @@ function AdminApplicationDetailPage() {
         return res.json();
       })
       .then(({ status }) => {
-        console.log("Status updated to", status);
         setApp((prev) => ({ ...prev, status }));
       })
       .catch((err) => {
@@ -55,17 +51,10 @@ function AdminApplicationDetailPage() {
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-8 rounded shadow">
-      {/* Top header section */}
+      {/* Top header */}
       <div className="flex justify-between items-start mb-6">
         <div>
           <h2 className="text-2xl font-semibold">Mentorship Application Details</h2>
-        </div>
-        <div className="flex items-center space-x-4">
-          <button className="bg-gray-100 text-sm px-3 py-1 rounded">Edit</button>
-          <div className="flex items-center space-x-2">
-            <img src="/placeholder-avatar.jpg" className="w-10 h-10 rounded-full" alt="Creator" />
-            <div className="text-sm font-medium">{app?.email || "Applicant"}</div>
-          </div>
         </div>
       </div>
 
@@ -78,21 +67,104 @@ function AdminApplicationDetailPage() {
       {/* Personal Profile */}
       <div className="mb-6">
         <h3 className="text-lg font-medium">Personal Profile</h3>
-        <div className="p-4 bg-gray-50 rounded text-gray-700">Profile details placeholder</div>
+        <div className="p-4 bg-gray-50 rounded text-gray-700">
+          {app?.profile ? (
+            Object.entries(app.profile).map(([key, value]) => (
+              <div key={key} className="mb-1">
+                <span className="font-semibold capitalize">{key}:</span>{" "}
+                <span>{String(value)}</span>
+              </div>
+            ))
+          ) : (
+            "No profile information available."
+          )}
+        </div>
       </div>
 
       {/* Mentorship Preferences */}
       <div className="mb-6">
         <h3 className="text-lg font-medium">Mentorship Preferences</h3>
-        <div className="p-4 bg-gray-50 rounded text-gray-700">Preferences placeholder</div>
+        <div className="p-4 bg-gray-50 rounded text-gray-700">
+          {app?.preferences ? (
+            Object.entries(app.preferences).map(([key, value]) => (
+              <div key={key} className="mb-1">
+                <span className="font-semibold capitalize">{key}:</span>{" "}
+                <span>{String(value)}</span>
+              </div>
+            ))
+          ) : (
+            "No preferences information available."
+          )}
+        </div>
       </div>
+
+      {app?.role?.toLowerCase() === "mentee" && (
+        <>
+          {/* Recommended Mentors */}
+          <div className="mb-6">
+            <h3 className="text-lg font-medium">Recommended Mentors</h3>
+            {app?.recommendedMentors && app.recommendedMentors.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {app.recommendedMentors.map((mentor) => (
+                  <div
+                    key={mentor.id}
+                    className="flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
+                  >
+                    <img
+                      src={mentor.avatar || "/placeholder-avatar.jpg"}
+                      alt={mentor.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div className="font-medium">{mentor.name}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">No recommended mentors available.</p>
+            )}
+          </div>
+
+          {/* Assign Another Mentor */}
+          <div className="mb-6">
+            <h3 className="text-lg font-medium">Assign Another Mentor</h3>
+            <div className="p-4 bg-gray-50 rounded text-gray-700">
+              <input
+                type="text"
+                placeholder="Search mentors..."
+                className="w-full p-2 border rounded"
+                disabled
+              />
+              <p className="mt-2 text-gray-500 text-sm">Feature coming soon.</p>
+            </div>
+          </div>
+
+          {/* Admin Comments */}
+          <div className="mb-6">
+            <h3 className="text-lg font-medium">Admin Comments</h3>
+            {app?.adminComments && app.adminComments.length > 0 ? (
+              <ul className="space-y-4 max-h-64 overflow-y-auto border p-4 rounded bg-gray-50">
+                {app.adminComments.map((comment) => (
+                  <li key={comment.id} className="border-b pb-2 last:border-b-0">
+                    <div className="text-xs text-gray-500">
+                      {new Date(comment.timestamp).toLocaleString()} by {comment.author}
+                    </div>
+                    <div className="mt-1 text-gray-700 whitespace-pre-wrap">{comment.content}</div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">No admin comments available.</p>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Photo */}
       <div className="mb-6">
         <h3 className="text-lg font-medium">Photo</h3>
         <img
-          src="/mentor-photo.jpg"
-          alt="Mentor Session"
+          src={app?.role === "Mentor" ? "/mentor-photo.jpg" : "/mentee-photo.jpg"}
+          alt={`${app?.role} Session`}
           className="rounded-lg w-full max-w-2xl mx-auto"
         />
       </div>
