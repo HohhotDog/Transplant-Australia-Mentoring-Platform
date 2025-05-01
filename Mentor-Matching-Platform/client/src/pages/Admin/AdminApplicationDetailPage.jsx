@@ -137,8 +137,18 @@ function AdminApplicationDetailPage() {
             </div>
           </div>
 
-          {/* Admin Comments */}
-          <div className="mb-6">
+      {/* Photo */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium">Photo</h3>
+        <img
+          src={app?.role === "Mentor" ? "/mentor-photo.jpg" : "/mentee-photo.jpg"}
+          alt={`${app?.role} Session`}
+          className="rounded-lg w-full max-w-2xl mx-auto"
+        />
+      </div>
+      
+      {/* Admin Comments */}
+      <div className="mb-6">
             <h3 className="text-lg font-medium">Admin Comments</h3>
             {app?.adminComments && app.adminComments.length > 0 ? (
               <ul className="space-y-4 max-h-64 overflow-y-auto border p-4 rounded bg-gray-50">
@@ -157,16 +167,6 @@ function AdminApplicationDetailPage() {
           </div>
         </>
       )}
-
-      {/* Photo */}
-      <div className="mb-6">
-        <h3 className="text-lg font-medium">Photo</h3>
-        <img
-          src={app?.role === "Mentor" ? "/mentor-photo.jpg" : "/mentee-photo.jpg"}
-          alt={`${app?.role} Session`}
-          className="rounded-lg w-full max-w-2xl mx-auto"
-        />
-      </div>
 
       {/* Current Status */}
       <div className="mb-6">
