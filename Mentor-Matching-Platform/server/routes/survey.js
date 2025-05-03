@@ -9,21 +9,32 @@ function isAuthenticated(req, res, next) {
   return res.status(401).json({ success: false, message: "Unauthorized" });
 }
 
-// Save mentorship preferences
-router.post("/save-preferences", isAuthenticated, (req, res) => {
+/// Save mentorship preferences 
+router.post("/save-preferences", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
-  const { role, transplantType, transplantYear, goals, meetingPref, sportsInterest } = req.body;
+  const { sessionId, role, transplantType, transplantYear, goals, meetingPref, sportsInterest } = req.body;
 
-  console.log("🔸 /save-preferences hit", { userId, role, transplantType, transplantYear });
+  if (!sessionId || !role) {
+    return res.status(400).json({ success: false, error: 'Missing sessionId or role' });
+  }
 
-  db.run(`
+  // 🔄 Ensure application exists
+  await db.ensureApplicationExists(userId, sessionId, role);
+  const applicationId = await db.getApplicationIdForUser(userId);
+
+  console.log("🔸 /save-preferences hit", { userId, applicationId, role, transplantType, transplantYear });
+
+  db.run(
+    `
     INSERT OR REPLACE INTO mentorship_preferences 
-    (user_id, role, transplant_type, transplant_year, goals, meeting_preference, sports_activities)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    (application_id, user_id, role, transplant_type, transplant_year, goals, meeting_preference, sports_activities)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `,
     [
+      applicationId,
       userId,
       role,
-      JSON.stringify(transplantType), 
+      JSON.stringify(transplantType),
       transplantYear,
       JSON.stringify(goals),
       meetingPref,
@@ -34,20 +45,28 @@ router.post("/save-preferences", isAuthenticated, (req, res) => {
         console.error("❌ Error saving preferences:", err.message);
         return res.status(500).json({ success: false, error: err.message });
       }
-      console.log("✅ Preferences saved for user:", userId);
+      console.log("✅ Preferences saved for application:", applicationId);
       res.json({ success: true });
     }
   );
 });
 
 // Save lifestyle answers
-router.post("/save-lifestyle", isAuthenticated, (req, res) => {
+router.post("/save-lifestyle", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
-  const { answers } = req.body;
+  const { sessionId, answers } = req.body;
 
-  console.log("🔸 /save-lifestyle hit", { userId, answers });
+  if (!sessionId || !answers) {
+    return res.status(400).json({ success: false, error: 'Missing sessionId or answers' });
+  }
+
+  await db.ensureApplicationExists(userId, sessionId);
+  const applicationId = await db.getApplicationIdForUser(userId);
+
+  console.log("🔸 /save-lifestyle hit", { userId, applicationId, answers });
 
   const values = [
+    applicationId,
     userId,
     answers.physicalExerciseFrequency,
     answers.likeAnimals,
@@ -64,6 +83,7 @@ router.post("/save-lifestyle", isAuthenticated, (req, res) => {
 
   db.run(`
     INSERT OR REPLACE INTO lifestyle_answers (
+      application_id,
       user_id,
       physicalExerciseFrequency,
       likeAnimals,
@@ -76,42 +96,44 @@ router.post("/save-lifestyle", isAuthenticated, (req, res) => {
       stressHandling,
       motivationLevel,
       hadMentor
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    values,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `, values,
     function (err) {
       if (err) {
         console.error("❌ Error saving lifestyle answers:", err.message);
         return res.status(500).json({ success: false, error: err.message });
       }
-      console.log("✅ Lifestyle answers saved for user:", userId);
+      console.log("✅ Lifestyle answers saved for application:", applicationId);
       res.json({ success: true });
     }
   );
 });
 
-// Save Enneagram
-router.post("/save-enneagram", isAuthenticated, (req, res) => {
+// Save Enneagram answers
+router.post("/save-enneagram", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
+  const applicationId = await db.getApplicationIdForUser(userId);
   const { topTypes, allScores } = req.body;
 
-  console.log("🔸 /save-enneagram hit", { userId, topTypes });
+  console.log("🔸 /save-enneagram hit", { userId, applicationId, topTypes });
 
   db.run(`
-    INSERT OR REPLACE INTO enneagram_answers (user_id, top_type, scores)
-    VALUES (?, ?, ?)`,
-    [userId, JSON.stringify(topTypes), JSON.stringify(allScores)],
+    INSERT OR REPLACE INTO enneagram_answers (
+      application_id, user_id, top_type, scores
+    ) VALUES (?, ?, ?, ?)`,
+    [applicationId, userId, JSON.stringify(topTypes), JSON.stringify(allScores)],
     function (err) {
       if (err) {
         console.error("❌ Error saving enneagram:", err.message);
         return res.status(500).json({ success: false, error: err.message });
       }
-      console.log("✅ Enneagram saved for user:", userId);
+      console.log("✅ Enneagram saved for application:", applicationId);
       res.json({ success: true });
     }
   );
 });
 
-// Get top mentor matches for current mentee (combined name format)
+// Get top mentor matches for current mentee
 router.get("/match-mentee", isAuthenticated, async (req, res) => {
   try {
     const menteeId = req.session.user.id;
@@ -131,25 +153,27 @@ router.get("/match-mentee", isAuthenticated, async (req, res) => {
   }
 });
 
-// POST /api/mark-submitted
-router.post("/mark-submitted", isAuthenticated, (req, res) => {
+// Mark form as submitted
+router.post("/mark-submitted", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
+  const applicationId = await db.getApplicationIdForUser(userId);
 
-  db.run(`UPDATE mentorship_preferences SET submitted = 1 WHERE user_id = ?`, [userId], function (err) {
+  db.run(`UPDATE mentorship_preferences SET submitted = 1 WHERE application_id = ?`, [applicationId], function (err) {
     if (err) {
       console.error("❌ Failed to mark as submitted:", err.message);
       return res.status(500).json({ success: false });
     }
-    console.log(`✅ Form marked as submitted for user ${userId}`);
+    console.log(`✅ Form marked as submitted for application ${applicationId}`);
     res.json({ success: true });
   });
 });
 
 // Check if form is submitted
-router.get("/form-status", isAuthenticated, (req, res) => {
+router.get("/form-status", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
+  const applicationId = await db.getApplicationIdForUser(userId);
 
-  db.get(`SELECT submitted FROM mentorship_preferences WHERE user_id = ?`, [userId], (err, row) => {
+  db.get(`SELECT submitted FROM mentorship_preferences WHERE application_id = ?`, [applicationId], (err, row) => {
     if (err) {
       console.error("❌ Failed to check form status:", err.message);
       return res.status(500).json({ success: false });
@@ -160,9 +184,5 @@ router.get("/form-status", isAuthenticated, (req, res) => {
     res.json({ success: true, submitted: row.submitted === 1 });
   });
 });
-
-
-
-
 
 module.exports = router;

@@ -4,19 +4,6 @@ const router = express.Router();
 const { ensureAuthenticated } = require('../middlewares/auth');
 const db = require('../db'); // sqlite3.Database instance
 
-// Create applications table if not exists
-db.run(`
-  CREATE TABLE IF NOT EXISTS applications (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    session_id INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT 'in_progress' CHECK (status IN ('in_progress', 'approved')),
-    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE
-  );
-`);
 
 /**
  * GET /api/my-sessions
