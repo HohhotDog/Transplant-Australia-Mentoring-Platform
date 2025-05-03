@@ -207,42 +207,36 @@ db.run(`
 `);
 
 
-async function getApplicationIdForUser(userId) {
+async function getApplicationIdForUser(userId, sessionId = 9999) {
   const row = await db.getAsync(
-    `SELECT id FROM applications WHERE user_id = ? ORDER BY application_date DESC LIMIT 1`,
-    [userId]
+    `SELECT id FROM applications WHERE user_id = ? AND session_id = ? ORDER BY application_date DESC LIMIT 1`,
+    [userId, sessionId]
   );
   if (!row) {
-    console.warn(`⚠️ No application found for user ${userId}`);
+    console.warn(`⚠️ No application found for user ${userId} in session ${sessionId}`);
   }
   return row?.id;
 }
 
-db.ensureApplicationExists = async (userId, sessionId, role = 'mentee') => {
+db.ensureApplicationExists = async (userId, sessionId = 9999, role) => {
+  if (!role) {
+    throw new Error("Role is required in ensureApplicationExists");
+  }
+
   const existing = await db.getAsync(
     `SELECT id FROM applications WHERE user_id = ? AND session_id = ?`,
     [userId, sessionId]
   );
 
   if (!existing) {
-    console.log("🧪 Inserting new application for", { userId, sessionId, role });
-    try {
-      await db.runAsync(
-        `INSERT INTO applications (user_id, session_id, role) VALUES (?, ?, ?)`,
-        [userId, sessionId, role]
-      );
-      console.log("✅ Application inserted");
-    } catch (err) {
-      console.error("❌ Failed to insert application:", err.message);
-    }
-  } else {
-    console.log("✅ Application already exists");
+    console.log(`➕ Inserting new application for user ${userId} in session ${sessionId} with role ${role}`);
+    await db.runAsync(
+      `INSERT INTO applications (user_id, session_id, role) VALUES (?, ?, ?)`,
+      [userId, sessionId, role]
+    );
   }
 };
 
-
-// Export the actual SQLite instance with the extra function
 db.getApplicationIdForUser = getApplicationIdForUser;
 
 module.exports = db;
-

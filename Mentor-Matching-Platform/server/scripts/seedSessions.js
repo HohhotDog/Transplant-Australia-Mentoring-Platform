@@ -1,14 +1,44 @@
-// scripts/seedSessions.js
-
 const fs = require('fs');
 const path = require('path');
-const db = require('../db'); 
+const db = require('../db');
 
 /**
  * seedSessions reads static JSON and inserts each session into the database.
- * It uses INSERT OR IGNORE to avoid duplicate primary key errors when re-running.
+ * It inserts a default session first, then all others from sessions.json.
  */
 function seedSessions() {
+  // Insert default session with ID = 9999
+  const defaultSession = {
+    id: 9999,
+    name: "Default Survey Session",
+    start_date: "2000-01-01",
+    end_date: "2099-12-31",
+    description: "Default session for first-time users submitting surveys before selecting a session.",
+    picture_url: "/images/sessions/default.png",
+    creator_id: null,
+    status: "hidden"
+  };
+
+  db.run(
+    `INSERT OR IGNORE INTO sessions 
+     (id, name, start_date, end_date, description, picture_url, creator_id, status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      defaultSession.id,
+      defaultSession.name,
+      defaultSession.start_date,
+      defaultSession.end_date,
+      defaultSession.description,
+      defaultSession.picture_url,
+      defaultSession.creator_id,
+      defaultSession.status
+    ],
+    err => {
+      if (err) console.error("❌ Error inserting default session:", err.message);
+    }
+  );
+
+  // Insert remaining sessions from JSON
   const filePath = path.join(__dirname, '../data/sessions.json');
   const sessions = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
@@ -31,15 +61,14 @@ function seedSessions() {
         null // creator_id is null for seeding
       ],
       err => {
-        if (err) console.error('Seed error:', err);
+        if (err) console.error('❌ Seed error:', err.message);
       }
     );
   });
 
-  console.log(`Seeded ${sessions.length} sessions.`);
+  console.log(`✅ Seeded ${sessions.length + 1} sessions (including default).`);
 }
 
-// Run the seeding function if this script is executed directly
 if (require.main === module) {
   seedSessions();
 }

@@ -26,7 +26,6 @@ const transplantOptions = [
     { value: 'Walking', label: 'Walking' },
     { value: 'Board Games', label: 'Board Games' },
   ];
-  
 
 const MatchingPreferences = () => {
   const [formData, setFormData] = useState({
@@ -39,19 +38,19 @@ const MatchingPreferences = () => {
   });
 
   const [isLocked, setIsLocked] = useState(false);
-useEffect(() => {
-  fetch('/api/form-status', {
-    method: 'GET',
-    credentials: 'include',
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success && data.submitted) {
-        setIsLocked(true);
-      }
+  useEffect(() => {
+    fetch('/api/form-status', {
+      method: 'GET',
+      credentials: 'include',
     })
-    .catch(err => console.error("⚠️ Error checking submission status:", err));
-}, []);
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.submitted) {
+          setIsLocked(true);
+        }
+      })
+      .catch(err => console.error("⚠️ Error checking submission status:", err));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,42 +95,42 @@ useEffect(() => {
       </select>
 
       {/* Transplant Type */}
-<label className="block font-medium mb-1">Transplant Type</label>
-<Select
-  isMulti
-  options={transplantOptions}
-  disabled={isLocked}
-  value={transplantOptions.filter(option =>
-    formData.transplantType.includes(option.value)
-  )}
-  onChange={(selectedOptions) => {
-    setFormData(prev => ({
-      ...prev,
-      transplantType: selectedOptions.map(option => option.value),
-    }));
-  }}
-  className="mb-4"
-/>
+      <label className="block font-medium mb-1">Transplant Type</label>
+      <Select
+        isMulti
+        options={transplantOptions}
+        disabled={isLocked}
+        value={transplantOptions.filter(option =>
+          formData.transplantType.includes(option.value)
+        )}
+        onChange={(selectedOptions) => {
+          setFormData(prev => ({
+            ...prev,
+            transplantType: selectedOptions.map(option => option.value),
+          }));
+        }}
+        className="mb-4"
+      />
+
       {/* Year of Transplant */}
       <label className="block font-medium mb-1">Year of Transplant</label>
       <select
-  name="transplantYear"
-  value={formData.transplantYear}
-  onChange={handleChange}
-  disabled={isLocked}
-  className="w-full p-2 mb-4 border border-gray-300 rounded"
->
-  <option value="">Select Year</option>
-  {Array.from({ length: 40 }, (_, i) => {
-    const year = new Date().getFullYear() - i;
-    return (
-      <option key={year} value={year}>
-        {year}
-      </option>
-    );
-  })}
-</select>
-
+        name="transplantYear"
+        value={formData.transplantYear}
+        onChange={handleChange}
+        disabled={isLocked}
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
+      >
+        <option value="">Select Year</option>
+        {Array.from({ length: 40 }, (_, i) => {
+          const year = new Date().getFullYear() - i;
+          return (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          );
+        })}
+      </select>
 
       {/* I’m looking for... */}
       <label className="block font-medium mb-1">I am looking for:</label>
@@ -168,66 +167,65 @@ useEffect(() => {
 
       {/* Sports/Activity Interests */}
       <label className="block font-medium mb-1">Sports/Activities Interest</label>
-<Select
-  isMulti
-  isDisabled={isLocked}
-  name="sportsInterests"
-  options={sportsOptions}
-  value={sportsOptions.filter(option =>
-    formData.sportsInterests.includes(option.value)
-  )}
-  onChange={(selectedOptions) => {
-    setFormData(prev => ({
-      ...prev,
-      sportsInterests: selectedOptions.map(option => option.value),
-    }));
-  }}
-  className="mb-6"
-  classNamePrefix="select"
-/>
+      <Select
+        isMulti
+        isDisabled={isLocked}
+        name="sportsInterests"
+        options={sportsOptions}
+        value={sportsOptions.filter(option =>
+          formData.sportsInterests.includes(option.value)
+        )}
+        onChange={(selectedOptions) => {
+          setFormData(prev => ({
+            ...prev,
+            sportsInterests: selectedOptions.map(option => option.value),
+          }));
+        }}
+        className="mb-6"
+        classNamePrefix="select"
+      />
 
       <div className="flex justify-end mt-8">
-  <button
-    type="button"
-    disabled={isLocked}
-    onClick={async () => {
-        const payload = {
-          role: localStorage.getItem("selectedRole") || "mentee", // or fetch from global state
-          transplantType: formData.transplantType,
-          transplantYear: formData.transplantYear,
-          goals: formData.supportNeeds,
-          meetingPref: formData.meetingPreference,
-          sportsInterest: formData.sportsInterests,
-        };
-      
-        try {
-          const res = await fetch("/api/save-preferences", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify(payload),
-          });
-      
-          const data = await res.json();
-      
-          if (data.success) {
-            window.location.href = '/survey/lifestyle';
-          } else {
-            alert("❌ Failed to save preferences.");
-          }
-        } catch (err) {
-          console.error("❌ Error saving preferences:", err);
-          alert("⚠️ Server error. Please try again.");
-        }
-      }}
-      
-    className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 flex items-center gap-2"
-  >
-    <span>Next</span>
-    <span>➔</span>
-  </button>
-</div>
+        <button
+          type="button"
+          disabled={isLocked}
+          onClick={async () => {
+            const payload = {
+              sessionId: localStorage.getItem("sessionId") || "9999",
+              role: localStorage.getItem("selectedRole") || "mentee",
+              transplantType: formData.transplantType,
+              transplantYear: formData.transplantYear,
+              goals: formData.supportNeeds,
+              meetingPref: formData.meetingPreference,
+              sportsInterest: formData.sportsInterests,
+            };
 
+            try {
+              const res = await fetch("/api/save-preferences", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(payload),
+              });
+
+              const data = await res.json();
+
+              if (data.success) {
+                window.location.href = '/survey/lifestyle';
+              } else {
+                alert("❌ Failed to save preferences.");
+              }
+            } catch (err) {
+              console.error("❌ Error saving preferences:", err);
+              alert("⚠️ Server error. Please try again.");
+            }
+          }}
+          className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 flex items-center gap-2"
+        >
+          <span>Next</span>
+          <span>➔</span>
+        </button>
+      </div>
     </div>
   );
 };
