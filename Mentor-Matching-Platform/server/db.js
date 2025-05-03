@@ -15,6 +15,8 @@ const db = new sqlite3.Database(path.join(__dirname, "data", "survey.db"), (err)
 
 db.getAsync = promisify(db.get).bind(db);
 db.allAsync = promisify(db.all).bind(db);
+db.runAsync = promisify(db.run).bind(db); 
+
 
 // Users table
 db.run(`
@@ -59,48 +61,57 @@ db.run(`
 // Mentorship preferences table
 db.run(`
   CREATE TABLE IF NOT EXISTS mentorship_preferences (
-  user_id INTEGER PRIMARY KEY,
-  role TEXT CHECK (role IN ('mentor', 'mentee')),
-  transplant_type TEXT,
-  transplant_year TEXT,
-  goals TEXT,
-  meeting_preference TEXT,
-  sports_activities TEXT,
-  submitted BOOLEAN NOT NULL DEFAULT 0,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)
+    application_id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    role TEXT CHECK (role IN ('mentor', 'mentee')),
+    transplant_type TEXT,
+    transplant_year TEXT,
+    goals TEXT,
+    meeting_preference TEXT,
+    sports_activities TEXT,
+    submitted BOOLEAN NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (application_id) REFERENCES applications(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  )
 `);
+
 
 
 db.run(`
   CREATE TABLE IF NOT EXISTS lifestyle_answers (
-  user_id INTEGER PRIMARY KEY,
-  physicalExerciseFrequency INTEGER,
-  likeAnimals INTEGER,
-  likeCooking INTEGER,
-  travelImportance INTEGER,
-  freeTimePreference INTEGER,
-  feelOverwhelmed INTEGER,
-  activityBarriers INTEGER,
-  longTermGoals INTEGER,
-  stressHandling INTEGER,
-  motivationLevel INTEGER,
-  hadMentor INTEGER,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-)
-`);
-
-db.run(`
-  CREATE TABLE IF NOT EXISTS enneagram_answers (
-    user_id INTEGER PRIMARY KEY,
-    top_type TEXT, -- string or JSON of types if tie
-    scores TEXT, -- store full score breakdown as JSON
+    application_id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    physicalExerciseFrequency INTEGER,
+    likeAnimals INTEGER,
+    likeCooking INTEGER,
+    travelImportance INTEGER,
+    freeTimePreference INTEGER,
+    feelOverwhelmed INTEGER,
+    activityBarriers INTEGER,
+    longTermGoals INTEGER,
+    stressHandling INTEGER,
+    motivationLevel INTEGER,
+    hadMentor INTEGER,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (application_id) REFERENCES applications(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )
 `);
+
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS enneagram_answers (
+    application_id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    top_type TEXT,
+    scores TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (application_id) REFERENCES applications(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  )
+`);
+
 
 // Sessions table
 db.run(`
@@ -195,4 +206,43 @@ db.run(`
   )
 `);
 
+
+async function getApplicationIdForUser(userId) {
+  const row = await db.getAsync(
+    `SELECT id FROM applications WHERE user_id = ? ORDER BY application_date DESC LIMIT 1`,
+    [userId]
+  );
+  if (!row) {
+    console.warn(`⚠️ No application found for user ${userId}`);
+  }
+  return row?.id;
+}
+
+db.ensureApplicationExists = async (userId, sessionId, role = 'mentee') => {
+  const existing = await db.getAsync(
+    `SELECT id FROM applications WHERE user_id = ? AND session_id = ?`,
+    [userId, sessionId]
+  );
+
+  if (!existing) {
+    console.log("🧪 Inserting new application for", { userId, sessionId, role });
+    try {
+      await db.runAsync(
+        `INSERT INTO applications (user_id, session_id, role) VALUES (?, ?, ?)`,
+        [userId, sessionId, role]
+      );
+      console.log("✅ Application inserted");
+    } catch (err) {
+      console.error("❌ Failed to insert application:", err.message);
+    }
+  } else {
+    console.log("✅ Application already exists");
+  }
+};
+
+
+// Export the actual SQLite instance with the extra function
+db.getApplicationIdForUser = getApplicationIdForUser;
+
 module.exports = db;
+
