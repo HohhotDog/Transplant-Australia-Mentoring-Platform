@@ -15,8 +15,6 @@ const MatchingLifestyle = () => {
         }
       });
   }, []);
-  
-
 
   const [responses, setResponses] = useState({
     physicalExerciseFrequency: '',
@@ -43,12 +41,15 @@ const MatchingLifestyle = () => {
 
   const handleNext = () => {
     console.log("🔥 Matching Lifestyle Responses:", responses);
-  
+
+    const sessionId = localStorage.getItem("sessionId") || "9999";
+    const role = localStorage.getItem("selectedRole") || "mentee";
+
     fetch('/api/save-lifestyle', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ answers: responses })
+      body: JSON.stringify({ sessionId, role, answers: responses })
     })
       .then(res => res.json())
       .then(data => {
@@ -65,8 +66,7 @@ const MatchingLifestyle = () => {
         alert("Server error. Please try again later.");
       });
   };
-  
-  
+
   const QuestionSlider = ({ label, name }) => (
     <div className="mb-6">
       <label className="block font-semibold text-lg mb-1 text-gray-800">{label}</label>

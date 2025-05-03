@@ -40,6 +40,7 @@ const SurveyStart = () => {
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
     localStorage.setItem('selectedRole', role);
+    localStorage.setItem('sessionId', '9999'); 
   };
 
   const handleNext = () => {

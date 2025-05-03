@@ -1,5 +1,3 @@
-// src/components/Survey/MatchingEnneagram.js
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -84,65 +82,83 @@ const MatchingEnneagram = () => {
       1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
       6: 0, 7: 0, 8: 0, 9: 0,
     };
-
+  
     Object.entries(responses).forEach(([id, val]) => {
       const question = questions.find(q => q.id === Number(id));
       const [scoreA, scoreB] = weightMap[val];
       scores[question.typeA] += scoreA;
       scores[question.typeB] += scoreB;
     });
-
+  
     const maxScore = Math.max(...Object.values(scores));
     const topTypes = Object.entries(scores)
       .filter(([type, score]) => score === maxScore)
       .map(([type]) => Number(type));
-
+  
     const resultData = {
       topTypes: topTypes.length === 1 ? topTypes[0] : topTypes,
       topScore: maxScore,
       allScores: scores,
     };
-
+  
     localStorage.setItem('enneagramResult', JSON.stringify(resultData));
-
+  
+    const sessionId = localStorage.getItem("sessionId") || "9999";
+    const role = localStorage.getItem("selectedRole") || "mentee";
+  
     fetch('/api/save-enneagram', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify({
+        sessionId,
+        role,
         topTypes: resultData.topTypes,
         allScores: resultData.allScores,
       })
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        fetch('/api/mark-submitted', {
-          method: 'POST',
-          credentials: 'include'
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            navigate('/survey/submitform');
-          } else {
-            alert("⚠️ Failed to mark application as submitted.");
-          }
-        })
-        .catch(err => {
-          console.error("❌ Submission marking failed:", err);
-          alert("An error occurred while finalizing submission.");
-        });
-      } else {
-        alert("⚠️ Failed to save Enneagram result.");
-      }
-    })
-    .catch(err => {
-      console.error("❌ Error:", err);
-      alert("Something went wrong. Please try again.");
-    });
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          fetch('/api/mark-submitted', {
+            method: 'POST',
+            credentials: 'include'
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              // 🔥 Fetch mentor matches and log to console before navigating
+              fetch(`/api/match-mentee?sessionId=${sessionId}&role=${role}`, {
+                method: 'GET',
+                credentials: 'include'
+              })
+                .then(res => res.json())
+                .then(matchData => {
+                  console.log("🧠 Mentor Matches:", matchData);
+                  navigate('/survey/submitform');
+                })
+                .catch(err => {
+                  console.error("❌ Error fetching matches:", err);
+                  navigate('/survey/submitform'); // continue to next page anyway
+                });
+            } else {
+              alert("⚠️ Failed to mark application as submitted.");
+            }
+          })
+          .catch(err => {
+            console.error("❌ Submission marking failed:", err);
+            alert("An error occurred while finalizing submission.");
+          });
+        } else {
+          alert("⚠️ Failed to save Enneagram result.");
+        }
+      })
+      .catch(err => {
+        console.error("❌ Error:", err);
+        alert("Something went wrong. Please try again.");
+      });
   };
-
+  
   const renderSlider = (q) => (
     <div key={q.id} className="mb-6">
       <p className="font-semibold text-gray-700 mb-2">Q{q.id}</p>
@@ -187,26 +203,25 @@ const MatchingEnneagram = () => {
           <p className="mb-4 text-gray-600">
             Please adjust the slider to indicate which statement is more like you.
           </p>
-  
-          {(step === 1 ? batch1 : batch2).map(renderSlider)}
-  
-          {step === 2 && (
-  <div className="mt-6">
-    <label className="flex items-center space-x-2">
-      <input
-        type="checkbox"
-        disabled={isLocked} 
-        checked={isConfirmed}
-        onChange={(e) => setIsConfirmed(e.target.checked)}
-      />
-      <span className="text-sm text-gray-700">
-        I confirm that the information provided is accurate and I want to submit my mentorship application.
-      </span>
-    </label>
-  </div>
-)}
 
-  
+          {(step === 1 ? batch1 : batch2).map(renderSlider)}
+
+          {step === 2 && (
+            <div className="mt-6">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  disabled={isLocked} 
+                  checked={isConfirmed}
+                  onChange={(e) => setIsConfirmed(e.target.checked)}
+                />
+                <span className="text-sm text-gray-700">
+                  I confirm that the information provided is accurate and I want to submit my mentorship application.
+                </span>
+              </label>
+            </div>
+          )}
+
           <div className="flex justify-between mt-10">
             {step === 2 && (
               <button
@@ -241,7 +256,6 @@ const MatchingEnneagram = () => {
       )}
     </>
   );
-  
 };
 
 export default MatchingEnneagram;
