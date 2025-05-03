@@ -104,12 +104,24 @@ function RegisterForm({ isLoggedIn, handleLogout }) {
               <label>Select a security question</label>
               <select value={securityQuestion} onChange={(e) => setSecurityQuestion(e.target.value)} required>
                 <option value="">-- Choose a question --</option>
-                <option value="What is your childhood pet's name?">What is your childhood pet's name?</option>
-                <option value="What is the name of your first school?">What is the name of your first school?</option>
+                <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+                <option value="What was the name of your childhood best friend?">What was the name of your childhood best friend?</option>
                 <option value="In what city were you born?">In what city were you born?</option>
-                <option value="What is your favorite teacher's name?">What is your favorite teacher's name?</option>
+                <option value="What was the first concert you attended?">What was the first concert you attended?</option>
+                <option value="What was the name of your favourite teacher in school?">What was the name of your favourite teacher in school?</option>
+                <option value="What is your maternal grandmother’s first name?">What is your maternal grandmother’s first name?</option>
+                <option value="What was the model of your first car?">What was the model of your first car?</option>
+                <option value="What was the name of your first stuffed animal?">What was the name of your first stuffed animal?</option>
+                <option value="Where did you go on your first vacation?">Where did you go on your first vacation?</option>
+                <option value="What is the middle name of your oldest sibling?">What is the middle name of your oldest sibling?</option>
+                <option value="What was the name of your first job?">What was the name of your first job?</option>
+                <option value="What was the first movie you saw in a theatre?">What was the first movie you saw in a theatre?</option>
+                <option value="What was your dream job as a child?">What was your dream job as a child?</option>
+                <option value="What is the name of your favourite book?">What is the name of your favourite book?</option>
+                <option value="What was your childhood nickname?">What was your childhood nickname?</option>
               </select>
             </div>
+
 
             <div className="form-group">
               <label>Your Answer</label>
