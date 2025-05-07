@@ -168,10 +168,17 @@ router.get("/match-mentee", isAuthenticated, async (req, res) => {
 router.post("/mark-submitted", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
   const { sessionId } = req.body;
+<<<<<<< HEAD
 
   if (!sessionId) {
     return res.status(400).json({ success: false, message: "Missing sessionId" });
   }
+=======
+if (!sessionId) {
+  return res.status(400).json({ success: false, message: "Missing sessionId" });
+}
+
+>>>>>>> main
 
   try {
     const row = await db.get(
@@ -198,11 +205,18 @@ router.post("/mark-submitted", isAuthenticated, async (req, res) => {
 
 router.get("/form-status", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
+<<<<<<< HEAD
   const sessionId = req.query.sessionId;
 
   if (!sessionId) {
     return res.status(400).json({ success: false, error: 'Missing sessionId' });
   }
+=======
+  const sessionId = req.query.sessionId; 
+if (!sessionId) {
+    return res.status(400).json({ success: false, error: 'Missing sessionId' });
+}
+>>>>>>> main
 
   const applicationId = await db.getApplicationIdForUser(userId, sessionId);
 
@@ -219,4 +233,8 @@ router.get("/form-status", isAuthenticated, async (req, res) => {
   });
 });
 
+<<<<<<< HEAD
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> main
