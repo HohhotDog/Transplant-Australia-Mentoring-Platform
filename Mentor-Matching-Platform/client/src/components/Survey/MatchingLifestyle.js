@@ -4,18 +4,6 @@ import { useNavigate } from 'react-router-dom';
 const MatchingLifestyle = () => {
   const navigate = useNavigate();
   const [isLocked, setIsLocked] = useState(false);
-  useEffect(() => {
-    fetch("/api/form-status", {
-      credentials: "include",
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.submitted) {
-          setIsLocked(true);
-        }
-      });
-  }, []);
-
   const [responses, setResponses] = useState({
     physicalExerciseFrequency: '',
     likeAnimals: '',
@@ -29,6 +17,46 @@ const MatchingLifestyle = () => {
     motivationLevel: 3,
     hadMentor: 3,
   });
+  
+  useEffect(() => {
+    fetch("/api/form-status", {
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.submitted) {
+          setIsLocked(true);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/latest-survey', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        console.log("🔍 FULL SURVEY DATA:", data);
+        if (data.success && data.data?.lifestyle) {
+          const lifestyle = data.data.lifestyle;
+          console.log("⭐ LIFESTYLE BACKEND DATA:", lifestyle);
+          setResponses({
+            physicalExerciseFrequency: lifestyle.physicalExerciseFrequency ?? '',
+            likeAnimals: lifestyle.likeAnimals ?? '',
+            likeCooking: lifestyle.likeCooking ?? '',
+            travelImportance: lifestyle.travelImportance ?? '',
+            freeTimePreference: lifestyle.freeTimePreference ?? '',
+            feelOverwhelmed: lifestyle.feelOverwhelmed !== undefined ? Number(lifestyle.feelOverwhelmed) : 3,
+            activityBarriers: lifestyle.activityBarriers !== undefined ? Number(lifestyle.activityBarriers) : 3,
+            longTermGoals: lifestyle.longTermGoals !== undefined ? Number(lifestyle.longTermGoals) : 3,
+            stressHandling: lifestyle.stressHandling !== undefined ? Number(lifestyle.stressHandling) : 3,
+            motivationLevel: lifestyle.motivationLevel !== undefined ? Number(lifestyle.motivationLevel) : 3,
+            hadMentor: lifestyle.hadMentor !== undefined ? Number(lifestyle.hadMentor) : 3,
+          });
+        }
+      })
+      .catch(err => console.error("Failed to fetch existing lifestyle responses:", err));
+  }, []);
+
+
 
   const handleSliderChange = (key, value) => {
     setResponses(prev => ({ ...prev, [key]: Number(value) }));
@@ -86,9 +114,10 @@ const MatchingLifestyle = () => {
   const QuestionDropdown = ({ label, name, options }) => (
     <div className="mb-6">
       <label className="block font-semibold text-lg mb-1 text-gray-800">{label}</label>
-      <select disabled={isLocked}
+      <select
+        disabled={isLocked}
         name={name}
-        value={responses[name]}
+        value={responses[name]?.toString() || ''}
         onChange={handleDropdownChange}
         className="w-full p-3 rounded-lg border border-[#d4cfc5] text-gray-800 bg-[#f9f7f4] focus:outline-none focus:ring-2 focus:ring-orange-400 appearance-none"
       >
@@ -99,6 +128,7 @@ const MatchingLifestyle = () => {
       </select>
     </div>
   );
+  
 
   return (
     <div className="max-w-3xl mx-auto p-8 text-left">

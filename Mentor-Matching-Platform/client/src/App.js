@@ -6,7 +6,7 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
-import SurveyPage from "./pages/Mentorship/SurveyPage"; 
+import SurveyPage from "./pages/Mentorship/SurveyPage";
 import AdminPage from "./pages/Admin/AdminPage";
 import ExploreSessionPage from "./pages/Mentorship/ExploreSessionPage";
 import MentorshipSessionDetailPage from './pages/Mentorship/MentorshipSessionDetailPage';
@@ -57,9 +57,6 @@ function App() {
                 <Route path="/" element={<Layout isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}>
                    <Route index element={<HomePage />} />
 
-                    
-                    {/* Survey Flow */}
-                    <Route path="survey/*" element={<SurveyPage />} />
 
                     
                     {/* Explore Sessions with nested detail */}
@@ -78,6 +75,10 @@ function App() {
                       <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                       <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                       <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+
+                      {/* Survey Flow */}
+                    <Route path="survey/*" element={<SurveyPage />} />
+
 
                     {/* Admin */}
                     <Route path="admin" element={<AdminPage />} />

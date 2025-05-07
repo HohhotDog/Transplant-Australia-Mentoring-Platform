@@ -61,6 +61,23 @@ const MatchingEnneagram = () => {
       .catch(err => console.error("⚠️ Error checking form status:", err));
   }, []);
 
+  useEffect(() => {
+    fetch('/api/latest-survey', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.enneagram) {
+          const enneagram = data.data.enneagram;
+          const savedResponses = enneagram.answers; // 👈 this should be the raw slider data
+          if (savedResponses) {
+            console.log("🧠 Loaded previous enneagram responses:", savedResponses);
+            const parsed = typeof savedResponses === 'string' ? JSON.parse(savedResponses) : savedResponses;
+            setResponses(parsed);
+         }         
+        }
+      })
+      .catch(err => console.error("⚠️ Error loading latest survey:", err));
+  }, []);
+
   const handleSliderChange = (id, value) => {
     setResponses(prev => ({ ...prev, [id]: Number(value) }));
   };
@@ -112,6 +129,7 @@ const MatchingEnneagram = () => {
           role,
           topTypes: resultData.topTypes,
           allScores: resultData.allScores,
+          answers: responses,  
         })
       });
 
@@ -130,8 +148,7 @@ const MatchingEnneagram = () => {
       const markData = await markRes.json();
 
       if (markData.success) {
-        // Fetch mentor matches (no sessionId in URL for now)
-        fetch('/api/match-mentee', {
+        fetch(`/api/match-mentee?sessionId=${sessionId}`, {
           method: 'GET',
           credentials: 'include'
         })
