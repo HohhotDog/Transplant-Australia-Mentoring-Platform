@@ -2,11 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// read url parameter
+// import { useSearchParams } from 'react-router-dom';
+
 const SurveyStart = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState(null);
   const [profile, setProfile] = useState({});
   const [isLocked, setIsLocked] = useState(false);
+  // get sessionId and role from url
+  // const sessionId = searchParams.get('sessionId');
+  // const role      = searchParams.get('role');
 
   useEffect(() => {
     fetch('/api/form-status', {

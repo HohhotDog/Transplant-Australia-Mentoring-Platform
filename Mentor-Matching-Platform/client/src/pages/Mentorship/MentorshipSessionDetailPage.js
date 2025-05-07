@@ -64,7 +64,8 @@ const MentorshipSessionDetailPage = () => {
         alert('Application sent successfully!');
         setApplied(true);
         setAppliedRole(role);
-        navigate('/sessions');
+        // Navigate into survey flow, passing sessionId and role as query params
+        navigate(`/survey?sessionId=${id}&role=${role}`);
       } else {
         const data = await resp.json();
         alert(data.error || 'Failed to apply');
