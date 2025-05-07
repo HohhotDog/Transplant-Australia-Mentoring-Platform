@@ -167,7 +167,11 @@ router.get("/match-mentee", isAuthenticated, async (req, res) => {
 // Mark the mentorship application as fully submitted
 router.post("/mark-submitted", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
-  const sessionId = req.session.sessionId || "9999";
+  const { sessionId } = req.body;
+
+  if (!sessionId) {
+    return res.status(400).json({ success: false, message: "Missing sessionId" });
+  }
 
   try {
     const row = await db.get(
@@ -194,7 +198,11 @@ router.post("/mark-submitted", isAuthenticated, async (req, res) => {
 
 router.get("/form-status", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
-  const sessionId = req.query.sessionId || 9999; // Use default or pass explicitly
+  const sessionId = req.query.sessionId;
+
+  if (!sessionId) {
+    return res.status(400).json({ success: false, error: 'Missing sessionId' });
+  }
 
   const applicationId = await db.getApplicationIdForUser(userId, sessionId);
 

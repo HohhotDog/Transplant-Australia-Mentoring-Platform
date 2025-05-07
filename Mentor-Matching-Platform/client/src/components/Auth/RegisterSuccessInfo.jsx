@@ -22,7 +22,7 @@ function RegisterSuccessInfo({ isLoggedIn, handleLogout }) {
                     enhance your experience. We're thrilled to have you aboard!
                 </p>
                 <Link to="/profile">
-                    <button className="form-btn">Go to My Profile</button>
+                    <button className="form-btn">Go to Log-in Page</button>
                 </Link>
                 <p className="success-tagline">Embracing the journey, together.</p>
             </div>

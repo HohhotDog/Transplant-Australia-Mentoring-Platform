@@ -2,14 +2,24 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// read url parameter
+import { useSearchParams } from 'react-router-dom';
+
 const SurveyStart = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState(null);
   const [profile, setProfile] = useState({});
   const [isLocked, setIsLocked] = useState(false);
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get('sessionId'); 
+  // get sessionId and role from url
+  // const sessionId = searchParams.get('sessionId');
+  // const role      = searchParams.get('role');
 
   useEffect(() => {
-    fetch('/api/form-status', {
+    if (!sessionId) return;  
+  
+    fetch(`/api/form-status?sessionId=${sessionId}`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -20,7 +30,8 @@ const SurveyStart = () => {
         }
       })
       .catch(err => console.error("⚠️ Error checking form status:", err));
-  }, []);
+  }, [sessionId]);
+  
 
   useEffect(() => {
     fetch('/api/profile', {
@@ -40,7 +51,7 @@ const SurveyStart = () => {
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
     localStorage.setItem('selectedRole', role);
-    localStorage.setItem('sessionId', '9999'); 
+    localStorage.setItem('sessionId', sessionId);
   };
 
   const handleNext = () => {
