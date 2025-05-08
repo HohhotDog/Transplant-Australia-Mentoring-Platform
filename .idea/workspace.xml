@@ -4,10 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="CSS Log-in Page implemented">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_4_2025_PM10_49_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_4_2025_PM10_49__Changes_.xml" beforeDir="false" />
+    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Several New Features:&#10;Now forbiddened mentor/mentee to visit admin pages&#10;And sessions and survey would not be shared to the admin for the clarity.&#10;Re-edited the current logic for the layout">
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/AvatarCropper.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ChangeAvatar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/cropUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/avatar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/PersonalDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/PersonalDetails.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,9 +27,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JSX File" />
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -58,28 +68,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.Back-end.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/public/images/ProfilePage&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.Front-end.executor&quot;: &quot;Run&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.App.js.executor": "Run",
+    "Node.js.Back-end.executor": "Run",
+    "Node.js.index.js.executor": "Run",
+    "Node.js.server.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Chensu-dev-2",
+    "last_opened_file_path": "/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/public/images/ProfilePage",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.Front-end.executor": "Run",
+    "npm.start.executor": "Run",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images/ProfilePage" />
@@ -242,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745289047798</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Several New Features:&#10;Now forbiddened mentor/mentee to visit admin pages&#10;And sessions and survey would not be shared to the admin for the clarity.&#10;Re-edited the current logic for the layout">
+      <option name="closed" value="true" />
+      <created>1746720751468</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1746720751468</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +302,8 @@
     <MESSAGE value="Bug Fix" />
     <MESSAGE value="Updated Security Question" />
     <MESSAGE value="CSS Log-in Page implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="CSS Log-in Page implemented" />
+    <MESSAGE value="Several New Features:&#10;Now forbiddened mentor/mentee to visit admin pages&#10;And sessions and survey would not be shared to the admin for the clarity.&#10;Re-edited the current logic for the layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="Several New Features:&#10;Now forbiddened mentor/mentee to visit admin pages&#10;And sessions and survey would not be shared to the admin for the clarity.&#10;Re-edited the current logic for the layout" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -292,8 +311,13 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Admin/SessionTable.jsx</url>
           <line>15</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js</url>
+          <line>101</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

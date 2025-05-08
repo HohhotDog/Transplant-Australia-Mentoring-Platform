@@ -8,6 +8,7 @@ const profileRoutes = require("./routes/profile");
 const securityRoutes = require("./routes/security");
 const surveyRoutes = require("./routes/survey");
 const matchRoutes = require("./routes/match");
+const avatarRoutes = require("./routes/avatar");
 
 const sessionRoutes = require("./routes/sessions");
 const seedSessions = require("./scripts/seedSessions");
@@ -47,6 +48,7 @@ app.use("/api", securityRoutes);
 app.use("/api", surveyRoutes);
 app.use("/api", matchRoutes);
 app.use("/api", sessionRoutes);
+app.use("/api", avatarRoutes);
 
 // admin routes
 const adminRoutes = require("./routes/admin");

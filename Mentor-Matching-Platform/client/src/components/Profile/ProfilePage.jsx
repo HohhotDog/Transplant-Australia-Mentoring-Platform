@@ -45,6 +45,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
                 }
 
                 const data = await res.json();
+                console.log("Fetched profile:", data.profile);
                 if (data.success) {
                     setProfile(data.profile);
                 } else {
@@ -59,7 +60,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         fetchProfile();
     }, [navigate]);
 
-    // === UI: Error Display ===
+    // Error state
     if (error) {
         return (
             <div className="form-container">
@@ -69,7 +70,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         );
     }
 
-    // === UI: Loading Indicator ===
+    // Loading state
     if (!profile) {
         return (
             <div className="form-container">
@@ -78,22 +79,25 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
         );
     }
 
-    // === UI: Profile Data ===
+    // Render profile
     return (
         <div className="form-container">
             <h2 className="form-title">My Profile</h2>
 
             {/* Avatar Section */}
-            <div className="avatar-card">
+            <div className="avatar-card" onClick={() => navigate("/profile-avatar")} style={{ cursor: "pointer" }}>
                 <div className="avatar-card-inner">
                     <img
                         src={profile.profile_picture_url || "/images/ProfilePage/Sample.jpg"}
                         alt="Profile"
                     />
                 </div>
+                <p style={{ fontSize: "0.9em", textAlign: "center", marginTop: "0.5rem", color: "#666" }}>
+                    Click to change avatar
+                </p>
             </div>
 
-            {/* Profile Info Table */}
+            {/* Profile Info */}
             <div className="profile-info">
                 {[
                     ["Name", `${profile.first_name} ${profile.last_name}`],
@@ -106,7 +110,10 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
                     ["State", profile.state],
                     ["Postcode", profile.postal_code],
                     ["Gender", profile.gender],
-                    ["Aboriginal / Torres Strait Islander", profile.aboriginal_or_torres_strait_islander === "true" ? "Yes" : "No"],
+                    [
+                        "Aboriginal / Torres Strait Islander",
+                        profile.aboriginal_or_torres_strait_islander === "true" ? "Yes" : "No"
+                    ],
                     ["Language at Home", profile.language_spoken_at_home],
                     ["Living Situation", profile.living_situation],
                 ].map(([label, value], idx) => (
@@ -117,7 +124,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
                 ))}
             </div>
 
-            {/* Buttons */}
+            {/* Action Buttons */}
             <div className="profile-buttons">
                 <button className="form-btn" onClick={() => navigate("/profile-edit")}>
                     Edit Profile
