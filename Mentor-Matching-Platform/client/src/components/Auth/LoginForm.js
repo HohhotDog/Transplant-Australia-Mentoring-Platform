@@ -1,12 +1,13 @@
 // src/components/Auth/LoginForm.js
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../Navigation/NavBar";
 import "../../components/Auth/style/Login.css";
 
 function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const navigate = useNavigate(); // ✅ for redirection
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -20,9 +21,17 @@ function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
           password: loginPassword,
         }),
       });
+
       const data = await res.json();
+
       if (data.success) {
-        onLoginSuccess();
+        onLoginSuccess(data.account_type); // ✅ update App state
+        // ✅ Redirect based on account type
+        if (data.account_type === 1) {
+          navigate("/admin");
+        } else {
+          navigate("/sessions");
+        }
       } else {
         alert("Error: " + data.message);
       }
