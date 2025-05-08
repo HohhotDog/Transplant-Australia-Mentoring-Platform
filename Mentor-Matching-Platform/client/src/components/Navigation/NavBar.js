@@ -74,6 +74,7 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
                             <Link to="/my-sessions" className="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap">My Sessions</Link>
                         </div>
                     </div>
+
                     <Link to="/survey">Survey</Link>
                     <Link to="#" onClick={(e) => { e.preventDefault(); handleProfileClick(); }} className="text-black hover:text-btnorange">Profile</Link>
                 </>
@@ -82,6 +83,7 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
             {/* Admin Menu */}
             {isLoggedIn && (accountType === 1 || accountType === "1") && (
                 <>
+
                     <Link to="/admin">Admin</Link>
                 </>
             )}

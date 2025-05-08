@@ -107,11 +107,13 @@ function App() {
                         <Route path=":id" element={<MySessionDetailRouter />} />
                     </Route>
 
+
                     {/* Profile management routes */}
                     <Route path="profile" element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                     <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                     <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                     <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+
 
                     {/* Admin-only pages with permission check */}
                     <Route
@@ -138,6 +140,12 @@ function App() {
                             </RequireAdmin>
                         }
                     />
+
+                      {/* Survey Flow */}
+                    <Route path="survey/*" element={<SurveyPage />} />
+
+
+
                 </Route>
 
                 {/* Auth-related pages (outside layout) */}

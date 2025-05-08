@@ -57,20 +57,25 @@ function lifestyleVector(user) {
   ];
 }
 
-async function matchMentorsForMentee(menteeId) {
+async function matchMentorsForMentee(menteeId, sessionId) {
+
   const mentee = await db.getAsync(`
-    SELECT u.id, mp.transplant_type, mp.goals, mp.sports_activities, e.top_type, l.*
-    FROM users u
-    JOIN mentorship_preferences mp ON u.id = mp.user_id
-    JOIN enneagram_answers e ON u.id = e.user_id
-    JOIN lifestyle_answers l ON u.id = l.user_id
-    WHERE u.id = ? AND mp.role = 'mentee'
-  `, [menteeId]);
+    SELECT u.id, a.id as application_id, a.session_id,
+  mp.transplant_type, mp.goals, mp.sports_activities, e.top_type, l.*
+FROM users u
+JOIN applications a ON u.id = a.user_id
+JOIN mentorship_preferences mp ON a.id = mp.application_id
+JOIN enneagram_answers e ON a.id = e.application_id
+JOIN lifestyle_answers l ON a.id = l.application_id
+WHERE u.id = ? AND mp.role = 'mentee' AND a.session_id = ?
+  `, [menteeId, sessionId]);
 
   if (!mentee) throw new Error("Mentee not found or missing data");
 
+  console.log(`🔎 Matching for mentee ${menteeId} in session ${mentee.session_id}`);
+
   const mentors = await db.allAsync(`
-    SELECT 
+ SELECT 
   u.id AS mentor_id, 
   p.first_name AS first_name, 
   p.last_name AS last_name, 
@@ -82,11 +87,12 @@ async function matchMentorsForMentee(menteeId) {
   l.*
 FROM users u
 JOIN profiles p ON u.id = p.user_id
-JOIN mentorship_preferences mp ON u.id = mp.user_id
-JOIN enneagram_answers e ON u.id = e.user_id
-JOIN lifestyle_answers l ON u.id = l.user_id
-WHERE mp.role = 'mentor'
-  `);
+JOIN applications a ON u.id = a.user_id
+JOIN mentorship_preferences mp ON a.id = mp.application_id
+JOIN enneagram_answers e ON a.id = e.application_id
+JOIN lifestyle_answers l ON a.id = l.application_id
+WHERE mp.role = 'mentor' AND a.session_id = ?
+`, [mentee.session_id]);
 
   const menteeLifestyle = lifestyleVector(mentee);
   const menteeEnneagram = mentee.top_type;

@@ -43,7 +43,6 @@ const questions = [
 const MatchingEnneagram = () => {
   const [step, setStep] = useState(1);
   const [responses, setResponses] = useState({});
-  const [result, setResult] = useState(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const navigate = useNavigate();
@@ -62,6 +61,23 @@ const MatchingEnneagram = () => {
       .catch(err => console.error("⚠️ Error checking form status:", err));
   }, []);
 
+  useEffect(() => {
+    fetch('/api/latest-survey', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.enneagram) {
+          const enneagram = data.data.enneagram;
+          const savedResponses = enneagram.answers; // 👈 this should be the raw slider data
+          if (savedResponses) {
+            console.log("🧠 Loaded previous enneagram responses:", savedResponses);
+            const parsed = typeof savedResponses === 'string' ? JSON.parse(savedResponses) : savedResponses;
+            setResponses(parsed);
+         }         
+        }
+      })
+      .catch(err => console.error("⚠️ Error loading latest survey:", err));
+  }, []);
+
   const handleSliderChange = (id, value) => {
     setResponses(prev => ({ ...prev, [id]: Number(value) }));
   };
@@ -77,12 +93,9 @@ const MatchingEnneagram = () => {
     5: [0, 5],
   };
 
-  const calculateResult = () => {
-    const scores = {
-      1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
-      6: 0, 7: 0, 8: 0, 9: 0,
-    };
-  
+  const calculateResult = async () => {
+    const scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+
     Object.entries(responses).forEach(([id, val]) => {
       const question = questions.find(q => q.id === Number(id));
       const [scoreA, scoreB] = weightMap[val];
@@ -92,7 +105,7 @@ const MatchingEnneagram = () => {
   
     const maxScore = Math.max(...Object.values(scores));
     const topTypes = Object.entries(scores)
-      .filter(([type, score]) => score === maxScore)
+      .filter(([_, score]) => score === maxScore)
       .map(([type]) => Number(type));
   
     const resultData = {
@@ -102,61 +115,59 @@ const MatchingEnneagram = () => {
     };
   
     localStorage.setItem('enneagramResult', JSON.stringify(resultData));
-  
-    const sessionId = localStorage.getItem("sessionId") || "9999";
-    const role = localStorage.getItem("selectedRole") || "mentee";
-  
-    fetch('/api/save-enneagram', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({
-        sessionId,
-        role,
-        topTypes: resultData.topTypes,
-        allScores: resultData.allScores,
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          fetch('/api/mark-submitted', {
-            method: 'POST',
-            credentials: 'include'
-          })
+
+    const sessionId = localStorage.getItem("sessionId");
+    const role = localStorage.getItem("selectedRole");
+
+    try {
+      const enneagramRes = await fetch('/api/save-enneagram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          sessionId,
+          role,
+          topTypes: resultData.topTypes,
+          allScores: resultData.allScores,
+          answers: responses,  
+        })
+      });
+
+      const enneagramData = await enneagramRes.json();
+      if (!enneagramData.success) {
+        alert("⚠️ Failed to save Enneagram result.");
+        return;
+      }
+
+      const markRes = await fetch('/api/mark-submitted', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ sessionId })
+      });
+      const markData = await markRes.json();
+
+      if (markData.success) {
+        fetch(`/api/match-mentee?sessionId=${sessionId}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
           .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              // 🔥 Fetch mentor matches and log to console before navigating
-              fetch(`/api/match-mentee?sessionId=${sessionId}&role=${role}`, {
-                method: 'GET',
-                credentials: 'include'
-              })
-                .then(res => res.json())
-                .then(matchData => {
-                  console.log("🧠 Mentor Matches:", matchData);
-                  navigate('/survey/submitform');
-                })
-                .catch(err => {
-                  console.error("❌ Error fetching matches:", err);
-                  navigate('/survey/submitform'); // continue to next page anyway
-                });
-            } else {
-              alert("⚠️ Failed to mark application as submitted.");
-            }
+          .then(matchData => {
+            console.log("🧠 Mentor Matches:", matchData);
+            navigate('/survey/submitform');
           })
           .catch(err => {
-            console.error("❌ Submission marking failed:", err);
-            alert("An error occurred while finalizing submission.");
+            console.error("❌ Error fetching matches:", err);
+            navigate('/survey/submitform');
           });
-        } else {
-          alert("⚠️ Failed to save Enneagram result.");
-        }
-      })
-      .catch(err => {
-        console.error("❌ Error:", err);
-        alert("Something went wrong. Please try again.");
-      });
+      } else {
+        alert("⚠️ Failed to mark application as submitted.");
+      }
+    } catch (err) {
+      console.error("❌ Error during submission:", err);
+      alert("An error occurred while finalizing submission.");
+    }
   };
   
   const renderSlider = (q) => (
@@ -179,82 +190,61 @@ const MatchingEnneagram = () => {
   );
 
   return (
-    <>
-      {result ? (
-        <div className="max-w-2xl mx-auto p-6 text-left">
-          <h1 className="text-3xl font-bold mb-6">Your Enneagram Result</h1>
-          <p className="text-lg mb-4">
-            {Array.isArray(result.topTypes)
-              ? 'Your top Enneagram types are: '
-              : 'Your top Enneagram type is: '}
-            <strong>
-              {Array.isArray(result.topTypes)
-                ? result.topTypes.map(t => `Type ${t}`).join(', ')
-                : `Type ${result.topTypes}`}
-            </strong>
-          </p>
-          <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
-            {JSON.stringify(result.allScores, null, 2)}
-          </pre>
-        </div>
-      ) : (
-        <div className="max-w-3xl mx-auto p-6 text-left">
-          <h1 className="text-3xl font-bold mb-6">Enneagram Questionnaire</h1>
-          <p className="mb-4 text-gray-600">
-            Please adjust the slider to indicate which statement is more like you.
-          </p>
+    <div className="max-w-3xl mx-auto p-6 text-left">
+      <h1 className="text-3xl font-bold mb-6">Enneagram Questionnaire</h1>
+      <p className="mb-4 text-gray-600">
+        Please adjust the slider to indicate which statement is more like you.
+      </p>
 
-          {(step === 1 ? batch1 : batch2).map(renderSlider)}
+      {(step === 1 ? batch1 : batch2).map(renderSlider)}
 
-          {step === 2 && (
-            <div className="mt-6">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  disabled={isLocked} 
-                  checked={isConfirmed}
-                  onChange={(e) => setIsConfirmed(e.target.checked)}
-                />
-                <span className="text-sm text-gray-700">
-                  I confirm that the information provided is accurate and I want to submit my mentorship application.
-                </span>
-              </label>
-            </div>
-          )}
-
-          <div className="flex justify-between mt-10">
-            {step === 2 && (
-              <button
-                onClick={() => setStep(1)}
-                className="bg-gray-300 text-black px-6 py-2 rounded hover:bg-gray-400"
-              >
-                ◀ Back
-              </button>
-            )}
-            {step === 1 ? (
-              <button
-                onClick={() => setStep(2)}
-                className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 ml-auto"
-              >
-                Next ➔
-              </button>
-            ) : (
-              <button
-                onClick={calculateResult}
-                disabled={!isConfirmed || isLocked}
-                className={`ml-auto px-6 py-2 rounded text-white ${
-                  isConfirmed
-                    ? 'bg-green-600 hover:bg-green-700'
-                    : 'bg-gray-400 cursor-not-allowed'
-                }`}
-              >
-                Submit
-              </button>
-            )}
-          </div>
+      {step === 2 && (
+        <div className="mt-6">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              disabled={isLocked}
+              checked={isConfirmed}
+              onChange={(e) => setIsConfirmed(e.target.checked)}
+            />
+            <span className="text-sm text-gray-700">
+              I confirm that the information provided is accurate and I want to submit my mentorship application.
+            </span>
+          </label>
         </div>
       )}
-    </>
+
+      <div className="flex justify-between mt-10">
+        {step === 2 && (
+          <button
+            onClick={() => setStep(1)}
+            className="bg-gray-300 text-black px-6 py-2 rounded hover:bg-gray-400"
+          >
+            ◀ Back
+          </button>
+        )}
+        {step === 1 ? (
+          <button
+            onClick={() => setStep(2)}
+            className="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 ml-auto"
+          >
+            Next ➔
+          </button>
+        ) : (
+          <button
+            onClick={calculateResult}
+            disabled={!isConfirmed || isLocked}
+            className={`ml-auto px-6 py-2 rounded text-white ${
+              isConfirmed
+                ? 'bg-green-600 hover:bg-green-700'
+                : 'bg-gray-400 cursor-not-allowed'
+            }`}
+          >
+            Submit
+          </button>
+        )}
+      </div>
+    </div>
   );
 };
 
