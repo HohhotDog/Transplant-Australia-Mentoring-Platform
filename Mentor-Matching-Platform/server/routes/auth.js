@@ -95,9 +95,15 @@ router.post("/login", (req, res) => {
 
         req.session.user = {
             id: row.id,
-            email: row.email
+            email: row.email,
+            account_type: row.account_type
         };
-        return res.json({ success: true, message: "Login successful." });
+        return res.json({
+            success: true,
+            message: "Login successful.",
+            account_type: row.account_type
+        });
+
     });
 });
 
@@ -150,6 +156,21 @@ router.post("/forgot-password", (req, res) => {
     });
 });
 
+
+// GET /api/me - returns current session user info
+router.get("/me", (req, res) => {
+    if (req.session && req.session.user) {
+        return res.json({
+            success: true,
+            id: req.session.user.id,
+            email: req.session.user.email,
+            account_type: req.session.user.account_type
+        });
+    } else {
+        return res.status(401).json({ success: false });
+    }
+});
+
 /**
  * @route POST /logout
  * @group Auth
@@ -163,3 +184,5 @@ router.post("/logout", (req, res) => {
 });
 
 module.exports = router;
+
+
