@@ -6,11 +6,19 @@ function MatchResult() {
 
   async function handleMatchRequest() {
     try {
-      const res = await fetch("/api/match-mentee", { credentials: "include" });
+      const sessionId = localStorage.getItem("sessionId"); 
+      if (!sessionId) {
+        console.error("⚠️ No sessionId found in localStorage");
+        alert("Session ID is missing. Please complete the survey steps first.");
+        return;
+      }
+      const res = await fetch(`/api/match-mentee?sessionId=${sessionId}`, {
+        credentials: "include",
+      });
       const data = await res.json();
       setMatchResult(data);
     } catch (err) {
-      console.error(err);
+      console.error("❌ Error fetching match results:", err);
     }
   }
 

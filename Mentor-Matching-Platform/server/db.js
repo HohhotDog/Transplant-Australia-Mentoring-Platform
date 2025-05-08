@@ -65,6 +65,7 @@ db.run(`
     user_id INTEGER NOT NULL,
     role TEXT CHECK (role IN ('mentor', 'mentee')),
     transplant_type TEXT,
+    session_role TEXT,
     transplant_year TEXT,
     goals TEXT,
     meeting_preference TEXT,
@@ -106,6 +107,7 @@ db.run(`
     user_id INTEGER NOT NULL,
     top_type TEXT,
     scores TEXT,
+    answers TEXT, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (application_id) REFERENCES applications(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -207,7 +209,10 @@ db.run(`
 `);
 
 
-async function getApplicationIdForUser(userId, sessionId = 9999) {
+async function getApplicationIdForUser(userId, sessionId) {
+  if (!sessionId) {
+    throw new Error("sessionId is required in getApplicationIdForUser");
+  }
   const row = await db.getAsync(
     `SELECT id FROM applications WHERE user_id = ? AND session_id = ? ORDER BY application_date DESC LIMIT 1`,
     [userId, sessionId]
@@ -218,7 +223,10 @@ async function getApplicationIdForUser(userId, sessionId = 9999) {
   return row?.id;
 }
 
-db.ensureApplicationExists = async (userId, sessionId = 9999, role) => {
+db.ensureApplicationExists = async (userId, sessionId, role) => {
+  if (!sessionId) {
+    throw new Error("sessionId is required in ensureApplicationExists");
+  }
   if (!role) {
     throw new Error("Role is required in ensureApplicationExists");
   }

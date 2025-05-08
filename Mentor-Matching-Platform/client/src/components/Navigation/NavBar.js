@@ -64,7 +64,6 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
                         </div>
                     </div>
 
-                    <Link to="/survey">Survey</Link>
                     <Link to="/admin">Admin</Link>
                     <Link
                         to="#"

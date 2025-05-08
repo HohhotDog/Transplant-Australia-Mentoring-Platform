@@ -36,7 +36,7 @@ const MatchingPreferences = () => {
     sportsInterests: [],
     supportNeeds: []
   });
-
+  const [initialData, setInitialData] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
   useEffect(() => {
     fetch('/api/form-status', {
@@ -51,6 +51,38 @@ const MatchingPreferences = () => {
       })
       .catch(err => console.error("⚠️ Error checking submission status:", err));
   }, []);
+
+  useEffect(() => {
+    fetch('/api/latest-survey', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data?.preferences) {
+          const prefs = data.data.preferences;
+          setInitialData({
+            participantRole: prefs.session_role || '',
+            transplantType: JSON.parse(prefs.transplant_type),
+            transplantYear: prefs.transplant_year,
+            goals: JSON.parse(prefs.goals),
+            meetingPref: prefs.meeting_preference,
+            sportsInterest: JSON.parse(prefs.sports_activities),
+          });
+        }
+      })
+      .catch(err => console.error("⚠️ Error loading latest survey:", err));
+  }, []);
+  useEffect(() => {
+    if (initialData) {
+      setFormData(prev => ({
+        ...prev,
+        participantRole: initialData.participantRole || '',
+        transplantType: initialData.transplantType || [],
+        transplantYear: initialData.transplantYear || '',
+        supportNeeds: initialData.goals || [],
+        meetingPreference: initialData.meetingPref || '',
+        sportsInterests: initialData.sportsInterest || []
+      }));
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -193,6 +225,7 @@ const MatchingPreferences = () => {
             const payload = {
               sessionId: localStorage.getItem("sessionId") || "9999",
               role: localStorage.getItem("selectedRole") || "mentee",
+              session_role: formData.participantRole,
               transplantType: formData.transplantType,
               transplantYear: formData.transplantYear,
               goals: formData.supportNeeds,
