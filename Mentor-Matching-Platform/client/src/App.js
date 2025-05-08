@@ -13,6 +13,7 @@ import MentorshipSessionDetailPage from "./pages/Mentorship/MentorshipSessionDet
 import MySessionPage from "./pages/Mentorship/MySessions";
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
+import AvatarUpdatePage from "./components/Profile/ChangeAvatar";
 
 // Auth and Profile Components
 import LoginForm from "./components/Auth/LoginForm"; // ✅ Login component
@@ -113,7 +114,7 @@ function App() {
                     <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                     <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                     <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
-
+                    <Route path="/profile-avatar" element={<AvatarUpdatePage />} />
 
                     {/* Admin-only pages with permission check */}
                     <Route
