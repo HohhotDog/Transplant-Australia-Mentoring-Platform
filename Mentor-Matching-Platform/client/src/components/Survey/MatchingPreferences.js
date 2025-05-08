@@ -59,6 +59,7 @@ const MatchingPreferences = () => {
         if (data.success && data.data?.preferences) {
           const prefs = data.data.preferences;
           setInitialData({
+            participantRole: prefs.session_role || '',
             transplantType: JSON.parse(prefs.transplant_type),
             transplantYear: prefs.transplant_year,
             goals: JSON.parse(prefs.goals),
@@ -73,6 +74,7 @@ const MatchingPreferences = () => {
     if (initialData) {
       setFormData(prev => ({
         ...prev,
+        participantRole: initialData.participantRole || '',
         transplantType: initialData.transplantType || [],
         transplantYear: initialData.transplantYear || '',
         supportNeeds: initialData.goals || [],
@@ -223,6 +225,7 @@ const MatchingPreferences = () => {
             const payload = {
               sessionId: localStorage.getItem("sessionId") || "9999",
               role: localStorage.getItem("selectedRole") || "mentee",
+              session_role: formData.participantRole,
               transplantType: formData.transplantType,
               transplantYear: formData.transplantYear,
               goals: formData.supportNeeds,

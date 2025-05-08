@@ -9,10 +9,10 @@ function isAuthenticated(req, res, next) {
   return res.status(401).json({ success: false, message: "Unauthorized" });
 }
 
-/// Save mentorship preferences 
+// Save mentorship preferences 
 router.post("/save-preferences", isAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
-  const { sessionId, role, transplantType, transplantYear, goals, meetingPref, sportsInterest } = req.body;
+  const { sessionId, role, session_role, transplantType, transplantYear, goals, meetingPref, sportsInterest } = req.body;
 
   if (!sessionId || !role) {
     return res.status(400).json({ success: false, error: 'Missing sessionId or role' });
@@ -27,18 +27,20 @@ router.post("/save-preferences", isAuthenticated, async (req, res) => {
   db.run(
     `
     INSERT OR REPLACE INTO mentorship_preferences 
-    (application_id, user_id, role, transplant_type, transplant_year, goals, meeting_preference, sports_activities)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    (application_id, user_id, role, session_role, transplant_type, transplant_year, goals, meeting_preference, sports_activities)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
     [
       applicationId,
       userId,
       role,
+      session_role,
       JSON.stringify(transplantType),
       transplantYear,
       JSON.stringify(goals),
       meetingPref,
-      JSON.stringify(sportsInterest)
+      JSON.stringify(sportsInterest),
+      
     ],
     function (err) {
       if (err) {

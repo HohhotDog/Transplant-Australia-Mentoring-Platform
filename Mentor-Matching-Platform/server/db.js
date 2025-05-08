@@ -65,6 +65,7 @@ db.run(`
     user_id INTEGER NOT NULL,
     role TEXT CHECK (role IN ('mentor', 'mentee')),
     transplant_type TEXT,
+    session_role TEXT,
     transplant_year TEXT,
     goals TEXT,
     meeting_preference TEXT,
