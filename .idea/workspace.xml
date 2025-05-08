@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="New Security Questions based on the requirement.&#10;Edited the button about the RegisterSuccessInfo.jsx">
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/RequireAdmin.jsx" afterDir="false" />
+    <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="CSS Log-in Page implemented">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_4_2025_PM10_49_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_4_2025_PM10_49__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Layout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Navigation/NavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Navigation/NavBar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/middlewares/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/middlewares/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/admin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/auth.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +17,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JSX File" />
         <option value="JavaScript File" />
         <option value="CSS File" />
-        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -65,38 +58,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.App.js.executor": "Run",
-    "Node.js.Back-end.executor": "Run",
-    "Node.js.index.js.executor": "Run",
-    "Node.js.server.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Chensu-Yang-dev-branch",
-    "last_opened_file_path": "/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/src/components/Auth",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.Front-end.executor": "Run",
-    "npm.start.executor": "Run",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Back-end.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/public/images/ProfilePage&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.Front-end.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images/ProfilePage" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images/ProfileCreation" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images/RegSuccessInfo" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/style/Components/Login" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/public/images" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile" />
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/style" />
@@ -146,8 +137,6 @@
       <workItem from="1744814943156" duration="7109000" />
       <workItem from="1744891900192" duration="17814000" />
       <workItem from="1744954180234" duration="2327000" />
-      <workItem from="1746443867659" duration="76000" />
-      <workItem from="1746689792239" duration="9023000" />
     </task>
     <task id="LOCAL-00001" summary="Fix Bug from Session Page for ensuring compile">
       <option name="closed" value="true" />
@@ -253,15 +242,7 @@
       <option name="project" value="LOCAL" />
       <updated>1745289047798</updated>
     </task>
-    <task id="LOCAL-00014" summary="CSS Profile+Auth Implemented">
-      <option name="closed" value="true" />
-      <created>1745292488542</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1745292488542</updated>
-    </task>
-    <option name="localTasksCounter" value="15" />
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,19 +268,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/Chensu-Yang-dev-branch" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -315,29 +284,16 @@
     <MESSAGE value="Bug Fix" />
     <MESSAGE value="Updated Security Question" />
     <MESSAGE value="CSS Log-in Page implemented" />
-    <MESSAGE value="CSS Profile+Auth Implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="CSS Profile+Auth Implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="CSS Log-in Page implemented" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js</url>
-          <line>21</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js</url>
-          <line>23</line>
+          <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Admin/SessionTable.jsx</url>
+          <line>15</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Navigation/NavBar.js</url>
-          <line>59</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
