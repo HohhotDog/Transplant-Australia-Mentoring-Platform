@@ -102,7 +102,6 @@ function PersonalDetails({ isLoggedIn, handleLogout }) {
                     <input name="last_name" placeholder="Last name" value={formData.last_name} onChange={handleChange} required />
                     <input name="email" type="email" placeholder="Email" value={formData.email} disabled required />
                     <input name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} />
-                    <input name="profile_picture_url" placeholder="Photo (URL)" value={formData.profile_picture_url} onChange={handleChange} />
                     <textarea name="bio" placeholder="Bio (100 words max)" value={formData.bio} onChange={handleChange} rows={4} />
 
                     {/* Date input */}
