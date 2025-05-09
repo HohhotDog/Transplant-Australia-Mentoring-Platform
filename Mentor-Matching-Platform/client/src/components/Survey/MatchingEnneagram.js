@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+
 
 const questions = [
   { id: 1, textA: 'I want to be helpful.', typeA: 2, textB: 'I want to be competent.', typeB: 3 },
@@ -45,6 +47,10 @@ const MatchingEnneagram = () => {
   const [responses, setResponses] = useState({});
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
+  const [searchParams] = useSearchParams();
+const sessionId = searchParams.get('sessionId');
+const roleFromUrl = searchParams.get('role');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,7 +73,7 @@ const MatchingEnneagram = () => {
       .then(data => {
         if (data.success && data.data?.enneagram) {
           const enneagram = data.data.enneagram;
-          const savedResponses = enneagram.answers; // 👈 this should be the raw slider data
+          const savedResponses = enneagram.answers; 
           if (savedResponses) {
             console.log("🧠 Loaded previous enneagram responses:", savedResponses);
             const parsed = typeof savedResponses === 'string' ? JSON.parse(savedResponses) : savedResponses;
@@ -95,6 +101,12 @@ const MatchingEnneagram = () => {
 
   const calculateResult = async () => {
     const scores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+  
+const safeSessionId = (!sessionId || sessionId === "null") ? "9999" : sessionId;
+const safeRole = (!roleFromUrl || roleFromUrl === "null") ? "mentee" : roleFromUrl;
+
+console.log("🔥 calculateResult sessionId + role:", sessionId, roleFromUrl);
+
 
     Object.entries(responses).forEach(([id, val]) => {
       const question = questions.find(q => q.id === Number(id));
@@ -116,8 +128,6 @@ const MatchingEnneagram = () => {
   
     localStorage.setItem('enneagramResult', JSON.stringify(resultData));
 
-    const sessionId = localStorage.getItem("sessionId");
-    const role = localStorage.getItem("selectedRole");
 
     try {
       const enneagramRes = await fetch('/api/save-enneagram', {
@@ -125,13 +135,14 @@ const MatchingEnneagram = () => {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
-          sessionId,
-          role,
-          topTypes: resultData.topTypes,
-          allScores: resultData.allScores,
-          answers: responses,  
+            sessionId: safeSessionId,
+            role: safeRole,
+            topTypes: resultData.topTypes,
+            allScores: resultData.allScores,
+            answers: responses,  
         })
-      });
+    });
+    
 
       const enneagramData = await enneagramRes.json();
       if (!enneagramData.success) {
@@ -143,12 +154,12 @@ const MatchingEnneagram = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ sessionId })
+        body: JSON.stringify({ sessionId: safeSessionId })
       });
       const markData = await markRes.json();
 
       if (markData.success) {
-        fetch(`/api/match-mentee?sessionId=${sessionId}`, {
+        fetch(`/api/match-mentee?sessionId=${safeSessionId}`, {
           method: 'GET',
           credentials: 'include'
         })
@@ -163,7 +174,7 @@ const MatchingEnneagram = () => {
           });
       } else {
         alert("⚠️ Failed to mark application as submitted.");
-      }
+      }      
     } catch (err) {
       console.error("❌ Error during submission:", err);
       alert("An error occurred while finalizing submission.");

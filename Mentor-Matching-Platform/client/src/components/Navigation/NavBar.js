@@ -8,7 +8,9 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
 
     const isOnRegisterPage = location.pathname === "/register";
     const isOnLoginPage = location.pathname === "/login";
-    const handleProfileClick = async () => {
+
+    const handleProfileClick = async (e) => {
+        e.preventDefault();
         try {
             const res = await fetch("/api/profile", {
                 method: "GET",
@@ -16,18 +18,14 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
             });
 
             if (res.status === 200) {
-                // Profile exists
                 navigate("/profile");
             } else if (res.status === 404) {
-                // Profile not found
                 alert("⚠️ You need to complete your profile first.");
                 navigate("/profile-creation");
             } else if (res.status === 401) {
-                // Not logged in
                 alert("Please log in first.");
                 navigate("/login");
             } else {
-                // Unexpected response
                 alert("Unexpected error.");
             }
         } catch (err) {
@@ -35,7 +33,6 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
             alert("Unable to fetch profile info.");
         }
     };
-
 
     return (
         <nav className="navbar font-normal flex items-center space-x-4">
@@ -45,9 +42,9 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
                 <>
                     {/* Mentorship dropdown */}
                     <div className="relative inline-block group">
-            <span className="cursor-pointer px-2 py-1 hover:text-btnorange">
-              Mentorship
-            </span>
+                        <span className="cursor-pointer px-2 py-1 hover:text-btnorange">
+                            Mentorship
+                        </span>
                         <div className="absolute left-0 top-full hidden group-hover:block bg-white shadow-lg rounded z-10">
                             <Link
                                 to="/sessions"
@@ -64,19 +61,34 @@ const NavBar = ({ isLoggedIn, handleLogout }) => {
                         </div>
                     </div>
 
+                    {/* Account dropdown */}
+                    <div className="relative inline-block group">
+                        <span className="cursor-pointer px-2 py-1 hover:text-btnorange">
+                            Account
+                        </span>
+                        <div className="absolute left-0 top-full hidden group-hover:block bg-white shadow-lg rounded z-10">
+                            <Link
+                                to="/profile"
+                                onClick={handleProfileClick}
+                                className="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap"
+                            >
+                                My Profile
+                            </Link>
+                            <Link
+                                to="/account-mentorship-preferences"
+                                className="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap"
+                            >
+                                Mentorship Preferences
+                            </Link>
+                        </div>
+                    </div>
+
                     <Link to="/admin">Admin</Link>
-                    <Link
-                        to="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            handleProfileClick();
-                        }}
-                        className="text-black hover:text-btnorange"
-                    >
-                        Profile
-                    </Link>
                     <button
-                        onClick={handleLogout}
+                        onClick={() => {
+                            handleLogout();
+                            navigate("/");
+                        }}
                         className="bg-2-brown text-black font-normal px-3 py-1 rounded"
                     >
                         Logout

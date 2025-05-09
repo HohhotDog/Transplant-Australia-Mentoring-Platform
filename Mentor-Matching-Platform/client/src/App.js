@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
@@ -18,6 +18,7 @@ import PasswordLost from "./components/Auth/PasswordLost";
 import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";
+import AccountMentorshipPreferences from "./components/Account/AccountMentorshipPreferences";
 import SecurityManagement from "./components/Profile/SecurityManagement";
 import MySessionDetailRouter from "./pages/Mentorship/MySessionDetailRouter";
 
@@ -51,6 +52,22 @@ function App() {
             .catch((err) => console.error(err));
     }
 
+    useEffect(() => {
+        fetch("/api/check-auth", { credentials: "include" })
+            .then(res => res.json())
+            .then(data => {
+                if (data.isAuthenticated) {
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                }
+            })
+            .catch(err => {
+                console.error("Failed to check auth:", err);
+                setIsLoggedIn(false);
+            });
+    }, []);
+
     return (
         <Router>
             <Routes>
@@ -75,6 +92,7 @@ function App() {
                       <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                       <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                       <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                      <Route path="account-mentorship-preferences" element={<AccountMentorshipPreferences isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
 
                       {/* Survey Flow */}
                     <Route path="survey/*" element={<SurveyPage />} />

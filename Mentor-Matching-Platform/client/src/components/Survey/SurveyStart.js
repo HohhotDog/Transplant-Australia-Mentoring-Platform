@@ -11,10 +11,10 @@ const SurveyStart = () => {
   const [profile, setProfile] = useState({});
   const [isLocked, setIsLocked] = useState(false);
   const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get('sessionId'); 
-  // get sessionId and role from url
-  // const sessionId = searchParams.get('sessionId');
-  // const role      = searchParams.get('role');
+  const sessionId = searchParams.get('sessionId');
+  const roleFromUrl = searchParams.get('role');
+  
+
 
   useEffect(() => {
     if (!sessionId) return;  
@@ -48,10 +48,16 @@ const SurveyStart = () => {
       .catch(err => console.error("Failed to fetch profile", err));
   }, []);
 
+  useEffect(() => {
+    if (roleFromUrl) {
+        setSelectedRole(roleFromUrl);
+        setIsLocked(true); 
+    }
+}, [roleFromUrl]);
+
+
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
-    localStorage.setItem('selectedRole', role);
-    localStorage.setItem('sessionId', sessionId);
   };
 
   const handleNext = () => {
@@ -59,8 +65,9 @@ const SurveyStart = () => {
       alert('Please select a role before proceeding.');
       return;
     }
-    navigate('/survey/preferences');
+    navigate(`/survey/preferences?sessionId=${sessionId}&role=${selectedRole}`);
   };
+  
 
   const inputStyle = "w-full p-2 border border-gray-300 rounded-md mb-4 bg-gray-100";
   const labelStyle = "font-medium mb-1 block";
@@ -138,17 +145,20 @@ const SurveyStart = () => {
       </div>
 
       <div className="flex justify-end mt-8">
-        <button
-          type="button"
-          onClick={handleNext}
-          disabled={isLocked}
-          className={`px-6 py-2 rounded flex items-center gap-2 text-white ${
-            isLocked ? 'bg-gray-400 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'
-          }`}
-        >
-          <span>Next</span>
-          <span>➔</span>
-        </button>
+      <button
+  type="button"
+  onClick={handleNext}
+  className={`px-6 py-2 rounded flex items-center gap-2 text-white ${
+    !selectedRole
+      ? 'bg-gray-400 cursor-not-allowed'
+      : 'bg-orange-500 hover:bg-orange-600'
+  }`}
+  disabled={!selectedRole}  
+>
+  <span>Next</span>
+  <span>➔</span>
+</button>
+
       </div>
     </div>
   );
