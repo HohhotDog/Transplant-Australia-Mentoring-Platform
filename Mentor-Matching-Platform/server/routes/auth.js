@@ -183,6 +183,30 @@ router.post("/logout", (req, res) => {
     return res.json({ success: true, message: "Logged out successfully." });
 });
 
+/**
+ * @route GET /check-auth
+ * @group Auth
+ * @summary Checks if the user is logged in (session-based)
+ * @returns {object} 200 - { isAuthenticated: true/false }
+ */
+router.get("/check-auth", (req, res) => {
+    if (req.session && req.session.user) {
+        return res.json({
+            isAuthenticated: true,
+            user: {
+                id: req.session.user.id,
+                email: req.session.user.email,
+            }
+        });
+    } else {
+        return res.json({
+            isAuthenticated: false
+        });
+    }
+});
+
+
+
 module.exports = router;
 
 

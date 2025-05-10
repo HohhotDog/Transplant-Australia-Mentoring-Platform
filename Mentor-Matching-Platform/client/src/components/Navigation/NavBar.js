@@ -1,4 +1,3 @@
-// src/components/Navigation/NavBar.js
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -9,8 +8,6 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
     const isOnRegisterPage = location.pathname === "/register";
     const isOnLoginPage = location.pathname === "/login";
 
-
-
     const doLogout = async () => {
         try {
             const res = await fetch("/api/logout", {
@@ -19,9 +16,7 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
             });
             const data = await res.json();
             if (data.success) {
-
                 handleLogout();
-
                 navigate("/");
             }
         } catch (err) {
@@ -30,11 +25,8 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
         }
     };
 
-
-    // Debug log to inspect props
-    console.log("🔎 NavBar props:", { isLoggedIn, accountType });
-
-    const handleProfileClick = async () => {
+    const handleProfileClick = async (e) => {
+        e.preventDefault();
         try {
             const res = await fetch("/api/profile", {
                 method: "GET",
@@ -58,6 +50,9 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
         }
     };
 
+    // Debug log to inspect props
+    console.log("🔎 NavBar props:", { isLoggedIn, accountType });
+
     return (
         <nav className="navbar font-normal flex items-center space-x-4">
             <Link to="/">Home</Link>
@@ -75,17 +70,33 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
                         </div>
                     </div>
 
-                    <Link to="/survey">Survey</Link>
-                    <Link to="#" onClick={(e) => { e.preventDefault(); handleProfileClick(); }} className="text-black hover:text-btnorange">Profile</Link>
+                    {/* Account dropdown */}
+                    <div className="relative inline-block group">
+                        <span className="cursor-pointer px-2 py-1 hover:text-btnorange">
+                            Account
+                        </span>
+                        <div className="absolute left-0 top-full hidden group-hover:block bg-white shadow-lg rounded z-10">
+                            <Link
+                                to="/profile"
+                                onClick={handleProfileClick}
+                                className="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap"
+                            >
+                                My Profile
+                            </Link>
+                            <Link
+                                to="/account-mentorship-preferences"
+                                className="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap"
+                            >
+                                Mentorship Preferences
+                            </Link>
+                        </div>
+                    </div>
                 </>
             )}
 
             {/* Admin Menu */}
             {isLoggedIn && (accountType === 1 || accountType === "1") && (
-                <>
-
-                    <Link to="/admin">Admin</Link>
-                </>
+                <Link to="/admin">Admin</Link>
             )}
 
             {/* Logout Button */}

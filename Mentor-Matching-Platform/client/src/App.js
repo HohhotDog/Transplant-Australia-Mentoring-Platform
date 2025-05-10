@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import RequireAdmin from "./components/Auth/RequireAdmin";
@@ -20,6 +21,7 @@ import LoginForm from "./components/Auth/LoginForm"; // ✅ Login component
 import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";
+import AccountMentorshipPreferences from "./components/Account/AccountMentorshipPreferences";
 import SecurityManagement from "./components/Profile/SecurityManagement";
 import MySessionDetailRouter from "./pages/Mentorship/MySessionDetailRouter";
 
@@ -80,67 +82,92 @@ function App() {
             .catch((err) => console.error(err));
     }
 
+ // Check auth status on page load
+    useEffect(() => {
+        fetch("/api/check-auth", { credentials: "include" })
+            .then(res => res.json())
+            .then(data => {
+                if (data.isAuthenticated) {
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                }
+            })
+            .catch(err => {
+                console.error("Failed to check auth:", err);
+                setIsLoggedIn(false);
+            })
+            .finally(() => {
+                setIsSessionChecked(true);
+            });
+    }, []);
+
     // Delay rendering routes until session check is complete
     if (!isSessionChecked) return null;
 
-    return (
-        <Router>
-            <Routes>
+return (
+    <Router>
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <Layout
+                        isLoggedIn={isLoggedIn}
+                        handleLogout={handleLogout}
+                        accountType={accountType}
+                    />
+                }
+            >
+                {/* Public & user-accessible pages */}
+                <Route index element={<HomePage />} />
+                <Route path="survey/*" element={<SurveyPage />} />
+
+                {/* Explore Sessions with nested detail */}
+                <Route path="sessions">
+                    <Route index element={<ExploreSessionPage />} />
+                    <Route path=":id" element={<MentorshipSessionDetailPage />} />
+                </Route>
+
+                {/* My Sessions with nested detail */}
+                <Route path="my-sessions">
+                    <Route index element={<MySessionPage />} />
+                    <Route path=":id" element={<MySessionDetailRouter />} />
+                </Route>
+
+                {/* Profile management routes */}
+                <Route path="profile" element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                <Route path="account-mentorship-preferences" element={<AccountMentorshipPreferences isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+                <Route path="profile-avatar" element={<AvatarUpdatePage />} />
+
+                {/* Admin-only pages with permission check */}
                 <Route
-                    path="/"
+                    path="admin"
                     element={
-                        <Layout
-                            isLoggedIn={isLoggedIn}
-                            handleLogout={handleLogout}
-                            accountType={accountType}
-                        />
+                        <RequireAdmin accountType={accountType}>
+                            <AdminPage />
+                        </RequireAdmin>
                     }
-                >
-                    {/* Public & user-accessible pages */}
-                    <Route index element={<HomePage />} />
-                    <Route path="survey/*" element={<SurveyPage />} />
-                    <Route path="sessions">
-                        <Route index element={<ExploreSessionPage />} />
-                        <Route path=":id" element={<MentorshipSessionDetailPage />} />
-                    </Route>
-                    <Route path="my-sessions">
-                        <Route index element={<MySessionPage />} />
-                        <Route path=":id" element={<MySessionDetailRouter />} />
-                    </Route>
-
-
-                    {/* Profile management routes */}
-                    <Route path="profile" element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
-                    <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
-                    <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
-                    <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
-                    <Route path="/profile-avatar" element={<AvatarUpdatePage />} />
-
-                    {/* Admin-only pages with permission check */}
-                    <Route
-                        path="admin"
-                        element={
-                            <RequireAdmin accountType={accountType}>
-                                <AdminPage />
-                            </RequireAdmin>
-                        }
-                    />
-                    <Route
-                        path="admin/sessions/:sessionId/applications"
-                        element={
-                            <RequireAdmin accountType={accountType}>
-                                <AdminApplicationsPage />
-                            </RequireAdmin>
-                        }
-                    />
-                    <Route
-                        path="admin/sessions/:sessionId/applications/:applicationId"
-                        element={
-                            <RequireAdmin accountType={accountType}>
-                                <AdminApplicationDetailPage />
-                            </RequireAdmin>
-                        }
-                    />
+                />
+                <Route
+                    path="admin/sessions/:sessionId/applications"
+                    element={
+                        <RequireAdmin accountType={accountType}>
+                            <AdminApplicationsPage />
+                        </RequireAdmin>
+                    }
+                />
+                <Route
+                    path="admin/sessions/:sessionId/applications/:applicationId"
+                    element={
+                        <RequireAdmin accountType={accountType}>
+                            <AdminApplicationDetailPage />
+                        </RequireAdmin>
+                    }
+                />
+            </Route>
 
                       {/* Survey Flow */}
                     <Route path="survey/*" element={<SurveyPage />} />

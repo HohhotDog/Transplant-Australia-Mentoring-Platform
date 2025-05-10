@@ -1,6 +1,7 @@
 // src/components/Survey/MatchingPreferences.js
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 
 const transplantOptions = [
@@ -28,6 +29,10 @@ const transplantOptions = [
   ];
 
 const MatchingPreferences = () => {
+  const [searchParams] = useSearchParams();
+const sessionId = searchParams.get('sessionId');
+const roleFromUrl = searchParams.get('role');
+
   const [formData, setFormData] = useState({
     participantRole: '',
     transplantType: [],
@@ -50,7 +55,11 @@ const MatchingPreferences = () => {
         }
       })
       .catch(err => console.error("⚠️ Error checking submission status:", err));
-  }, []);
+
+    if (sessionId) localStorage.setItem("sessionId", sessionId);
+    if (roleFromUrl) localStorage.setItem("selectedRole", roleFromUrl);
+  }, [sessionId, roleFromUrl]);
+  
 
   useEffect(() => {
     fetch('/api/latest-survey', { credentials: 'include' })
@@ -223,15 +232,15 @@ const MatchingPreferences = () => {
           disabled={isLocked}
           onClick={async () => {
             const payload = {
-              sessionId: localStorage.getItem("sessionId") || "9999",
-              role: localStorage.getItem("selectedRole") || "mentee",
+              sessionId: sessionId || "9999",   
+              role: roleFromUrl || "mentee",    
               session_role: formData.participantRole,
               transplantType: formData.transplantType,
               transplantYear: formData.transplantYear,
               goals: formData.supportNeeds,
               meetingPref: formData.meetingPreference,
               sportsInterest: formData.sportsInterests,
-            };
+          };
 
             try {
               const res = await fetch("/api/save-preferences", {
@@ -244,7 +253,7 @@ const MatchingPreferences = () => {
               const data = await res.json();
 
               if (data.success) {
-                window.location.href = '/survey/lifestyle';
+                window.location.href = `/survey/lifestyle?sessionId=${sessionId}&role=${roleFromUrl}`;
               } else {
                 alert("❌ Failed to save preferences.");
               }

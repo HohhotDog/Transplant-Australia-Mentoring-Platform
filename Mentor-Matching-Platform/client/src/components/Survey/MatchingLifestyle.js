@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 const MatchingLifestyle = () => {
   const navigate = useNavigate();
   const [isLocked, setIsLocked] = useState(false);
+  const [searchParams] = useSearchParams();
+const sessionId = searchParams.get('sessionId');
+const roleFromUrl = searchParams.get('role');
+
   const [responses, setResponses] = useState({
     physicalExerciseFrequency: '',
     likeAnimals: '',
@@ -70,20 +75,22 @@ const MatchingLifestyle = () => {
   const handleNext = () => {
     console.log("🔥 Matching Lifestyle Responses:", responses);
 
-    const sessionId = localStorage.getItem("sessionId") || "9999";
-    const role = localStorage.getItem("selectedRole") || "mentee";
-
     fetch('/api/save-lifestyle', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ sessionId, role, answers: responses })
+      body: JSON.stringify({
+        sessionId: sessionId || "9999",
+        role: roleFromUrl || "mentee",
+        answers: responses
+      })
     })
+    
       .then(res => res.json())
       .then(data => {
         if (data.success) {
           console.log("✅ Lifestyle answers saved!");
-          navigate('/survey/enneagram');
+          navigate(`/survey/enneagram?sessionId=${sessionId}&role=${roleFromUrl}`);
         } else {
           console.error("❌ Failed to save lifestyle answers");
           alert("Something went wrong while saving. Try again?");
