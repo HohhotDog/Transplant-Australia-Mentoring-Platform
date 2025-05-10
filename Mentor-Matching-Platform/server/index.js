@@ -8,6 +8,7 @@ const profileRoutes = require("./routes/profile");
 const securityRoutes = require("./routes/security");
 const surveyRoutes = require("./routes/survey");
 const matchRoutes = require("./routes/match");
+const avatarRoutes = require("./routes/avatar");
 
 const sessionRoutes = require("./routes/sessions");
 const seedSessions = require("./scripts/seedSessions");
@@ -25,13 +26,20 @@ app.use(cors({
 }));
 
 app.use(
-  session({
-    secret: "someSuperSecretKey",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 60 * 60 * 1000 } // 60 minutes
-  })
+    session({
+        name: "connect.sid", // optional but explicit
+        secret: "someSuperSecretKey",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            sameSite: "lax",
+            secure: false,
+            maxAge: 60 * 60 * 1000
+        }
+    })
 );
+
 
 // Mount routes
 app.use("/api", authRoutes);
@@ -40,6 +48,7 @@ app.use("/api", securityRoutes);
 app.use("/api", surveyRoutes);
 app.use("/api", matchRoutes);
 app.use("/api", sessionRoutes);
+app.use("/api", avatarRoutes);
 
 // admin routes
 const adminRoutes = require("./routes/admin");
