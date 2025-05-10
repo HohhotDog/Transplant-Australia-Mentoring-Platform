@@ -76,8 +76,8 @@ const SurveyStart = () => {
     <div className="max-w-2xl mx-auto p-8 text-left">
       <h1 className="text-3xl font-bold mb-8">Mentorship Application</h1>
 
-      <h2 className="text-xl font-semibold mb-2">Choose Your Role</h2>
-      <p className="mb-4">I’m applying to:</p>
+      <h2 className="text-xl font-semibold mb-2">Confirm your role</h2>
+      <p className="mb-4">I’m applying to be a:</p>
 
       <div className="flex gap-4 mb-8">
         <button
@@ -90,7 +90,7 @@ const SurveyStart = () => {
               : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
           } ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-300 hover:shadow-md'} transition duration-200 ease-in-out`}
         >
-          Become a mentor
+          Mentor
         </button>
 
         <button
@@ -103,7 +103,7 @@ const SurveyStart = () => {
               : 'bg-[#f8f4ee] text-black border-[#f8f4ee]'
           } ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-300 hover:shadow-md'} transition duration-200 ease-in-out`}
         >
-          Find a mentor
+          Mentee
         </button>
       </div>
 

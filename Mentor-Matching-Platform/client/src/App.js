@@ -174,7 +174,7 @@ return (
 
 
 
-                </Route>
+                
 
                 {/* Auth-related pages (outside layout) */}
                 <Route
@@ -191,6 +191,7 @@ return (
                 <Route path="/register-success" element={<RegisterSuccessInfo isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
                 <Route path="/forgot-password" element={<PasswordLost isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
             </Routes>
+        
         </Router>
     );
 }
