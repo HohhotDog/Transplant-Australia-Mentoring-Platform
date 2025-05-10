@@ -27,10 +27,10 @@ const SubmitForm = () => {
         </p>
 
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/')}
           className="bg-orange-600 text-white font-semibold px-6 py-2 rounded hover:bg-orange-700"
         >
-          Back to Connections
+          Back to Home
         </button>
       </div>
     </div>

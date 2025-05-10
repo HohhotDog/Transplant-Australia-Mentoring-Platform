@@ -284,4 +284,60 @@ if (!sessionId) {
   });
 });
 
+// Save Account Mentorship Preferences (no session tie)
+router.post("/account-save-preferences", isAuthenticated, async (req, res) => {
+  const userId = req.session.user.id;
+  const { session_role, transplantType, transplantYear, goals, meetingPref, sportsInterest } = req.body;
+
+  try {
+      // Check if user already has a saved mentorship_preferences row (account-level)
+      const existing = await db.get(
+          `SELECT * FROM mentorship_preferences WHERE user_id = ? AND session_id IS NULL`,
+          [userId]
+      );
+
+      if (existing) {
+          // Update existing
+          await db.run(
+              `UPDATE mentorship_preferences
+               SET session_role = ?, transplant_type = ?, transplant_year = ?, goals = ?, meeting_preference = ?, sports_activities = ?, updated_at = CURRENT_TIMESTAMP
+               WHERE user_id = ? AND session_id IS NULL`,
+              [
+                  session_role,
+                  JSON.stringify(transplantType),
+                  transplantYear,
+                  JSON.stringify(goals),
+                  meetingPref,
+                  JSON.stringify(sportsInterest),
+                  userId
+              ]
+          );
+          console.log(`✅ Updated account-level mentorship preferences for user ${userId}`);
+      } else {
+          // Insert new
+          await db.run(
+              `INSERT INTO mentorship_preferences 
+              (user_id, session_id, role, session_role, transplant_type, transplant_year, goals, meeting_preference, sports_activities, submitted, updated_at)
+              VALUES (?, NULL, NULL, ?, ?, ?, ?, ?, ?, 0, CURRENT_TIMESTAMP)`,
+              [
+                  userId,
+                  session_role,
+                  JSON.stringify(transplantType),
+                  transplantYear,
+                  JSON.stringify(goals),
+                  meetingPref,
+                  JSON.stringify(sportsInterest),
+              ]
+          );
+          console.log(`✅ Inserted new account-level mentorship preferences for user ${userId}`);
+      }
+
+      return res.json({ success: true });
+  } catch (err) {
+      console.error("❌ Error saving account-level preferences:", err.message);
+      res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
 module.exports = router;

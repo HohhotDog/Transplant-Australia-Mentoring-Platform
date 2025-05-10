@@ -21,7 +21,7 @@ import LoginForm from "./components/Auth/LoginForm"; // ✅ Login component
 import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";
-import AccountMentorshipPreferences from "./components/Account/AccountMentorshipPreferences";
+import AccountMentorshipPreferences from "./pages/Account/AccountMentorshipPreferences";
 import SecurityManagement from "./components/Profile/SecurityManagement";
 import MySessionDetailRouter from "./pages/Mentorship/MySessionDetailRouter";
 
