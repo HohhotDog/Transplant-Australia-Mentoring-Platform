@@ -174,7 +174,7 @@ return (
 
 
 
-                </Route>
+            
 
                 {/* Auth-related pages (outside layout) */}
                 <Route
