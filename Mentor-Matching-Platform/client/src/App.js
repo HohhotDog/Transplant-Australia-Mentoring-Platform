@@ -17,7 +17,7 @@ import PasswordLost from "./components/Auth/PasswordLost";
 import AvatarUpdatePage from "./components/Profile/ChangeAvatar";
 
 // Auth and Profile Components
-import LoginForm from "./components/Auth/LoginForm"; // ✅ Login component
+import LoginForm from "./components/Auth/LoginForm"; 
 import ProfileForm from "./components/Profile/ProfileCreation";
 import ProfilePage from "./components/Profile/ProfilePage";
 import PersonalDetails from "./components/Profile/PersonalDetails";

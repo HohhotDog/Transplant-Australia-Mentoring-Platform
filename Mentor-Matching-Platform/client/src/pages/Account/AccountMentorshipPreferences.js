@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 
+
 const transplantOptions = [
     { value: 'Bone Marrow', label: 'Bone Marrow' },
     { value: 'Pancreas', label: 'Pancreas' },
@@ -36,28 +37,35 @@ const AccountMentorshipPreferences = () => {
         supportNeeds: []
     });
 
+    const [hasData, setHasData] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Load latest saved preferences
         fetch('/api/latest-survey', { credentials: 'include' })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.data?.preferences) {
-                    const prefs = data.data.preferences;
-                    setFormData({
-                        participantRole: prefs.session_role || '',
-                        transplantType: JSON.parse(prefs.transplant_type || '[]'),
-                        transplantYear: prefs.transplant_year || '',
-                        supportNeeds: JSON.parse(prefs.goals || '[]'),
-                        meetingPreference: prefs.meeting_preference || '',
-                        sportsInterests: JSON.parse(prefs.sports_activities || '[]')
-                    });
-                }
-            })
-            .catch(err => console.error('Error loading preferences:', err))
-            .finally(() => setLoading(false));
-    }, []);
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.data?.preferences) {
+              const prefs = data.data.preferences;
+              setFormData({
+                participantRole: prefs.session_role || '',
+                transplantType: JSON.parse(prefs.transplant_type || '[]'),
+                transplantYear: prefs.transplant_year || '',
+                supportNeeds: JSON.parse(prefs.goals || '[]'),
+                meetingPreference: prefs.meeting_preference || '',
+                sportsInterests: JSON.parse(prefs.sports_activities || '[]')
+              });
+              setHasData(true);
+            } else {
+              setHasData(false);
+            }
+          })
+          .catch(err => {
+            console.error('Error loading preferences:', err);
+            setHasData(false);
+          })
+          .finally(() => setLoading(false));
+      }, []);
+      
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -102,6 +110,29 @@ const AccountMentorshipPreferences = () => {
     };
 
     if (loading) return <div>Loading preferences...</div>;
+
+    if (!hasData) {
+       
+        return (
+            <div className="max-w-3xl mx-auto p-8 mt-10 bg-white rounded-xl shadow text-center">
+              <h1 className="text-4xl font-bold mb-6 text-gray-800">My Mentorship Preferences</h1>
+              <div className="text-gray-700 text-lg leading-relaxed px-6">
+                <div className="flex justify-center mb-4 text-yellow-600 text-2xl">⚠️</div>
+                <p className="mb-4 font-medium">
+                  You haven’t submitted any mentorship application yet.
+                </p>
+                <p className="text-base font-normal text-gray-700">
+                Join a session and complete the survey to view and manage your preferences here.
+                </p>
+              </div>
+            </div>
+          );
+          
+              
+          
+      }
+      
+
 
     return (
         <div className="max-w-3xl mx-auto p-8 text-left">
