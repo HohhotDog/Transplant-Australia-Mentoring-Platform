@@ -80,7 +80,7 @@ router.post(
             });
 
             // Respond with the new avatar URL
-            return res.json({ success: true, url: publicUrl });
+            return res.json({ success: true, avatar_url: publicUrl });
         } catch (err) {
             console.error("Database update error:", err);
             return res

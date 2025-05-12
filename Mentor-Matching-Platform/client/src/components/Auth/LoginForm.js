@@ -7,7 +7,7 @@ import "../../components/Auth/style/Login.css";
 function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const navigate = useNavigate(); // ✅ for redirection
+  const navigate = useNavigate(); 
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -43,7 +43,7 @@ function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
 
   return (
       <div>
-        <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+        {isLoggedIn && <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
 
         <div className="login-container">
           <div className="login-carousel">

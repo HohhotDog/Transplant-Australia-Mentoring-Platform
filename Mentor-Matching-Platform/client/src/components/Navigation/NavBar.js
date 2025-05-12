@@ -100,14 +100,15 @@ const NavBar = ({ isLoggedIn, handleLogout, accountType }) => {
             )}
 
             {/* Logout Button */}
-            {isLoggedIn && (
-                <button
-                    onClick={doLogout}
-                    className="bg-2-brown text-black font-normal px-3 py-1 rounded"
-                >
-                    Logout
-                </button>
-            )}
+            {isLoggedIn && !isOnLoginPage && (
+  <button
+    onClick={doLogout}
+    className="bg-2-brown text-black font-normal px-3 py-1 rounded"
+  >
+    Logout
+  </button>
+)}
+
 
             {/* Login/Register Links */}
             {!isLoggedIn && (

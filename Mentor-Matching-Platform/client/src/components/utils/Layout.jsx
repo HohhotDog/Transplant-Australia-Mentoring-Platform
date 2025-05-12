@@ -1,7 +1,7 @@
 // src/components/Layout.jsx
 import React from "react";
 import { Outlet } from "react-router-dom";
-import NavBar from "./Navigation/NavBar";
+import NavBar from "../Navigation/NavBar";
 
 /**
  * Global page layout.
