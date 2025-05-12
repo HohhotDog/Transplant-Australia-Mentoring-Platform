@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
@@ -35,229 +34,160 @@ import Layout from "./components/utils/Layout";
 import SidebarLayout from "./components/utils/SidebarLayout";
 
 function App() {
-    // Global session state
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [accountType, setAccountType] = useState(null); // 0 = regular user, 1 = admin
-    const [isSessionChecked, setIsSessionChecked] = useState(false); // Wait for session to be checked before rendering routes
-    const { setUser } = useUser();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accountType, setAccountType] = useState(null);
+  const [isSessionChecked, setIsSessionChecked] = useState(false);
+  const { setUser } = useUser();
 
-
-    // Automatically check session on initial page load
-    useEffect(() => {
-      fetch("/api/me", {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            setIsLoggedIn(true);
-            setAccountType(data.account_type);
-            setUser({
-              avatar_url: data.avatar_url || "/images/default-avatar.png",
-            });
-          }
-        })
-        .catch((err) => {
-          console.error("Failed to check session:", err);
-        })
-        .finally(() => {
-          setIsSessionChecked(true);
-        });
-    }, []);
-    
-
-    // Called when login succeeds
-    function handleLoginSuccess(type, avatarUrl) {
-      setIsLoggedIn(true);
-      setAccountType(type);
-      setUser({
-        avatar_url: avatarUrl || "/images/default-avatar.png",
-      });
-    }
-    
-
-    // Called when logout is triggered
-    function handleLogout() {
-        fetch("/api/logout", {
-          method: "POST",
-          credentials: "include",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              setIsLoggedIn(false); 
-              setAccountType(null);
-              setUser(null);
-            }
+  useEffect(() => {
+    fetch("/api/me", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setIsLoggedIn(true);
+          setAccountType(data.account_type);
+          setUser({
+            avatar_url: data.avatar_url || "/images/default-avatar.png",
           });
-      }
-      
+        }
+      })
+      .catch((err) => console.error("Failed to check session:", err))
+      .finally(() => setIsSessionChecked(true));
+  }, []);
 
- // Check auth status on page load
-    useEffect(() => {
-        fetch("/api/check-auth", { credentials: "include" })
-            .then(res => res.json())
-            .then(data => {
-                if (data.isAuthenticated) {
-                    setIsLoggedIn(true);
-                } else {
-                    setIsLoggedIn(false);
-                }
-            })
-            .catch(err => {
-                console.error("Failed to check auth:", err);
-                setIsLoggedIn(false);
-            })
-            .finally(() => {
-                setIsSessionChecked(true);
-            });
-    }, []);
+  function handleLoginSuccess(type, avatarUrl) {
+    setIsLoggedIn(true);
+    setAccountType(type);
+    setUser({
+      avatar_url: avatarUrl || "/images/default-avatar.png",
+    });
+  }
 
-    // Delay rendering routes until session check is complete
-    if (!isSessionChecked) return null;
+  function handleLogout() {
+    fetch("/api/logout", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setIsLoggedIn(false);
+          setAccountType(null);
+          setUser(null);
+        }
+      });
+  }
 
-    return (
-        <Router>
-          <Routes>
-            {/* Pages that use the SIDEBAR layout */}
-            <Route element={<SidebarLayout isLoggedIn={isLoggedIn} />}>
+  useEffect(() => {
+    fetch("/api/check-auth", { credentials: "include" })
+      .then((res) => res.json())
+      .then((data) => setIsLoggedIn(data.isAuthenticated))
+      .catch((err) => {
+        console.error("Failed to check auth:", err);
+        setIsLoggedIn(false);
+      })
+      .finally(() => setIsSessionChecked(true));
+  }, []);
 
-              <Route
-                path="account-mentorship-preferences"
-                element={
-                  <AccountMentorshipPreferences
-                    isLoggedIn={isLoggedIn}
-                    handleLogout={handleLogout}
-                  />
-                }
+  if (!isSessionChecked) return null;
+
+  return (
+    <Router>
+      <Routes>
+        {/* Sidebar Layout */}
+        <Route element={<SidebarLayout isLoggedIn={isLoggedIn} />}>
+          <Route
+            path="account-mentorship-preferences"
+            element={
+              <AccountMentorshipPreferences
+                isLoggedIn={isLoggedIn}
+                handleLogout={handleLogout}
               />
-              {/* Profile management routes */}
-              <Route
-                path="profile"
-                element={
-                  <ProfilePage
-                    isLoggedIn={isLoggedIn}
-                    handleLogout={handleLogout}
-                  />
-                }
-              />
-              <Route
-                path="profile-creation"
-                element={
-                  <ProfileForm
-                    isLoggedIn={isLoggedIn}
-                    handleLogout={handleLogout}
-                  />
-                }
-              />
-              <Route
-                path="profile-edit"
-                element={
-                  <PersonalDetails
-                    isLoggedIn={isLoggedIn}
-                    handleLogout={handleLogout}
-                  />
-                }
-              />
-              <Route
-                path="profile-security"
-                element={
-                  <SecurityManagement
-                    isLoggedIn={isLoggedIn}
-                    handleLogout={handleLogout}
-                  />
-                }
-              />
-              <Route path="profile-avatar" element={<AvatarUpdatePage />} />
-              <Route path="my-sessions">
-                <Route index element={<MySessionPage />} />
-                <Route path=":id" element={<MySessionDetailRouter />} />
-              </Route>
-              <Route path="sessions">
-                <Route index element={<ExploreSessionPage />} />
-                <Route path=":id" element={<MentorshipSessionDetailPage />} />
-              </Route>
-              <Route
-                path="admin"
-                element={
-                  <RequireAdmin accountType={accountType}>
-                    <AdminPage />
-                  </RequireAdmin>
-                }
-              />
-              <Route
-                path="admin/sessions/:sessionId/applications"
-                element={
-                  <RequireAdmin accountType={accountType}>
-                    <AdminApplicationsPage />
-                  </RequireAdmin>
-                }
-              />
-              <Route
-                path="admin/sessions/:sessionId/applications/:applicationId"
-                element={
-                  <RequireAdmin accountType={accountType}>
-                    <AdminApplicationDetailPage />
-                  </RequireAdmin>
-                }
-              />
-            </Route>
-      
-            {/* All other pages that use the TOP NAVBAR layout */}
-            <Route
-              path="/"
-              element={
-                <Layout
-                  isLoggedIn={isLoggedIn}
-                  handleLogout={handleLogout}
-                  accountType={accountType}
-                />
-              }
-            >
-              {/* Authenticated & user-accessible pages */}
-              <Route index element={<HomePage />} />
-              <Route path="survey/*" element={<SurveyPage />} />
-      
-              
-            </Route>
-      
-            {/* Auth-related pages (outside layout) */}
-            <Route
-              path="/login"
-              element={
-                <LoginForm
-                  isLoggedIn={isLoggedIn}
-                  handleLogout={handleLogout}
-                  onLoginSuccess={handleLoginSuccess}
-                />
-              }
+            }
+          />
+          <Route path="profile" element={<ProfilePage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+          <Route path="profile-creation" element={<ProfileForm isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+          <Route path="profile-edit" element={<PersonalDetails isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+          <Route path="profile-security" element={<SecurityManagement isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+          <Route path="profile-avatar" element={<AvatarUpdatePage />} />
+          <Route path="my-sessions">
+            <Route index element={<MySessionPage />} />
+            <Route path=":id" element={<MySessionDetailRouter />} />
+          </Route>
+          <Route path="sessions">
+            <Route index element={<ExploreSessionPage />} />
+            <Route path=":id" element={<MentorshipSessionDetailPage />} />
+          </Route>
+          <Route
+            path="admin"
+            element={
+              <RequireAdmin accountType={accountType}>
+                <AdminPage />
+              </RequireAdmin>
+            }
+          />
+          <Route
+            path="admin/sessions/:sessionId/applications"
+            element={
+              <RequireAdmin accountType={accountType}>
+                <AdminApplicationsPage />
+              </RequireAdmin>
+            }
+          />
+          <Route
+            path="admin/sessions/:sessionId/applications/:applicationId"
+            element={
+              <RequireAdmin accountType={accountType}>
+                <AdminApplicationDetailPage />
+              </RequireAdmin>
+            }
+          />
+        </Route>
+
+        {/* Top Navbar Layout */}
+        <Route
+          path="/"
+          element={
+            <Layout
+              isLoggedIn={isLoggedIn}
+              handleLogout={handleLogout}
+              accountType={accountType}
             />
-            <Route
-              path="/register"
-              element={
-                <RegisterPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-              }
-            />
-            <Route
-              path="/register-success"
-              element={
-                <RegisterSuccessInfo
-                  isLoggedIn={isLoggedIn}
-                  handleLogout={handleLogout}
-                />
-              }
-            />
-            <Route
-              path="/forgot-password"
-              element={
-                <PasswordLost isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-              }
-            />
-          </Routes>
-        </Router>
-      );
-      
-    }
+          }
+        >
+          <Route index element={<HomePage />} />
+          <Route path="survey/*" element={<SurveyPage />} />
+        </Route>
 
-    export default App; 
+        {/* Auth Routes */}
+        <Route
+          path="/login"
+          element={
+            <LoginForm
+              isLoggedIn={isLoggedIn}
+              handleLogout={handleLogout}
+              onLoginSuccess={handleLoginSuccess}
+            />
+          }
+        />
+        <Route
+          path="/register"
+          element={<RegisterPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/register-success"
+          element={<RegisterSuccessInfo isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/forgot-password"
+          element={<PasswordLost isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}
+        />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
