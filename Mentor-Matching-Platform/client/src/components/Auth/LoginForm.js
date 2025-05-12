@@ -25,8 +25,8 @@ function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
       const data = await res.json();
 
       if (data.success) {
-        onLoginSuccess(data.account_type); // ✅ update App state
-        // ✅ Redirect based on account type
+        onLoginSuccess(data.account_type, data.avatar_url); 
+    
         if (data.account_type === 1) {
           navigate("/admin");
         } else {

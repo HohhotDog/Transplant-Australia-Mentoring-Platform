@@ -2,11 +2,11 @@ import React, { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "./cropUtils";
-import { useUser } from "../context/UserContext"; // ✅ Import user context
+import { useUser } from "../context/UserContext";
 
 export default function AvatarUpdatePage() {
   const navigate = useNavigate();
-  const { setUser } = useUser(); // ✅ Access context to update avatar URL
+  const { setUser } = useUser();
 
   const [imageSrc, setImageSrc] = useState("");
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -17,16 +17,19 @@ export default function AvatarUpdatePage() {
 
   const fileInputRef = useRef(null);
 
+  // 1️⃣ Select file
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     setImageSrc(URL.createObjectURL(file));
   };
 
+  // 2️⃣ On crop finish
   const onCropComplete = useCallback((_, pixels) => {
     setCroppedAreaPixels(pixels);
   }, []);
 
+  // 3️⃣ Generate preview + blob
   const generateCropped = useCallback(async () => {
     try {
       const { blob, url } = await getCroppedImg(imageSrc, croppedAreaPixels);
@@ -35,15 +38,15 @@ export default function AvatarUpdatePage() {
       URL.revokeObjectURL(imageSrc);
       setImageSrc("");
     } catch (err) {
-      console.error("Crop generation error:", err);
+      console.error("Crop error:", err);
     }
   }, [imageSrc, croppedAreaPixels]);
 
-  const handleSubmit = async (e) => {
+  // 4️⃣ Submit upload
+  const handleUpload = async (e) => {
     e.preventDefault();
     if (!avatarBlob) {
-      alert("Please select and crop an image first.");
-      return;
+      return alert("Please select and crop an image first.");
     }
 
     const formData = new FormData();
@@ -55,23 +58,18 @@ export default function AvatarUpdatePage() {
         credentials: "include",
         body: formData,
       });
-
       const data = await res.json();
+      console.log("Upload response:", data);
 
-      if (data.success) {
+      if (data.success && data.url) {
+        setUser((prev) => ({
+          ...prev,
+          avatar_url: data.url + "?t=" + Date.now(),
+        }));
         alert("Avatar updated successfully.");
-
-        
-        if (data.success && data.url) {
-            setUser(prev => ({
-              ...prev,
-              avatar_url: data.url, 
-            }));
-          }
-
-        navigate("/profile");
+        return navigate("/profile");
       } else {
-        alert("Failed to update avatar: " + data.message);
+        return alert("Failed to update avatar: " + (data.message || "Unknown"));
       }
     } catch (err) {
       console.error("Upload error:", err);
@@ -83,7 +81,7 @@ export default function AvatarUpdatePage() {
     <div className="form-container">
       <h2 className="form-title">Update Avatar</h2>
 
-      {/* Step 1: Choose file */}
+      {/* Step 1: Choose Image */}
       {!imageSrc && !previewUrl && (
         <>
           <input
@@ -135,9 +133,9 @@ export default function AvatarUpdatePage() {
         </div>
       )}
 
-      {/* Step 3: Preview and Upload */}
+      {/* Step 3: Preview & Upload */}
       {previewUrl && (
-        <form onSubmit={handleSubmit} className="form-box">
+        <form onSubmit={handleUpload} className="form-box">
           <img
             src={previewUrl}
             alt="Avatar Preview"
@@ -146,6 +144,7 @@ export default function AvatarUpdatePage() {
           <button type="submit" className="form-btn mt-4">
             Upload
           </button>
+          {/* CANCEL is a simple navigate, NOT a form submit */}
           <button
             type="button"
             className="form-btn secondary-btn mt-2"

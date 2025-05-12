@@ -32,6 +32,7 @@ const Topbar = () => {
         }
       };
       
+      console.log("👤 Topbar user context:", user);
 
   return (
     <div className="flex items-center justify-between px-8 py-4 bg-white border-b">
@@ -54,11 +55,12 @@ const Topbar = () => {
   Logout
 </a>
 
-        <img
-          src={user?.avatar_url || "/images/default-avatar.png"}
-          alt="Profile"
-          className="w-8 h-8 rounded-full object-cover"
-        />
+<img
+  src={user?.avatar_url?.trim() ? user.avatar_url : "/images/default-avatar.png"}
+  alt="Profile"
+  className="w-8 h-8 rounded-full object-cover"
+/>
+
 
       </div>
     </div>

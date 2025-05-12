@@ -1,23 +1,29 @@
-// src/components/Layout.jsx
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import NavBar from "../Navigation/NavBar";
 
 /**
  * Global page layout.
- * Receives session‑related props from <App /> and
- * passes them down to <NavBar /> so it can render
- * the correct menu items.
+ * Redirects to /login if user is not logged in.
  */
 const Layout = ({ isLoggedIn, handleLogout, accountType }) => {
-    return (
-        <div className="min-h-screen flex flex-col bg-lightbrown">
-            {/* Top navigation */}
-            <NavBar
-                isLoggedIn={isLoggedIn}
-                handleLogout={handleLogout}
-                accountType={accountType}
-            />
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
+
+  return (
+    <div className="min-h-screen flex flex-col bg-lightbrown">
+      {/* Top navigation */}
+      <NavBar
+        isLoggedIn={isLoggedIn}
+        handleLogout={handleLogout}
+        accountType={accountType}
+      />
+
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 py-4">
         <Outlet />

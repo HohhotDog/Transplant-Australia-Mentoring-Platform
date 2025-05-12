@@ -1,9 +1,11 @@
 // src/components/Sidebar.jsx
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaUsers, FaUser } from "react-icons/fa";
+import { FaUsers, FaUser, FaCog, FaSearch  } from "react-icons/fa";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BsShieldLock } from "react-icons/bs";
+
+
 
 const Sidebar = () => {
   return (
@@ -17,7 +19,7 @@ const Sidebar = () => {
       <div className="mb-6">
         <p className="text-sm font-semibold text-gray-500 uppercase mb-2">Mentorship</p>
         <nav className="flex flex-col space-y-1 pl-2">
-          <SidebarLink to="/sessions" label="Explore Sessions" icon={<HiOutlineUserGroup />} />
+        <SidebarLink to="/sessions" label="Explore Sessions" icon={<FaSearch />} />
           <SidebarLink to="/my-sessions" label="My Sessions" icon={<HiOutlineUserGroup />} />
         </nav>
       </div>
@@ -27,7 +29,8 @@ const Sidebar = () => {
         <p className="text-sm font-semibold text-gray-500 uppercase mb-2">Account</p>
         <nav className="flex flex-col space-y-1 pl-2">
           <SidebarLink to="/profile" label="My Profile" icon={<FaUser />} />
-          <SidebarLink to="/account-mentorship-preferences" label="Mentorship Preferences" icon={<BsShieldLock />} />
+          <SidebarLink to="/account-mentorship-preferences" label="Mentorship Preferences" icon={<FaCog />} />
+
           <SidebarLink to="/profile-security" label="Security" icon={<BsShieldLock />} />
         </nav>
       </div>

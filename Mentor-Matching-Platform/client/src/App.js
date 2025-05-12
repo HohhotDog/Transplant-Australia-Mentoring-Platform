@@ -44,30 +44,38 @@ function App() {
 
     // Automatically check session on initial page load
     useEffect(() => {
-        fetch("/api/me", {
-            method: "GET",
-            credentials: "include",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    setIsLoggedIn(true);
-                    setAccountType(data.account_type);
-                }
-            })
-            .catch((err) => {
-                console.error("Failed to check session:", err);
-            })
-            .finally(() => {
-                setIsSessionChecked(true); // Finish session check
+      fetch("/api/me", {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setIsLoggedIn(true);
+            setAccountType(data.account_type);
+            setUser({
+              avatar_url: data.avatar_url || "/images/default-avatar.png",
             });
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to check session:", err);
+        })
+        .finally(() => {
+          setIsSessionChecked(true);
+        });
     }, []);
+    
 
     // Called when login succeeds
-    function handleLoginSuccess(type) {
-        setIsLoggedIn(true);
-        setAccountType(type);
+    function handleLoginSuccess(type, avatarUrl) {
+      setIsLoggedIn(true);
+      setAccountType(type);
+      setUser({
+        avatar_url: avatarUrl || "/images/default-avatar.png",
+      });
     }
+    
 
     // Called when logout is triggered
     function handleLogout() {
@@ -113,7 +121,8 @@ function App() {
         <Router>
           <Routes>
             {/* Pages that use the SIDEBAR layout */}
-            <Route element={<SidebarLayout />}>
+            <Route element={<SidebarLayout isLoggedIn={isLoggedIn} />}>
+
               <Route
                 path="account-mentorship-preferences"
                 element={
