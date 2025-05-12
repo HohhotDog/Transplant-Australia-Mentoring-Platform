@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+// Toggle mock data for testing
+const USE_MOCK_RECOMMEND = true;
+
 function AdminApplicationDetailPage() {
   const { sessionId, applicationId } = useParams();
   const [app, setApp] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [recommendedMentors, setRecommendedMentors] = useState([]);
+  const [recommendedMentors, setRecommendedMentors] = useState(
+    USE_MOCK_RECOMMEND
+      ? [
+          { id: 101, name: 'Mock Mentor A', avatar: null },
+          { id: 102, name: 'Mock Mentor B', avatar: 'https://via.placeholder.com/150' },
+        ]
+      : []
+  );
   const [recLoading, setRecLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
 
