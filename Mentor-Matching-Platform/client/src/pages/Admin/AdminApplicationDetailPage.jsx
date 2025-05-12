@@ -6,6 +6,8 @@ function AdminApplicationDetailPage() {
   const [app, setApp] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [recommendedMentors, setRecommendedMentors] = useState([]);
+  const [recLoading, setRecLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
@@ -24,6 +26,20 @@ function AdminApplicationDetailPage() {
         setLoading(false);
       });
   }, [sessionId, applicationId]);
+
+  useEffect(() => {
+    if (app?.role?.toLowerCase() === 'mentee') {
+      setRecLoading(true);
+      fetch(`/api/match-mentee?sessionId=${sessionId}`, { credentials: 'include' })
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to fetch recommended mentors: ${res.status}`);
+          return res.json();
+        })
+        .then(data => setRecommendedMentors(data))
+        .catch(err => console.error('Error fetching recommended mentors:', err))
+        .finally(() => setRecLoading(false));
+    }
+  }, [app, sessionId]);
 
   const updateStatus = (newStatus) => {
     setUpdating(true);
@@ -104,9 +120,11 @@ function AdminApplicationDetailPage() {
           {/* Recommended Mentors */}
           <div className="mb-6">
             <h3 className="text-lg font-medium">Recommended Mentors</h3>
-            {app?.recommendedMentors && app.recommendedMentors.length > 0 ? (
+            {recLoading ? (
+              <p className="text-gray-500">Loading recommended mentors...</p>
+            ) : recommendedMentors.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {app.recommendedMentors.map((mentor) => (
+                {recommendedMentors.map((mentor) => (
                   <div
                     key={mentor.id}
                     className="flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
@@ -121,7 +139,7 @@ function AdminApplicationDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No recommended mentors available.</p>
+              <p className="text-gray-500">No recommended mentors available now</p>
             )}
           </div>
 
