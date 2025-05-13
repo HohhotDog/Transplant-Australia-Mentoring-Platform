@@ -4,7 +4,7 @@ import Sidebar from "../Navigation/Sidebar";
 import Topbar from "../Navigation/TopBar";
 import { useUser } from "../context/UserContext";
 
-const SidebarLayout = ({ isLoggedIn }) => {
+const SidebarLayout = ({ isLoggedIn, accountType }) => {
   const navigate = useNavigate();
   const { user } = useUser();
 
@@ -16,7 +16,7 @@ const SidebarLayout = ({ isLoggedIn }) => {
 
   return (
     <div className="flex min-h-screen bg-[#fdfbf8]">
-      <Sidebar />
+      <Sidebar accountType={accountType} />
       <div className="flex-1 flex flex-col">
         <Topbar userImage={user?.avatar_url || "/images/default-avatar.png"} />
         <main className="flex-1 overflow-y-auto px-8 py-6">

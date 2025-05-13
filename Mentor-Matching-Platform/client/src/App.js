@@ -98,7 +98,7 @@ function App() {
     <Router>
       <Routes>
         {/* Sidebar Layout */}
-        <Route element={<SidebarLayout isLoggedIn={isLoggedIn} />}>
+        <Route element={<SidebarLayout isLoggedIn={isLoggedIn} accountType={accountType} />}>
           <Route
             path="account-mentorship-preferences"
             element={
