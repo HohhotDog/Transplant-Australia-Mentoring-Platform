@@ -1,12 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+// Toggle mock data for testing
+const USE_MOCK_RECOMMEND = true;
+
 function AdminApplicationDetailPage() {
   const { sessionId, applicationId } = useParams();
   const [app, setApp] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [recommendedMentors, setRecommendedMentors] = useState(
+    USE_MOCK_RECOMMEND
+      ? [
+          { id: 101, name: 'Mock Mentor A', avatar: null },
+          { id: 102, name: 'Mock Mentor B', avatar: 'https://via.placeholder.com/150' },
+        ]
+      : []
+  );
+  const [recLoading, setRecLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState(null);
 
   useEffect(() => {
     fetch(`/api/admin/sessions/${sessionId}/applications/${applicationId}`)
@@ -24,6 +40,41 @@ function AdminApplicationDetailPage() {
         setLoading(false);
       });
   }, [sessionId, applicationId]);
+
+  useEffect(() => {
+    if (app?.role?.toLowerCase() === 'mentee') {
+      setRecLoading(true);
+      fetch(`/api/match-mentee?sessionId=${sessionId}`, { credentials: 'include' })
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to fetch recommended mentors: ${res.status}`);
+          return res.json();
+        })
+        .then(data => setRecommendedMentors(data))
+        .catch(err => console.error('Error fetching recommended mentors:', err))
+        .finally(() => setRecLoading(false));
+    }
+  }, [app, sessionId]);
+
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      setSearchLoading(true);
+      setSearchError(null);
+      fetch(`/api/mentors?search=${encodeURIComponent(searchTerm)}`, { credentials: 'include' })
+        .then(res => {
+          if (!res.ok) throw new Error(`Search failed: ${res.status}`);
+          return res.json();
+        })
+        .then(data => setSearchResults(data))
+        .catch(err => {
+          console.error('Search mentors error:', err);
+          setSearchError(err);
+        })
+        .finally(() => setSearchLoading(false));
+    } else {
+      setSearchResults([]);
+      setSearchError(null);
+    }
+  }, [searchTerm]);
 
   const updateStatus = (newStatus) => {
     setUpdating(true);
@@ -48,6 +99,31 @@ function AdminApplicationDetailPage() {
 
   if (loading) return <p className="p-4">Loading details...</p>;
   if (error) return <p className="p-4 text-red-500">Error: {error.message}</p>;
+
+  // Assign mentor to this application
+  const assignMentor = (mentor) => {
+    setUpdating(true);
+    fetch('/api/matching-pairs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        sessionId,
+        applicationId,
+        mentorId: mentor.id,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Failed to assign mentor: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        console.log('Assigned mentor pair:', data);
+        // You can update state or show a notification here
+      })
+      .catch((err) => console.error('Assign mentor error:', err))
+      .finally(() => setUpdating(false));
+  };
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-8 rounded shadow">
@@ -104,12 +180,15 @@ function AdminApplicationDetailPage() {
           {/* Recommended Mentors */}
           <div className="mb-6">
             <h3 className="text-lg font-medium">Recommended Mentors</h3>
-            {app?.recommendedMentors && app.recommendedMentors.length > 0 ? (
+            {recLoading ? (
+              <p className="text-gray-500">Loading recommended mentors...</p>
+            ) : recommendedMentors.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {app.recommendedMentors.map((mentor) => (
+                {recommendedMentors.map((mentor) => (
                   <div
                     key={mentor.id}
-                    className="flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
+                    onClick={() => !updating && assignMentor(mentor)}
+                    className="cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
                   >
                     <img
                       src={mentor.avatar || "/placeholder-avatar.jpg"}
@@ -121,7 +200,7 @@ function AdminApplicationDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No recommended mentors available.</p>
+              <p className="text-gray-500">No recommended mentors available now</p>
             )}
           </div>
 
@@ -131,10 +210,34 @@ function AdminApplicationDetailPage() {
             <div className="p-4 bg-gray-50 rounded text-gray-700">
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search mentors..."
                 className="w-full p-2 border rounded"
               />
-              <p className="mt-2 text-gray-500 text-sm">Mentor details will appear here after selection</p>
+              {searchLoading && <p className="text-gray-500 mt-2">Searching mentors...</p>}
+              {searchError && <p className="text-red-500 mt-2">Error searching mentors: {searchError.message}</p>}
+              {!searchLoading && searchResults.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-2">
+                  {searchResults.map((mentor) => (
+                    <div
+                      key={mentor.id}
+                      onClick={() => !updating && assignMentor(mentor)}
+                      className="cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
+                    >
+                      <img
+                        src={mentor.avatar || "/placeholder-avatar.jpg"}
+                        alt={mentor.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <div className="font-medium">{mentor.name}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {searchTerm && !searchLoading && searchResults.length === 0 && (
+                <p className="text-gray-500 mt-2">No mentors found for "{searchTerm}"</p>
+              )}
             </div>
           </div>
 
