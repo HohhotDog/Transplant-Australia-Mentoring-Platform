@@ -28,7 +28,7 @@ import { useUser } from "./components/context/UserContext";
 // Admin Routes
 import AdminApplicationsPage from "./pages/Admin/AdminApplicationPage";
 import AdminApplicationDetailPage from "./pages/Admin/AdminApplicationDetailPage";
-
+import ParticipantPage from "./pages/Admin/ParticipantsPage";
 // Layout
 import Layout from "./components/utils/Layout";
 import SidebarLayout from "./components/utils/SidebarLayout";
