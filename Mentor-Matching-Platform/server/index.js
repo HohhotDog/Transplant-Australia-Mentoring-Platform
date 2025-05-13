@@ -1,4 +1,3 @@
-
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -14,6 +13,7 @@ const avatarRoutes = require("./routes/avatar");
 const sessionRoutes = require("./routes/sessions");
 const seedSessions = require("./scripts/seedSessions");
 const seedAdmin = require("./scripts/seedAdmin");
+const commentsRoutes = require("./routes/comments");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -53,6 +53,7 @@ app.use("/api", surveyRoutes);
 app.use("/api", matchRoutes);
 app.use("/api", sessionRoutes);
 app.use("/api", avatarRoutes);
+app.use("/api/comments", commentsRoutes);
 
 // admin routes
 const adminRoutes = require("./routes/admin");

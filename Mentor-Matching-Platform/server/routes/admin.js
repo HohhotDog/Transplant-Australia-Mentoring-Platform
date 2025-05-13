@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
@@ -141,13 +140,17 @@ router.patch(
     });
   }
 );
+
+
 /**
- * GET /api/admin/sessions/:sessionId/participants/mentors
- * get approved mentor list and the number of assigned mentees
+ * GET /api/admin/sessions/:sessionId/participants
+ * Returns both mentors and mentees for a session
  */
-router.get("/sessions/:sessionId/participants/mentors", (req, res) => {
+router.get("/sessions/:sessionId/participants", (req, res) => {
   const { sessionId } = req.params;
-  const sql = `
+
+  // SQL query for mentors
+  const mentorsSql = `
     SELECT
       p.user_id AS id,
       u.email,
@@ -164,23 +167,8 @@ router.get("/sessions/:sessionId/participants/mentors", (req, res) => {
     ORDER BY a.application_date DESC
   `;
 
-  db.all(sql, [sessionId], (err, rows) => {
-    if (err) return handleError(res, err);
-    res.json(
-      rows.map((r) => ({
-        ...r,
-        assigned_mentees: r.assigned_mentees || 0,
-      }))
-    );
-  });
-});
-/**
- * GET /api/admin/sessions/:sessionId/participants/mentees
- * get mentees list and matching info
- */
-router.get("/sessions/:sessionId/participants/mentees", (req, res) => {
-  const { sessionId } = req.params;
-  const sql = `
+  // SQL query for mentees
+  const menteesSql = `
     SELECT
       p.user_id AS id,
       u.email,
@@ -200,15 +188,123 @@ router.get("/sessions/:sessionId/participants/mentees", (req, res) => {
     ORDER BY a.application_date DESC
   `;
 
-  db.all(sql, [sessionId], (err, rows) => {
-    if (err) return handleError(res, err);
-    res.json(
-      rows.map((r) => ({
-        ...r,
-        assigned_mentor: r.assigned_mentor || "Not assigned",
-      }))
-    );
+  // Execute both queries
+  db.all(mentorsSql, [sessionId], (err, mentors) => {
+    if (err) return res.status(500).json({ error: "Failed to fetch mentors" });
+
+    db.all(menteesSql, [sessionId], (err, mentees) => {
+      if (err) return res.status(500).json({ error: "Failed to fetch mentees" });
+
+      // Combine results and send response
+      res.json({
+        mentors: mentors.map((r) => ({
+          ...r,
+          assigned_mentees: r.assigned_mentees || 0,
+        })),
+        mentees: mentees.map((r) => ({
+          ...r,
+          assigned_mentor: r.assigned_mentor || "Not assigned",
+        })),
+      });
+    });
   });
+});
+
+/**
+ * GET /api/admin/participants/:userId/profile
+ * Fetch the profile of a specific user by their userId
+ */
+router.get("/participants/:userId/profile", ensureAdmin, (req, res) => {
+    const { userId } = req.params;
+
+    const query = `
+        SELECT
+            u.email,
+            p.*
+        FROM users u
+        LEFT JOIN profiles p ON u.id = p.user_id
+        WHERE u.id = ?
+    `;
+
+    db.get(query, [userId], (err, row) => {
+        if (err) {
+            console.error("DB error:", err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        if (!row) {
+            return res.status(404).json({
+                success: false,
+                message: "Profile not found."
+            });
+        }
+        return res.json({ success: true, profile: row });
+    });
+});
+
+/**
+ * GET /api/admin/participants/:userId/preferences
+ * Fetch mentorship preferences for a specific user by their userId
+ */
+router.get("/participants/:userId/preferences", ensureAdmin, async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const preferences = await db.getAsync(`
+            SELECT * FROM mentorship_preferences WHERE user_id = ?
+        `, [userId]);
+
+        if (!preferences) {
+            return res.status(404).json({ success: false, message: "Preferences not found" });
+        }
+
+        res.json({ success: true, preferences });
+    } catch (err) {
+        console.error("Error fetching preferences:", err.message);
+        res.status(500).json({ success: false, error: "Failed to fetch preferences" });
+    }
+});
+
+/**
+ * GET /api/admin/participants/:userId/match
+ * Fetch assigned mentor or mentee for a specific user by their userId
+ */
+router.get("/participants/:userId/match", ensureAdmin, async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Check if the user is a mentor
+        const mentorMatch = await db.allAsync(`
+            SELECT 
+                mp.mentee_id AS user_id,
+                mentee_pr.first_name || ' ' || mentee_pr.last_name AS name
+            FROM matching_pairs mp
+            LEFT JOIN profiles mentee_pr ON mp.mentee_id = mentee_pr.user_id
+            WHERE mp.mentor_id = ?
+        `, [userId]);
+
+        // Check if the user is a mentee
+        const menteeMatch = await db.getAsync(`
+            SELECT 
+                mp.mentor_id AS user_id,
+                mentor_pr.first_name || ' ' || mentor_pr.last_name AS name
+            FROM matching_pairs mp
+            LEFT JOIN profiles mentor_pr ON mp.mentor_id = mentor_pr.user_id
+            WHERE mp.mentee_id = ?
+        `, [userId]);
+
+        if (mentorMatch.length > 0) {
+            // User is a mentor, return their mentees
+            return res.json({ success: true, role: "mentor", mentees: mentorMatch });
+        } else if (menteeMatch) {
+            // User is a mentee, return their mentor
+            return res.json({ success: true, role: "mentee", mentor: menteeMatch });
+        } else {
+            return res.status(404).json({ success: false, message: "No match found" });
+        }
+    } catch (err) {
+        console.error("Error fetching match:", err.message);
+        res.status(500).json({ success: false, error: "Failed to fetch match" });
+    }
 });
 
 module.exports = router;

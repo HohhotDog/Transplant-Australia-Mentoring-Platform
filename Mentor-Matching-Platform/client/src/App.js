@@ -14,6 +14,7 @@ import MySessionPage from "./pages/Mentorship/MySessions";
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
 import AvatarUpdatePage from "./components/Profile/ChangeAvatar";
+import ParticipantDetails from "./pages/Admin/ParticipantDetails";
 
 // Auth and Profile Components
 import LoginForm from "./components/Auth/LoginForm"; 
@@ -57,7 +58,7 @@ function App() {
       })
       .catch((err) => console.error("Failed to check session:", err))
       .finally(() => setIsSessionChecked(true));
-  }, []);
+  }, [setUser]);
 
   function handleLoginSuccess(type, avatarUrl) {
     setIsLoggedIn(true);
@@ -151,6 +152,14 @@ function App() {
             element={
               <RequireAdmin accountType={accountType}>
                 <ParticipantPage />
+              </RequireAdmin>
+            }
+          />
+          <Route
+            path="admin/participants/:userId/details"
+            element={
+              <RequireAdmin accountType={accountType}>
+                <ParticipantDetails />
               </RequireAdmin>
             }
           />
