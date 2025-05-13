@@ -37,14 +37,17 @@ function AdminApplicationDetailPage() {
   useEffect(() => {
     if (app?.role?.toLowerCase() === 'mentee') {
       setRecLoading(true);
-      fetch(`/api/match-mentee?sessionId=${sessionId}`, { credentials: 'include' })
+      fetch(
+        `/api/match-mentee?sessionId=${sessionId}&menteeId=${app.userId}`,
+        { credentials: 'include' }
+      )
         .then(res => {
           if (!res.ok) throw new Error(`Failed to fetch recommended mentors: ${res.status}`);
           return res.json();
         })
         .then(data => {
           if (data.success) {
-            setRecommendedMentors(data.matches);
+            setRecommendedMentors(data.recommendations);
           } else {
             console.error('Match API error:', data.message);
           }
@@ -189,12 +192,10 @@ function AdminApplicationDetailPage() {
                     onClick={() => !updating && assignMentor(mentor)}
                     className="cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
                   >
-                    <img
-                      src={mentor.avatar || "/placeholder-avatar.jpg"}
-                      alt={mentor.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div className="font-medium">{mentor.name}</div>
+                    
+                    <div className="font-medium">{mentor.name }</div>
+                    <div className="text-sm text-gray-500">{mentor.email}</div>
+                    
                   </div>
                 ))}
               </div>
