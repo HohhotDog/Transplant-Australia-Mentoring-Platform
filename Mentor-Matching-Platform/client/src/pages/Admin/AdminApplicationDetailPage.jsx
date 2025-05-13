@@ -19,6 +19,10 @@ function AdminApplicationDetailPage() {
   );
   const [recLoading, setRecLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState(null);
 
   useEffect(() => {
     fetch(`/api/admin/sessions/${sessionId}/applications/${applicationId}`)
@@ -50,6 +54,27 @@ function AdminApplicationDetailPage() {
         .finally(() => setRecLoading(false));
     }
   }, [app, sessionId]);
+
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      setSearchLoading(true);
+      setSearchError(null);
+      fetch(`/api/mentors?search=${encodeURIComponent(searchTerm)}`, { credentials: 'include' })
+        .then(res => {
+          if (!res.ok) throw new Error(`Search failed: ${res.status}`);
+          return res.json();
+        })
+        .then(data => setSearchResults(data))
+        .catch(err => {
+          console.error('Search mentors error:', err);
+          setSearchError(err);
+        })
+        .finally(() => setSearchLoading(false));
+    } else {
+      setSearchResults([]);
+      setSearchError(null);
+    }
+  }, [searchTerm]);
 
   const updateStatus = (newStatus) => {
     setUpdating(true);
@@ -185,10 +210,34 @@ function AdminApplicationDetailPage() {
             <div className="p-4 bg-gray-50 rounded text-gray-700">
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search mentors..."
                 className="w-full p-2 border rounded"
               />
-              <p className="mt-2 text-gray-500 text-sm">Mentor details will appear here after selection</p>
+              {searchLoading && <p className="text-gray-500 mt-2">Searching mentors...</p>}
+              {searchError && <p className="text-red-500 mt-2">Error searching mentors: {searchError.message}</p>}
+              {!searchLoading && searchResults.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-2">
+                  {searchResults.map((mentor) => (
+                    <div
+                      key={mentor.id}
+                      onClick={() => !updating && assignMentor(mentor)}
+                      className="cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
+                    >
+                      <img
+                        src={mentor.avatar || "/placeholder-avatar.jpg"}
+                        alt={mentor.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                      <div className="font-medium">{mentor.name}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {searchTerm && !searchLoading && searchResults.length === 0 && (
+                <p className="text-gray-500 mt-2">No mentors found for "{searchTerm}"</p>
+              )}
             </div>
           </div>
 
