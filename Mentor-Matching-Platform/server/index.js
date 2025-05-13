@@ -16,6 +16,7 @@ const matchingPairsRouter = require("./routes/matching-pairs");
 const sessionRoutes = require("./routes/sessions");
 const seedSessions = require("./scripts/seedSessions");
 const seedAdmin = require("./scripts/seedAdmin");
+const seedTestUsers = require("./scripts/seedTestUsers");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -24,6 +25,7 @@ app.disable("etag");
 // Seed the database with session data
 seedSessions();
 seedAdmin();
+seedTestUsers();
 // Middleware
 app.use(express.json());
 app.use(cors({

@@ -20,4 +20,89 @@ router.get("/match-mentee", async (req, res) => {
 });
 
 
+
+// get match pairing for the current user in a session
+
+const db = require('../db');               // SQLite database connection
+const { ensureAuthenticated } = require('../middlewares/auth');
+
+/**
+ * GET /api/sessions/:sessionId/matches
+ * Returns the match pairing for the currently logged-in user in a given session.
+ * Response: []
+ *   – empty array if no pairing exists
+ *   – otherwise an array with one object:
+ *     {
+ *       pairId: number,
+ *       sessionId: number,
+ *       role: 'mentor' | 'mentee',
+ *       other: { id: number, email: string },
+ *       createdAt: timestamp
+ *     }
+ */
+router.get(
+  '/sessions/:sessionId/matches',
+  ensureAuthenticated,
+  (req, res) => {
+    const userId = req.user.id;
+    const sessionId = Number(req.params.sessionId);
+
+    // Find the matching record where the current user is mentor or mentee
+    const findPairSql = `
+      SELECT *
+      FROM matching_pairs
+      WHERE session_id = ?
+        AND (mentor_id = ? OR mentee_id = ?)
+      LIMIT 1
+    `;
+
+    db.get(findPairSql, [sessionId, userId, userId], (err, pair) => {
+      if (err) {
+        console.error('Database error fetching pair:', err);
+        return res.status(500).json({ error: 'Database error' });
+      }
+      if (!pair) {
+        // No match found
+        return res.json([]);
+      }
+
+      // Identify the “other” user in the pair
+      const otherId = pair.mentor_id === userId
+        ? pair.mentee_id
+        : pair.mentor_id;
+
+      // Fetch the other user’s basic info
+      const findUserSql = `
+        SELECT id, email
+        FROM users
+        WHERE id = ?
+      `;
+      db.get(findUserSql, [otherId], (err, other) => {
+        if (err) {
+          console.error('Database error fetching matched user:', err);
+          return res.status(500).json({ error: 'Database error' });
+        }
+        if (!other) {
+          return res.status(404).json({ error: 'Matched user not found' });
+        }
+
+        // Return the pairing and other user’s info
+        res.json([{
+          pairId: pair.id,
+          sessionId: pair.session_id,
+          role: pair.mentor_id === userId ? 'mentor' : 'mentee',
+          other: {
+            id: other.id,
+            email: other.email
+          },
+          createdAt: pair.created_at
+        }]);
+      });
+    });
+  }
+);
+
+
+
+
 module.exports = router;
