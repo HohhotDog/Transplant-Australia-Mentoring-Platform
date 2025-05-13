@@ -1,4 +1,5 @@
 /*
+  seedTestUsers.js
   Script to create two test users (mentor & mentee), apply them to session #1, and pair them.
   Usage:
     - Standalone: node seedTestUsers.js
@@ -27,9 +28,16 @@ async function seedTestUsers() {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       const now = new Date().toISOString();
-      // 2. Insert users
+
+      // 2. Insert users (skip if exists)
       const insertUser = db.prepare(
-        `INSERT INTO users (email, password_hash, security_question, security_answer_hash, account_type)
+        `INSERT INTO users (
+           email,
+           password_hash,
+           security_question,
+           security_answer_hash,
+           account_type
+         )
          VALUES (?, ?, '', '', 0)
          ON CONFLICT(email) DO NOTHING;`
       );
@@ -38,25 +46,42 @@ async function seedTestUsers() {
       }
       insertUser.finalize();
 
-      // 3. Apply both to session_id = 1
+      // 3. Apply both to session_id = 1 (skip if already applied)
       const insertApp = db.prepare(
-        `INSERT INTO applications (session_id, user_id, role, status, application_date)
-         SELECT 1, id, ?, 'approved', ? FROM users WHERE email = ?;
-        `
+        `INSERT INTO applications (
+           session_id,
+           user_id,
+           role,
+           status,
+           application_date
+         )
+         SELECT
+           1,
+           id,
+           ?,
+           'approved',
+           ?
+         FROM users
+         WHERE email = ?
+         ON CONFLICT(session_id, user_id) DO NOTHING;`
       );
       for (let u of users) {
         insertApp.run(u.role, now, u.email);
       }
       insertApp.finalize();
 
-      // 4. Create matching pair (mentor_id, mentee_id)
+      // 4. Create matching pair (skip if exists)
       const insertPair = db.prepare(
-        `INSERT INTO matching_pairs (session_id, mentor_id, mentee_id)
-         SELECT 1,
-                (SELECT id FROM users WHERE email = ?),
-                (SELECT id FROM users WHERE email = ?)
-         ON CONFLICT(session_id, mentor_id, mentee_id) DO NOTHING;
-        `
+        `INSERT INTO matching_pairs (
+           session_id,
+           mentor_id,
+           mentee_id
+         )
+         SELECT
+           1,
+           (SELECT id FROM users WHERE email = ?),
+           (SELECT id FROM users WHERE email = ?)
+         ON CONFLICT(session_id, mentor_id, mentee_id) DO NOTHING;`
       );
       insertPair.run(
         users.find(u => u.role === 'mentor').email,
