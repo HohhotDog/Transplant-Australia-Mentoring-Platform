@@ -2,21 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 // Toggle mock data for testing
-const USE_MOCK_RECOMMEND = true;
+const USE_MOCK_RECOMMEND = false;
 
 function AdminApplicationDetailPage() {
   const { sessionId, applicationId } = useParams();
   const [app, setApp] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [recommendedMentors, setRecommendedMentors] = useState(
-    USE_MOCK_RECOMMEND
-      ? [
-          { id: 101, name: 'Mock Mentor A', avatar: null },
-          { id: 102, name: 'Mock Mentor B', avatar: 'https://via.placeholder.com/150' },
-        ]
-      : []
-  );
+  const [recommendedMentors, setRecommendedMentors] = useState([]);
   const [recLoading, setRecLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,7 +42,13 @@ function AdminApplicationDetailPage() {
           if (!res.ok) throw new Error(`Failed to fetch recommended mentors: ${res.status}`);
           return res.json();
         })
-        .then(data => setRecommendedMentors(data))
+        .then(data => {
+          if (data.success) {
+            setRecommendedMentors(data.matches);
+          } else {
+            console.error('Match API error:', data.message);
+          }
+        })
         .catch(err => console.error('Error fetching recommended mentors:', err))
         .finally(() => setRecLoading(false));
     }
