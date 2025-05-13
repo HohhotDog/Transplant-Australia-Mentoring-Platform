@@ -73,39 +73,66 @@ router.post("/register", async (req, res) => {
  */
 router.post("/login", (req, res) => {
     const { email, password } = req.body;
-
+  
     if (!email || !password) {
-        return res.status(400).json({ success: false, message: "Missing email or password." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing email or password." });
     }
-
+  
     const query = `SELECT * FROM users WHERE email = ?`;
     db.get(query, [email], async (err, row) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ success: false, message: "Database error." });
+      if (err) {
+        console.error(err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Database error." });
+      }
+      if (!row) {
+        return res
+          .status(401)
+          .json({ success: false, message: "Invalid email or password." });
+      }
+  
+      const match = await bcrypt.compare(password, row.password_hash);
+      if (!match) {
+        return res
+          .status(401)
+          .json({ success: false, message: "Invalid email or password." });
+      }
+  
+      // ✅ Fetch profile_picture_url from the profiles table
+      const profileQuery = `
+        SELECT profile_picture_url 
+        FROM profiles 
+        WHERE user_id = ?
+      `;
+      db.get(profileQuery, [row.id], (err2, profileRow) => {
+        if (err2) {
+          console.error(err2);
+          return res
+            .status(500)
+            .json({ success: false, message: "Failed to fetch profile info." });
         }
-        if (!row) {
-            return res.status(401).json({ success: false, message: "Invalid email or password." });
-        }
-
-        const match = await bcrypt.compare(password, row.password_hash);
-        if (!match) {
-            return res.status(401).json({ success: false, message: "Invalid email or password." });
-        }
-
+  
+        const avatarUrl = profileRow?.profile_picture_url || null;
+  
         req.session.user = {
-            id: row.id,
-            email: row.email,
-            account_type: row.account_type
+          id: row.id,
+          email: row.email,
+          account_type: row.account_type,
         };
+  
         return res.json({
-            success: true,
-            message: "Login successful.",
-            account_type: row.account_type
+          success: true,
+          message: "Login successful.",
+          account_type: row.account_type,
+          avatar_url: avatarUrl,
         });
-
+      });
     });
-});
+  });
+  
 
 /**
  * @route POST /forgot-password
@@ -158,18 +185,38 @@ router.post("/forgot-password", (req, res) => {
 
 
 // GET /api/me - returns current session user info
+// GET /api/me - returns current session user info + avatar_url
 router.get("/me", (req, res) => {
-    if (req.session && req.session.user) {
-        return res.json({
-            success: true,
-            id: req.session.user.id,
-            email: req.session.user.email,
-            account_type: req.session.user.account_type
-        });
-    } else {
+    if (!req.session || !req.session.user) {
         return res.status(401).json({ success: false });
     }
+
+    const userId = req.session.user.id;
+
+    const query = `
+        SELECT u.id, u.email, u.account_type,
+               p.profile_picture_url AS avatar_url
+        FROM users u
+        LEFT JOIN profiles p ON u.id = p.user_id
+        WHERE u.id = ?
+    `;
+
+    db.get(query, [userId], (err, row) => {
+        if (err || !row) {
+            console.error("DB error in /api/me:", err);
+            return res.status(500).json({ success: false });
+        }
+
+        return res.json({
+            success: true,
+            id: row.id,
+            email: row.email,
+            account_type: row.account_type,
+            avatar_url: row.avatar_url || null
+        });
+    });
 });
+
 
 /**
  * @route POST /logout
