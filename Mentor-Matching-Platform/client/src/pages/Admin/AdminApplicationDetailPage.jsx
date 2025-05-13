@@ -75,6 +75,31 @@ function AdminApplicationDetailPage() {
   if (loading) return <p className="p-4">Loading details...</p>;
   if (error) return <p className="p-4 text-red-500">Error: {error.message}</p>;
 
+  // Assign mentor to this application
+  const assignMentor = (mentor) => {
+    setUpdating(true);
+    fetch('/api/matching-pairs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        sessionId,
+        applicationId,
+        mentorId: mentor.id,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Failed to assign mentor: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        console.log('Assigned mentor pair:', data);
+        // You can update state or show a notification here
+      })
+      .catch((err) => console.error('Assign mentor error:', err))
+      .finally(() => setUpdating(false));
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-8 rounded shadow">
       {/* Top header */}
@@ -137,7 +162,8 @@ function AdminApplicationDetailPage() {
                 {recommendedMentors.map((mentor) => (
                   <div
                     key={mentor.id}
-                    className="flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
+                    onClick={() => !updating && assignMentor(mentor)}
+                    className="cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
                   >
                     <img
                       src={mentor.avatar || "/placeholder-avatar.jpg"}
