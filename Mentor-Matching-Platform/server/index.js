@@ -1,3 +1,4 @@
+
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -12,6 +13,7 @@ const avatarRoutes = require("./routes/avatar");
 
 const sessionRoutes = require("./routes/sessions");
 const seedSessions = require("./scripts/seedSessions");
+const seedAdmin = require("./scripts/seedAdmin");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,6 +21,7 @@ app.disable("etag");
 
 // Seed the database with session data
 seedSessions();
+seedAdmin();
 // Middleware
 app.use(express.json());
 app.use(cors({
