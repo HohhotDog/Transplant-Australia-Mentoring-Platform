@@ -29,6 +29,7 @@ import { useUser } from "./components/context/UserContext";
 import AdminApplicationsPage from "./pages/Admin/AdminApplicationPage";
 import AdminApplicationDetailPage from "./pages/Admin/AdminApplicationDetailPage";
 import ParticipantPage from "./pages/Admin/ParticipantsPage";
+
 // Layout
 import Layout from "./components/utils/Layout";
 import SidebarLayout from "./components/utils/SidebarLayout";
@@ -145,6 +146,14 @@ function App() {
               </RequireAdmin>
             }
           />
+          <Route
+            path="admin/sessions/:sessionId/participants"
+            element={
+              <RequireAdmin accountType={accountType}>
+                <ParticipantPage />
+              </RequireAdmin>
+            }
+          />
         </Route>
 
         {/* Top Navbar Layout */}
@@ -191,3 +200,4 @@ function App() {
 }
 
 export default App;
+
