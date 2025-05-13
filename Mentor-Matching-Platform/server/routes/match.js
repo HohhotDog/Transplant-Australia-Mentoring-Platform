@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { getTopMentorMatchesForMentee } = require("../utils/matchAlgorithm");
+
+const getTopMentorMatchesForMentee = require("../utils/matchAlgorithm");
 
 router.get("/match-mentee", async (req, res) => {
   const userId = req.session?.user?.id;
@@ -18,6 +19,10 @@ router.get("/match-mentee", async (req, res) => {
     res.status(500).json({ success: false, error: "Matching failed." });
   }
 });
+
+
+
+
 
 
 
