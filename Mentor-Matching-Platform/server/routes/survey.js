@@ -154,8 +154,11 @@ router.post("/save-enneagram", isAuthenticated, async (req, res) => {
 
 router.get("/match-mentee", isAuthenticated, async (req, res) => {
   try {
-    const menteeId = req.session.user.id;
+    const menteeId = req.query.menteeId;
     const sessionId = req.query.sessionId; 
+    // print the menteeId and sessionId for debugging
+    console.log("Mentee ID:", menteeId);
+    console.log("Session ID:", sessionId);
 
     if (!sessionId) {
       return res.status(400).json({ success: false, message: "Missing sessionId" });

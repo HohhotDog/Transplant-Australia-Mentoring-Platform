@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Several New Features:&#10;Now forbiddened mentor/mentee to visit admin pages&#10;And sessions and survey would not be shared to the admin for the clarity.&#10;Re-edited the current logic for the layout">
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/AvatarCropper.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ChangeAvatar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/cropUtils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/routes/avatar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/PersonalDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/PersonalDetails.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Profile/ProfilePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +65,7 @@
     "Node.js.server.js.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Chensu-dev-2",
+    "git-widget-placeholder": "chensuyang-3-editlogin",
     "last_opened_file_path": "/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/public/images/ProfilePage",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -315,8 +304,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js</url>
-          <line>101</line>
-          <properties lambdaOrdinal="-1" />
+          <line>41</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
