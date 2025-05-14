@@ -3,16 +3,23 @@ const router = express.Router();
 
 const getTopMentorMatchesForMentee = require("../utils/matchAlgorithm");
 
-router.get("/match-mentee", async (req, res) => {
-  const userId = req.session?.user?.id;
+router.get("", async (req, res) => {
+  const menteeId  = req.query.menteeId;
   const sessionId = req.query.sessionId; 
+
+  // print the menteeId and sessionId/match-mentee for debugging
+  console.log("Mentee ID:", menteeId);
+  console.log("Session ID:", sessionId);
+  // Check if menteeId and sessionId are provided
+
+
 
   if (!userId || !sessionId) {
     return res.status(400).json({ success: false, message: "Missing user or sessionId" });
   }
 
   try {
-    const matches = await getTopMentorMatchesForMentee(userId, sessionId);
+    const matches = await getTopMentorMatchesForMentee(menteeId, sessionId);
     res.json({ success: true, matches });
   } catch (error) {
     console.error("Matching error:", error);
