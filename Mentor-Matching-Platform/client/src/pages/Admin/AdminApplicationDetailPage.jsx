@@ -10,6 +10,7 @@ function AdminApplicationDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [recommendedMentors, setRecommendedMentors] = useState([]);
+  const [selectedMentorId, setSelectedMentorId] = useState(null);
   const [recLoading, setRecLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -122,6 +123,10 @@ function AdminApplicationDetailPage() {
       .then((data) => {
         console.log('***Assigned mentor pair:', data);
         // You can update state or show a notification here
+        alert(`Mentor ${mentor.name} assigned successfully!`);
+        setSelectedMentorId(mentor.mentor_id);
+        console.log('Now, set selectedMentorId', selectedMentorId);
+        
       })
       .catch((err) => console.error('Assign mentor error:', err))
       .finally(() => setUpdating(false));
@@ -186,18 +191,25 @@ function AdminApplicationDetailPage() {
               <p className="text-gray-500">Loading recommended mentors...</p>
             ) : recommendedMentors.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {recommendedMentors.map((mentor) => (
+                {recommendedMentors.map((mentor) => {
+                const isSelected = mentor.mentor_id === selectedMentorId;
+                console.log("mentor.mentor_id", mentor.mentor_id);
+                console.log("selectedMentorId", selectedMentorId);
+                console.log("isSelected", isSelected);
+                return (
                   <div
-                    key={mentor.id}
+                    key={mentor.mentor_id}
                     onClick={() => !updating && assignMentor(mentor)}
-                    className="cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
+                    className={`
+                      cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm transition
+                      ${isSelected ? "bg-green-100" : "hover:shadow-md"}
+                    `}
                   >
-                    
-                    <div className="font-medium">{mentor.name }</div>
+                    <div className="font-medium">{mentor.name}</div>
                     <div className="text-sm text-gray-500">{mentor.email}</div>
-                    
                   </div>
-                ))}
+                );
+              })}
               </div>
             ) : (
               <p className="text-gray-500">No recommended mentors available now</p>
