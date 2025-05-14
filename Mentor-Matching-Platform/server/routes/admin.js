@@ -90,6 +90,7 @@ router.get("/sessions/:sessionId/applications/:id", ensureAdmin, (req, res) => {
   const sql = `
         SELECT
             a.id,
+            u.id AS userId,
             u.email AS email,
             a.role,
             a.application_date AS applicationDate,
