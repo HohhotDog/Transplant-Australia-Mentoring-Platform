@@ -55,6 +55,7 @@ router.post('/:userId', async (req, res) => {
         }
 
         // Insert the comment into the database
+        console.log("Insert params:", sessionId, userId, commenterId, content);
         const result = await db.runAsync(
             `INSERT INTO comments (session_id, target_user_id, commenter_id, content, created_at)
              VALUES (?, ?, ?, ?, datetime('now'))`,
@@ -64,14 +65,22 @@ router.post('/:userId', async (req, res) => {
         console.log("Comment insert result:", result);
 
         if (result && result.lastID) {
+            // Fetch the inserted comment with the correct created_at value and commenter name
+            const inserted = await db.getAsync(
+                `SELECT 
+                    c.id,
+                    c.content, 
+                    c.created_at, 
+                    pr.first_name || ' ' || pr.last_name AS commenter
+                 FROM comments c
+                 JOIN users u ON c.commenter_id = u.id
+                 LEFT JOIN profiles pr ON u.id = pr.user_id
+                 WHERE c.id = ?`,
+                [result.lastID]
+            );
             res.json({
                 success: true,
-                comment: {
-                    id: result.lastID,
-                    commenter: commenterId,
-                    content,
-                    date: new Date().toISOString(),
-                },
+                comment: inserted,
             });
         } else {
             throw new Error('Failed to insert comment');

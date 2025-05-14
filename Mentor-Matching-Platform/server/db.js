@@ -15,7 +15,14 @@ const db = new sqlite3.Database(path.join(__dirname, "data", "survey.db"), (err)
 
 db.getAsync = promisify(db.get).bind(db);
 db.allAsync = promisify(db.all).bind(db);
-db.runAsync = promisify(db.run).bind(db); 
+db.runAsync = function(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function(err) {
+      if (err) return reject(err);
+      resolve({ lastID: this.lastID, changes: this.changes });
+    });
+  });
+};
 
 
 // Users table

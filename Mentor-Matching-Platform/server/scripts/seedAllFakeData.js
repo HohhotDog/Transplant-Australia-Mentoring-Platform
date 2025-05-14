@@ -1,4 +1,5 @@
-const { faker } = require("@faker-js/faker");
+const { Faker, en } = require('@faker-js/faker');
+const faker = new Faker({ locale: [en] }); // Ensures all data is English
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
 const db = new sqlite3.Database("../data/survey.db"); // Adjust path if needed
