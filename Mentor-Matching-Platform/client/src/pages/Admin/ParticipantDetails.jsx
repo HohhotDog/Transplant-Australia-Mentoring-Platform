@@ -247,16 +247,39 @@ export default function ParticipantDetails() {
           assigned.role === "mentor" ? (
             <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
               <p className="font-semibold mb-2">Assigned mentee(s):</p>
-              <ul className="list-disc list-inside">
+              <div>
                 {assigned.mentees.map((mentee, index) => (
-                  <li key={index}>{mentee.name}</li>
+                  <div
+                    key={index}
+                    className="flex items-center gap-4 py-1"
+                  >
+                    <span className="truncate">{mentee.name}</span>
+                    <a
+                      href={`/admin/participants/${mentee.user_id}/details?sessionId=${sessionId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-900 hover:underline cursor-pointer"
+                    >
+                      View
+                    </a>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           ) : (
             <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
               <p className="font-semibold mb-2">Assigned mentor:</p>
-              <p>{assigned.mentor.name}</p>
+              <div className="flex items-center gap-4">
+                <span className="truncate">{assigned.mentor.name}</span>
+                <a
+                  href={`/admin/participants/${assigned.mentor.user_id}/details?sessionId=${sessionId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-900 hover:underline cursor-pointer"
+                >
+                  View
+                </a>
+              </div>
             </div>
           )
         ) : (
