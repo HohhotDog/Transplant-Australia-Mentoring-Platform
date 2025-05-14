@@ -3,26 +3,19 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db'); // adjust this path to your DB instance
 
-/**
- * POST /api/matching-pairs
- * Request body: { sessionId, applicationId, mentorId }
- * 1. Look up the application’s user_id as menteeId.
- * 2. Insert a new record into matching_pairs.
- * 3. Return the created pair.
- */
-router.post('/', (req, res) => {
-  const { sessionId, applicationId, mentorId } = req.body;
 
-  // 1. Retrieve the user_id (mentee) from applications
-  const lookupSql = `SELECT user_id AS menteeId FROM applications WHERE id = ?`;
-  db.get(lookupSql, [applicationId], (err, row) => {
-    if (err || !row) {
-      console.error('Error fetching application:', err);
-      return res.status(500).json({ error: 'Unable to retrieve application' });
-    }
-    const menteeId = row.menteeId;
+router.post('/matching-pairs', (req, res) => {
+  const { sessionId, mentorId, menteeId } = req.body;
+  
 
-    // 2. Insert pairing record
+  if (!sessionId || !mentorId || !menteeId) {
+    return res.status(400).json({
+      success: false,
+      message: 'Missing sessionId, mentorId or menteeId',
+    });
+  }
+  
+
     const insertSql = `
       INSERT INTO matching_pairs (session_id, mentor_id, mentee_id)
       VALUES (?, ?, ?)
@@ -33,16 +26,23 @@ router.post('/', (req, res) => {
         return res.status(500).json({ error: err.message });
       }
 
-      // 3. Respond with new record details
-      res.json({
-        id: this.lastID,
+      console.log('Inserted matching pair:', {
         sessionId,
         mentorId,
         menteeId,
-        createdAt: new Date().toISOString()
+      });
+      // this.lastID is the new row id, or undefined if skipped
+      res.json({
+        success: true,
+        pairId: this.lastID || null,
+        body: req.body,
+        message: this.lastID
+          ? 'Matching pair created'
+          : 'Matching pair already exists',
       });
     });
-  });
-});
+  }
+);
+
 
 module.exports = router;

@@ -110,9 +110,9 @@ function AdminApplicationDetailPage() {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify({
-        sessionId,
-        applicationId,
-        mentorId: mentor.id,
+        sessionId: Number(sessionId),
+        mentorId: mentor.mentor_id,
+        menteeId: app.userId
       }),
     })
       .then((res) => {
@@ -120,7 +120,7 @@ function AdminApplicationDetailPage() {
         return res.json();
       })
       .then((data) => {
-        console.log('Assigned mentor pair:', data);
+        console.log('***Assigned mentor pair:', data);
         // You can update state or show a notification here
       })
       .catch((err) => console.error('Assign mentor error:', err))

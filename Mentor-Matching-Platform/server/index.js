@@ -58,7 +58,7 @@ app.use("/api", matchRoutes);
 app.use("/api", sessionRoutes);
 app.use("/api", avatarRoutes);
 app.use("/api/mentors", mentorsRouter);
-app.use("/api/matching-pairs", matchingPairsRouter);
+app.use("/api", matchingPairsRouter);
 
 // admin routes
 const adminRoutes = require("./routes/admin");

@@ -60,61 +60,60 @@ router.get(
     const sessionId = Number(req.params.sessionId);
 
     // Find the matching record where the current user is mentor or mentee
-    const findPairSql = `
+    const findPairsSql = `
       SELECT *
       FROM matching_pairs
       WHERE session_id = ?
         AND (mentor_id = ? OR mentee_id = ?)
-      LIMIT 1
+        AND mentor_id IS NOT NULL
+        AND mentee_id IS NOT NULL
     `;
 
-    db.get(findPairSql, [sessionId, userId, userId], (err, pair) => {
+    db.all(findPairsSql, [sessionId, userId, userId], (err, pairs) => {
       if (err) {
-        console.error('Database error fetching pair:', err);
-        return res.status(500).json({ error: 'Database error' });
+        console.error("Database error fetching pairs:", err);
+        return res.status(500).json({ error: "Database error" });
       }
-      if (!pair) {
-        // No match found
+      console.log("Pairs found:", pairs);
+      if (!pairs || pairs.length === 0) {
         return res.json([]);
       }
 
-      // Identify the “other” user in the pair
-      const otherId = pair.mentor_id === userId
-        ? pair.mentee_id
-        : pair.mentor_id;
-
-      // Fetch the other user’s basic info
-      const findUserSql = `
-        SELECT id, email
-        FROM users
-        WHERE id = ?
-      `;
-      db.get(findUserSql, [otherId], (err, other) => {
-        if (err) {
-          console.error('Database error fetching matched user:', err);
-          return res.status(500).json({ error: 'Database error' });
-        }
-        if (!other) {
-          return res.status(404).json({ error: 'Matched user not found' });
-        }
-
-        // Return the pairing and other user’s info
-        res.json([{
-          pairId: pair.id,
-          sessionId: pair.session_id,
-          role: pair.mentor_id === userId ? 'mentor' : 'mentee',
-          other: {
-            id: other.id,
-            email: other.email
-          },
-          createdAt: pair.created_at
-        }]);
+      // For each pair, fetch the "other" user's info
+      const otherFetches = pairs.map(pair => {
+        const otherId = pair.mentor_id === userId
+          ? pair.mentee_id
+          : pair.mentor_id;
+        return new Promise((resolve, reject) => {
+          db.get(
+            `SELECT id, email FROM users WHERE id = ?`,
+            [otherId],
+            (err, other) => {
+              if (err) return reject(err);
+              if (!other) return resolve(null);
+              resolve({
+                pairId: pair.id,
+                sessionId: pair.session_id,
+                role: pair.mentor_id === userId ? "mentor" : "mentee",
+                other,
+                createdAt: pair.created_at
+              });
+            }
+          );
+        });
       });
+
+      Promise.all(otherFetches)
+        .then(results => {
+          const filtered = results.filter(Boolean);
+          res.json(filtered);
+        })
+        .catch(err => {
+          console.error("Error fetching paired users:", err);
+          res.status(500).json({ error: "Database error" });
+        });
     });
   }
 );
-
-
-
 
 module.exports = router;
