@@ -56,10 +56,15 @@ const Topbar = () => {
 </a>
 
 <img
-  src={user?.avatar_url?.trim() ? user.avatar_url : "/images/default-avatar.png"}
+  src={user?.avatar_url?.trim() || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"}
   alt="Profile"
-  className="w-8 h-8 rounded-full object-cover"
+  className="w-8 h-8 rounded-full object-cover bg-gray-100"
+  onError={(e) => {
+    e.target.onerror = null; // prevent infinite loop
+    e.target.src = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+  }}
 />
+
 
 
       </div>

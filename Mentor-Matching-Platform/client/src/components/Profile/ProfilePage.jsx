@@ -92,9 +92,7 @@ function ProfilePage({ isLoggedIn, handleLogout }) {
                         alt="Profile"
                     />
                 </div>
-                <p style={{ fontSize: "0.9em", textAlign: "center", marginTop: "0.5rem", color: "#666" }}>
-                    Click to change avatar
-                </p>
+
             </div>
 
             {/* Profile Info */}

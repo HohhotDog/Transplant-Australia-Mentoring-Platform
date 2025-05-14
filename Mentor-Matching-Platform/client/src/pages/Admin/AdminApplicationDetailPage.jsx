@@ -2,21 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 // Toggle mock data for testing
-const USE_MOCK_RECOMMEND = true;
+const USE_MOCK_RECOMMEND = false;
 
 function AdminApplicationDetailPage() {
   const { sessionId, applicationId } = useParams();
   const [app, setApp] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [recommendedMentors, setRecommendedMentors] = useState(
-    USE_MOCK_RECOMMEND
-      ? [
-          { id: 101, name: 'Mock Mentor A', avatar: null },
-          { id: 102, name: 'Mock Mentor B', avatar: 'https://via.placeholder.com/150' },
-        ]
-      : []
-  );
+  const [recommendedMentors, setRecommendedMentors] = useState([]);
+  const [selectedMentorId, setSelectedMentorId] = useState(null);
   const [recLoading, setRecLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,12 +38,21 @@ function AdminApplicationDetailPage() {
   useEffect(() => {
     if (app?.role?.toLowerCase() === 'mentee') {
       setRecLoading(true);
-      fetch(`/api/match-mentee?sessionId=${sessionId}`, { credentials: 'include' })
+      fetch(
+        `/api/match-mentee?sessionId=${sessionId}&menteeId=${app.userId}`,
+        { credentials: 'include' }
+      )
         .then(res => {
           if (!res.ok) throw new Error(`Failed to fetch recommended mentors: ${res.status}`);
           return res.json();
         })
-        .then(data => setRecommendedMentors(data))
+        .then(data => {
+          if (data.success) {
+            setRecommendedMentors(data.recommendations);
+          } else {
+            console.error('Match API error:', data.message);
+          }
+        })
         .catch(err => console.error('Error fetching recommended mentors:', err))
         .finally(() => setRecLoading(false));
     }
@@ -108,9 +111,9 @@ function AdminApplicationDetailPage() {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify({
-        sessionId,
-        applicationId,
-        mentorId: mentor.id,
+        sessionId: Number(sessionId),
+        mentorId: mentor.mentor_id,
+        menteeId: app.userId
       }),
     })
       .then((res) => {
@@ -118,8 +121,12 @@ function AdminApplicationDetailPage() {
         return res.json();
       })
       .then((data) => {
-        console.log('Assigned mentor pair:', data);
+        console.log('***Assigned mentor pair:', data);
         // You can update state or show a notification here
+        alert(`Mentor ${mentor.name} assigned successfully!`);
+        setSelectedMentorId(mentor.mentor_id);
+        console.log('Now, set selectedMentorId', selectedMentorId);
+        
       })
       .catch((err) => console.error('Assign mentor error:', err))
       .finally(() => setUpdating(false));
@@ -184,20 +191,25 @@ function AdminApplicationDetailPage() {
               <p className="text-gray-500">Loading recommended mentors...</p>
             ) : recommendedMentors.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {recommendedMentors.map((mentor) => (
+                {recommendedMentors.map((mentor) => {
+                const isSelected = mentor.mentor_id === selectedMentorId;
+                console.log("mentor.mentor_id", mentor.mentor_id);
+                console.log("selectedMentorId", selectedMentorId);
+                console.log("isSelected", isSelected);
+                return (
                   <div
-                    key={mentor.id}
+                    key={mentor.mentor_id}
                     onClick={() => !updating && assignMentor(mentor)}
-                    className="cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm hover:shadow-md transition"
+                    className={`
+                      cursor-pointer flex items-center space-x-3 p-3 border rounded shadow-sm transition
+                      ${isSelected ? "bg-green-100" : "hover:shadow-md"}
+                    `}
                   >
-                    <img
-                      src={mentor.avatar || "/placeholder-avatar.jpg"}
-                      alt={mentor.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
                     <div className="font-medium">{mentor.name}</div>
+                    <div className="text-sm text-gray-500">{mentor.email}</div>
                   </div>
-                ))}
+                );
+              })}
               </div>
             ) : (
               <p className="text-gray-500">No recommended mentors available now</p>
