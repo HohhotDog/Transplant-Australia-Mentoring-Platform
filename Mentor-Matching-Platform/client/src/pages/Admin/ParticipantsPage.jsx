@@ -1,25 +1,26 @@
 // src/pages/Admin/ParticipantsPage.jsx
-import { useParams, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Tabs, Tab } from '@mui/material';
-import { useEffect, useState } from 'react';
 
 export default function ParticipantPage() {
-  const { sessionId } = useParams();
+  const { sessionId } = useParams(); // Get sessionId from the route
+  console.log("Session ID:", sessionId);
   const [tabValue, setTabValue] = useState(0);
   const [mentors, setMentors] = useState([]);
   const [mentees, setMentees] = useState([]);
 
-// add comment
   useEffect(() => {
-    fetch(`/api/admin/sessions/${sessionId}/participants/mentors`)
-      .then(res => res.json())
-      .then(setMentors);
-
-    fetch(`/api/admin/sessions/${sessionId}/participants/mentees`)
-      .then(res => res.json())
-      .then(setMentees);
+    // Fetch both mentors and mentees for the session
+    fetch(`/api/admin/sessions/${sessionId}/participants`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Participants data:", data);
+        setMentors(data.mentors);
+        setMentees(data.mentees);
+      })
+      .catch((err) => console.error("Failed to fetch participants:", err));
   }, [sessionId]);
-
 
   const renderTable = (data, columns) => (
     <div className="overflow-x-auto shadow rounded-lg">
@@ -41,7 +42,7 @@ export default function ParticipantPage() {
             <tr key={item.id}>
               {columns.map((col) => (
                 <td 
-                  key={col.field} 
+                  key={col.field || col.header} 
                   className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                 >
                   {col.render ? col.render(item) : item[col.field]}
@@ -59,72 +60,51 @@ export default function ParticipantPage() {
     </div>
   );
 
-  // Define the columns for the mentor and mentee tables
   const mentorColumns = [
     { header: 'Name', field: 'name' },
-    { 
-      header: 'Assigned Mentees', 
-      field: 'assigned_mentees',
-      render: (item) => item.assigned_mentees || 0
-    },
-    { 
-      header: 'Joined Date', 
-      field: 'join_date',
-      render: (item) => new Date(item.join_date).toLocaleDateString()
-    },
+    { header: 'Email', field: 'email' },
     {
       header: 'Action',
       render: (item) => (
         <Link
-          to={`/admin/participants/${item.id}`}
+          to={`/admin/participants/${item.id}/details?sessionId=${sessionId}`}
           className="text-blue-600 hover:text-blue-900"
         >
           View
         </Link>
-      )
-    }
+      ),
+    },
   ];
 
   const menteeColumns = [
     { header: 'Name', field: 'name' },
-    { 
-      header: 'Matched Date',
-      render: (item) => item.matched_date 
-        ? new Date(item.matched_date).toLocaleDateString()
-        : 'Not matched'
-    },
-    { 
-      header: 'Assigned Mentor', 
-      field: 'assigned_mentor',
-      render: (item) => item.assigned_mentor || 'Not assigned'
-    },
+    { header: 'Matched Date', field: 'matched_date' },
     {
       header: 'Action',
       render: (item) => (
         <Link
-          to={`/admin/participants/${item.id}`}
+          to={`/admin/participants/${item.id}/details?sessionId=${sessionId}`}
           className="text-blue-600 hover:text-blue-900"
         >
           View
         </Link>
-      )
-    }
+      ),
+    },
   ];
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Session Participants</h1>
-      
+
       <Tabs value={tabValue} onChange={(e, v) => setTabValue(v)}>
         <Tab label={`Mentors (${mentors.length})`} />
         <Tab label={`Mentees (${mentees.length})`} />
       </Tabs>
 
       <div className="mt-4">
-        {tabValue === 0 
+        {tabValue === 0
           ? renderTable(mentors, mentorColumns)
-          : renderTable(mentees, menteeColumns)
-        }
+          : renderTable(mentees, menteeColumns)}
       </div>
     </div>
   );

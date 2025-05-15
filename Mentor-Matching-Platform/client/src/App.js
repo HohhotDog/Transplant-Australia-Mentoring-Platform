@@ -14,6 +14,7 @@ import MySessionPage from "./pages/Mentorship/MySessions";
 import RegisterSuccessInfo from "./components/Auth/RegisterSuccessInfo";
 import PasswordLost from "./components/Auth/PasswordLost";
 import AvatarUpdatePage from "./components/Profile/ChangeAvatar";
+import ParticipantDetails from "./pages/Admin/ParticipantDetails";
 
 // Auth and Profile Components
 import LoginForm from "./components/Auth/LoginForm"; 
@@ -38,26 +39,31 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountType, setAccountType] = useState(null);
   const [isSessionChecked, setIsSessionChecked] = useState(false);
-  const { setUser } = useUser();
+  const { user, setUser } = useUser();
 
   useEffect(() => {
-    fetch("/api/me", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setIsLoggedIn(true);
-          setAccountType(data.account_type);
-          setUser({
-            avatar_url: data.avatar_url || "/images/default-avatar.png",
-          });
-        }
-      })
-      .catch((err) => console.error("Failed to check session:", err))
-      .finally(() => setIsSessionChecked(true));
-  }, []);
+    // Only fetch if user is not already set
+    if (!user) {
+      fetch("/api/me")
+        .then((res) => res.json())
+        .then((userData) => {
+          if (userData.success) {
+            setUser({
+              id: userData.id,
+              email: userData.email,
+              account_type: userData.account_type,
+              avatar_url: userData.avatar_url,
+            });
+            setIsLoggedIn(true);
+            setAccountType(userData.account_type);
+          }
+        })
+        .catch((err) => console.error("Failed to check session:", err))
+        .finally(() => setIsSessionChecked(true));
+    } else {
+      setIsSessionChecked(true);
+    }
+  }, [user, setUser]);
 
   function handleLoginSuccess(type, avatarUrl) {
     setIsLoggedIn(true);
@@ -81,17 +87,6 @@ function App() {
         }
       });
   }
-
-  useEffect(() => {
-    fetch("/api/check-auth", { credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => setIsLoggedIn(data.isAuthenticated))
-      .catch((err) => {
-        console.error("Failed to check auth:", err);
-        setIsLoggedIn(false);
-      })
-      .finally(() => setIsSessionChecked(true));
-  }, []);
 
   if (!isSessionChecked) return null;
 
@@ -151,6 +146,14 @@ function App() {
             element={
               <RequireAdmin accountType={accountType}>
                 <ParticipantPage />
+              </RequireAdmin>
+            }
+          />
+          <Route
+            path="admin/participants/:userId/details"
+            element={
+              <RequireAdmin accountType={accountType}>
+                <ParticipantDetails />
               </RequireAdmin>
             }
           />

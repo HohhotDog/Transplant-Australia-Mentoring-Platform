@@ -1,4 +1,3 @@
-
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -16,6 +15,7 @@ const matchingPairsRouter = require("./routes/matching-pairs");
 const sessionRoutes = require("./routes/sessions");
 const seedSessions = require("./scripts/seedSessions");
 const seedAdmin = require("./scripts/seedAdmin");
+const commentsRoutes = require("./routes/comments");
 const seedTestUsers = require("./scripts/seedTestUsers");
 
 const app = express();
@@ -57,6 +57,7 @@ app.use("/api", surveyRoutes);
 app.use("/api", matchRoutes);
 app.use("/api", sessionRoutes);
 app.use("/api", avatarRoutes);
+app.use("/api/comments", commentsRoutes);
 app.use("/api/mentors", mentorsRouter);
 app.use("/api", matchingPairsRouter);
 
