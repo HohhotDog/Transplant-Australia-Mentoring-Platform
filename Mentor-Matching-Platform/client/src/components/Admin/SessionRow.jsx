@@ -5,7 +5,22 @@ import { Link } from 'react-router-dom';
 const SessionRow = ({ session }) => (
   <tr className="border-t">
     <td className="py-2 px-4">{session.title}</td>
-    <td className="py-2 px-4">{session.timeFrame}</td>
+    <td className="py-2 px-4">
+      {session.start_date && session.end_date ? (
+        `${new Date(session.start_date).toLocaleDateString()} – ${new Date(session.end_date).toLocaleDateString()}`
+      ) : session.timeFrame && session.timeFrame.includes('T') ? (
+        // Parse and format ISO–ISO string
+        (() => {
+          const parts = session.timeFrame.split('–').map(s => s.trim());
+          if (parts.length === 2) {
+            return `${new Date(parts[0]).toLocaleDateString()} – ${new Date(parts[1]).toLocaleDateString()}`;
+          }
+          return session.timeFrame;
+        })()
+      ) : (
+        session.timeFrame || ''
+      )}
+    </td>
     <td className="py-2 px-4">{session.participants}</td>
     <td className="py-2 px-4">{session.pendingApplications}</td>
     <td className="py-2 px-4 capitalize">
