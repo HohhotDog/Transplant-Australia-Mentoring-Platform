@@ -1,33 +1,33 @@
 [
     {
       "id": "1",
-      "name": "Session Title 1",
+      "name": "Post-Op Nutrition",
       "picture_url": "/images/sessions/session1.png",
-      "description": "This is a brief description for mentorship session 1.",
+      "description": "Learn how to optimize your diet after surgery—covering macronutrient balance, essential vitamins and minerals, and meal planning strategies to support healing.",
       "start_date": "2025-05-01",
       "end_date": "2025-05-29"
     },
     {
       "id": "2",
-      "name": "Session Title 2",
+      "name": "Returning to Work",
       "picture_url": "/images/sessions/session2.png",
-      "description": "This is a brief description for mentorship session 2.",
+      "description": "Plan your phased return to work with ergonomic tips, employer communication guidelines, and stress-management strategies.",
       "start_date": "2025-06-01",
       "end_date": "2025-06-30"
     },
     {
       "id": "3",
-      "name": "Session Title 3",
+      "name": "Emotional Wellbeing",
       "picture_url": "/images/sessions/session1.png",
-      "description": "This is a brief description for mentorship session 3.",
+      "description": "Explore techniques for coping with stress, anxiety, and mood swings after surgery, including mindfulness exercises, journaling prompts, and peer support resources.",
       "start_date": "2025-07-01",
       "end_date": "2025-07-31"
     },
     {
       "id": "4",
-      "name": "Session Title 4",
+      "name": "Exercise",
       "picture_url": "/images/sessions/session2.png",
-      "description": "This is a brief description for mentorship session 4.",
+      "description": "Discover safe, doctor-approved exercise routines and mobility tips designed to rebuild strength, improve flexibility, and enhance your overall physical recovery.",
       "start_date": "2025-08-01",
       "end_date": "2025-08-31"
     }
