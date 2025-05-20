@@ -5,8 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78de1d49-85a6-4120-8530-aabf48cd137c" name="Changes" comment="Several New Features:&#10;Now forbiddened mentor/mentee to visit admin pages&#10;And sessions and survey would not be shared to the admin for the clarity.&#10;Re-edited the current logic for the layout">
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/admin.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/app.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/auth.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/avatar.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/comments.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/index.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/match.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/matching-pairs.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/mentors.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/profile.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/security.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/servey.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/sessions.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/LoginForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mentor-Matching-Platform/server/scripts/seedTestUsers.js" beforeDir="false" afterPath="$PROJECT_DIR$/Mentor-Matching-Platform/server/scripts/seedTestUsers.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +34,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="JSX File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -59,22 +76,40 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Jest..admin.js.executor": "Run",
+    "Jest.AuthRoutes.Session-based routes.GET /api/check-auth responds correctly.executor": "Debug",
+    "Jest.admin.js.executor": "Run",
+    "Jest.admin.test.js.executor": "Run",
+    "Jest.auth.test.js.executor": "Run",
+    "Jest.avatar.test.js.executor": "Run",
+    "Jest.comments.test.js.executor": "Run",
+    "Jest.index.test.js.executor": "Run",
+    "Jest.jest.admin.js.executor": "Run",
+    "Jest.match.test.js.executor": "Run",
+    "Jest.matching-pairs.test.js.executor": "Run",
+    "Jest.mentors.test.js.executor": "Run",
+    "Jest.profile.test.js.executor": "Run",
+    "Jest.security.test.js.executor": "Run",
+    "Jest.servey.test.js.executor": "Run",
+    "Jest.sessions.test.js.executor": "Run",
     "Node.js.App.js.executor": "Run",
     "Node.js.Back-end.executor": "Run",
     "Node.js.index.js.executor": "Run",
     "Node.js.server.js.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "chensuyang-3-editlogin",
+    "git-widget-placeholder": "backend-testing",
     "last_opened_file_path": "/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/client/public/images/ProfilePage",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/Users/yangchensu/WebstormProjects/Transplant-Australia-Mentoring-Platform/Mentor-Matching-Platform/server/node_modules/jest",
     "nodejs_package_manager_path": "npm",
     "npm.Front-end.executor": "Run",
     "npm.start.executor": "Run",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
@@ -92,10 +127,55 @@
       <recent name="$PROJECT_DIR$/Mentor-Matching-Platform/client/src/components/Auth/style" />
     </key>
   </component>
-  <component name="RunManager" selected="Compound.Start Proj">
+  <component name="RunManager" selected="Jest.index.test.js">
     <configuration name="Start Proj" type="CompoundRunConfigurationType">
       <toRun name="Back-end" type="NodeJSConfigurationType" />
       <toRun name="Front-end" type="js.build_tools.npm" />
+      <method v="2" />
+    </configuration>
+    <configuration name="admin.test.js" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/Mentor-Matching-Platform/server/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/Mentor-Matching-Platform/server" />
+      <envs />
+      <scope-kind value="TEST_FILE" />
+      <test-file value="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/admin.test.js" />
+      <method v="2" />
+    </configuration>
+    <configuration name="index.test.js" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/Mentor-Matching-Platform/server/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/Mentor-Matching-Platform/server" />
+      <envs />
+      <scope-kind value="TEST_FILE" />
+      <test-file value="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/index.test.js" />
+      <method v="2" />
+    </configuration>
+    <configuration name="security.test.js" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/Mentor-Matching-Platform/server/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/Mentor-Matching-Platform/server" />
+      <envs />
+      <scope-kind value="TEST_FILE" />
+      <test-file value="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/security.test.js" />
+      <method v="2" />
+    </configuration>
+    <configuration name="servey.test.js" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/Mentor-Matching-Platform/server/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/Mentor-Matching-Platform/server" />
+      <envs />
+      <scope-kind value="TEST_FILE" />
+      <test-file value="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/servey.test.js" />
+      <method v="2" />
+    </configuration>
+    <configuration name="sessions.test.js" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/Mentor-Matching-Platform/server/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/Mentor-Matching-Platform/server" />
+      <envs />
+      <scope-kind value="TEST_FILE" />
+      <test-file value="$PROJECT_DIR$/Mentor-Matching-Platform/server/tests/sessions.test.js" />
       <method v="2" />
     </configuration>
     <configuration name="Back-end" type="NodeJSConfigurationType" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/Mentor-Matching-Platform/server">
@@ -113,9 +193,23 @@
     </configuration>
     <list>
       <item itemvalue="Compound.Start Proj" />
+      <item itemvalue="Jest.admin.test.js" />
+      <item itemvalue="Jest.index.test.js" />
+      <item itemvalue="Jest.security.test.js" />
+      <item itemvalue="Jest.servey.test.js" />
+      <item itemvalue="Jest.sessions.test.js" />
       <item itemvalue="Node.js.Back-end" />
       <item itemvalue="npm.Front-end" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Jest.index.test.js" />
+        <item itemvalue="Jest.admin.test.js" />
+        <item itemvalue="Jest.sessions.test.js" />
+        <item itemvalue="Jest.servey.test.js" />
+        <item itemvalue="Jest.security.test.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -304,7 +398,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Mentor-Matching-Platform/client/src/App.js</url>
-          <line>41</line>
+          <line>101</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
