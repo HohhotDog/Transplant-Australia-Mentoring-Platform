@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:verbose": "jest --verbose"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +23,11 @@
     "mysql2": "^3.14.0",
     "path": "^0.12.7",
     "react-router-dom": "^7.5.1",
-    "sqlite3": "^5.1.7",
     "start": "^5.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "sqlite3": "^5.1.7",
+    "supertest": "^7.1.1"
   }
 }

@@ -1,6 +1,6 @@
 /*
   seedTestUsers.js
-  Script to create two test users (mentor & mentee), apply them to session #1, and pair them.
+  Script to create two tests users (mentor & mentee), apply them to session #1, and pair them.
   Usage:
     - Standalone: node seedTestUsers.js
     - As module: const seedTestUsers = require('./seedTestUsers'); seedTestUsers();
@@ -101,7 +101,7 @@ if (require.main === module) {
   seedTestUsers()
     .then(() => process.exit(0))
     .catch(err => {
-      console.error('❌ Seeding test users failed:', err);
+      console.error('❌ Seeding tests users failed:', err);
       process.exit(1);
     });
 }
