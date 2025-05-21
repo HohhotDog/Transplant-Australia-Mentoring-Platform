@@ -92,11 +92,11 @@ function LoginForm({ onLoginSuccess, isLoggedIn, handleLogout }) {
           </p>
         </form>
 
-        {/* Add Home Button */}
-        <div className="home-redirect">
+        {/* Back to Home Button */}
+        <div className="flex justify-center mt-6">
           <button
-              className="login-home-btn"
               onClick={() => navigate("/")}
+              className="bg-[#ff6f00] hover:bg-orange-700 text-white font-semibold px-4 py-2 rounded"
           >
             Back to Home
           </button>
