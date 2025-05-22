@@ -103,5 +103,7 @@ npm test
 - 🔗 [**Learning Resources**](https://docs.google.com/document/d/1DFY3lnWn82pg10eKOA8aZ4Ug-roccF-6BpgPVbvQF24/edit?tab=t.0#heading=h.964opy444ogh)
 - 🔗 [**Mentor-Mentee Matching Algorithm (Documentation)**](https://docs.google.com/document/d/1PQDIaYoI5F59inHe_NiGEx2V4uneqo5YZ10YJh0zMmM/edit?usp=sharing)
 - 🔗 [**Testing Documentation**](https://docs.google.com/document/d/13U9d_DCYkzxeq-aNCxFHDF5sjM-kTvcsEKfDQJ40nPg/edit?usp=sharing)
+- 🔗 [**User Manual**](https://docs.google.com/document/d/1n76r0vO9Dm-oyqxwhCmtV8iazgmclElFOlYf9AwCJdU/edit?tab=t.0)
+  
 
 ---
