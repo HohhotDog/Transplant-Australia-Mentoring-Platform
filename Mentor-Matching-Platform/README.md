@@ -57,6 +57,11 @@ node index.js
 ```
 Runs on: `http://localhost:3001`
 
+### 4. Back-end Testing (Jest)
+
+```bash
+npm test
+```
 
 
 ## 🛠️ Example API
